@@ -1,0 +1,26 @@
+# These are used to ignore make executables, we may remove them if the
+# ignored files actually need the source control
+# These ignores were cross referenced with fresh tarball to make sure regex matching does not throw out
+# required files
+
+# generated library
+/ptsrc/lib/pt/
+
+# binaries folder
+/ptsrc/bin/
+
+# random ptc binary
+/ptsrc/cmd/ptc
+
+# safe regex because fresh tarball does not have any .sst files
+/ptsrc/**/*.sst
+
+# safe regex because fresh tarball does not have any .def files
+/ptsrc/**/*.def
+
+# Excluding out files but leaving the important one that was already present
+/ptsrc/**/*.out
+!/ptsrc/primes.out
+
+# Object file
+/ptsrc/ptruntime/ptruntime.o
