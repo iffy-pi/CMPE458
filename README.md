@@ -26,3 +26,13 @@ source ~/.bash_profile
 ```
 
 which can be run automatically by adding it to your ~/.bashrc file.
+
+# Scripts ( /scripts )
+## scantrace
+Implements the scanner trace command:
+
+```bash
+ssltrace "ptc -o1 -t1 -L lib/pt $1" lib/pt/scan.def -i
+```
+
+Where `$1` is the test file to pass in (was `test.pt` in the tutorial docs).
