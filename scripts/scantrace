@@ -6,8 +6,8 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PTSRC_DIR=$SCRIPT_DIR/../ptsrc
 LIB_PT_DIR=$PTSRC_DIR/lib/pt
 
-if test "$#" -ne 2 ; then
-    echo "Must specify test file and tracing flag (either -i or -e)"
+if test "$#" -ne ; then
+    echo "Must specify test file"
     exit 0
 fi
 

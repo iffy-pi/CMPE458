@@ -37,4 +37,4 @@ ssltrace "ptc -o1 -t1 -L lib/pt $1" lib/pt/scan.def $2
 
 Where:
 - `$1` is the test file to pass in (was `test.pt` in the tutorial docs).
-- `$2` is the tracing flag ( `-i` for input tokens, `-e` for output tokens)
+- `$2` (optional) is the tracing flag ( `-i` for input tokens, `-e` for output tokens)
