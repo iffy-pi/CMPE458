@@ -24,3 +24,6 @@
 
 # Object file
 /ptsrc/ptruntime/ptruntime.o
+
+# Generated output files
+/**/*.out
