@@ -4,6 +4,8 @@ Repository for CMPE 458
 # Repo Organization
 ptsrc/ contains the contents of the tarball (`tar xvf /cas/course/cisc458/pt23/pt23-student.tar.gz`)
 
+ptsrc-ref/ is the same extraction, is included to be just a reference of the original state of the files.
+
 # Running Pascal
 To run the local library ( created at ptsrc/lib/pt), you must specify it with the `ptc` command:
 
