@@ -48,4 +48,6 @@ Run it with:
 
 ```
 python parser_def_paster.py
-```
+```.
+
+Note: You should first make the scanner (`make scanner`) and then run the paste script. You can verify everything is pasted correctly by making the scanner again (it should not give any errors this time).
