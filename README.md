@@ -40,3 +40,12 @@ ssltrace "ptc -o1 -t1 -L lib/pt $1" lib/pt/scan.def $2
 Where:
 - `$1` is the test file to pass in (was `test.pt` in the tutorial docs).
 - `$2` (optional) is the tracing flag ( `-i` for input tokens, `-e` for output tokens)
+
+# parser_def_paster
+Handles the pasting of the scan.def and parser.def content into parser/parser.pt (Tutorial 2 Page 4)
+
+Run it with:
+
+```
+python parser_def_paster.py
+```
