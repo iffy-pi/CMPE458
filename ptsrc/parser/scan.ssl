@@ -49,6 +49,7 @@ Output :
         %   Tokens pDiv through pRepeat are keywords which will be 
         %   separated from user defined identifiers by the Screener.
         %   This Scanner treats them all as identifiers.
+        %   New Quby identifiers added right above pRepeat
         pDiv 
         firstKeywordToken = pDiv
         pMod
@@ -72,6 +73,7 @@ Output :
         pIf
         pCase
         pWhile
+        pUsing
         pRepeat
         lastKeywordToken = pRepeat
 
