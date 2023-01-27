@@ -4,6 +4,7 @@
 % Language keywords 
 %   These must be in the exact same order as the keyword token definitions 
 %   in the Output section of scan.ssl and the Input section of parser.ssl
+%   New quby identifiers added right above repeat
 
 div
 mod
@@ -27,6 +28,7 @@ begin
 if
 case
 while
+using
 repeat
 
 % End of keywords
