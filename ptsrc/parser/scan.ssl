@@ -55,7 +55,6 @@ Output :
         pMod
         pOr
         pAnd
-        pNot
         pThen
         pElse
         pOf
