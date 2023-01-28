@@ -59,16 +59,11 @@ Output :
         pElse
         pOf
         pEnd
-        pUntil
         pDo
         pArray
         pFile
-        pProgram
-        pConst
         pVar
         pType
-        pProcedure
-        pBegin
         pIf
         pCase
         pWhile
