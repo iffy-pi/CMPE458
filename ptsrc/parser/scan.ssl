@@ -35,6 +35,7 @@ Input :
         lRightBracket   ']'
         lLeftBrace      '{'
         lRightBrace     '}'
+        lExclamation    '!'
         lBlank
         lIllegal
         lNewLine
@@ -96,6 +97,7 @@ Output :
         pMinus
         pStar
         pAssignEquals % renamed from pColonEquals to pAssignEquals as it is more descriptive for the assignment operator
+        pNot % added as a non-compound token as it is just an operator
         pDot
         pComma
         pSemicolon
@@ -182,6 +184,13 @@ Scan :
                     
                     | *: % if there is anything else, then reloop to handle it since it is the assignment operator
                         .pAssignEquals
+                ]
+            | '!':
+                [
+                    | '=':
+                        .pNotEqual % if we see ! followed by =, means != which is our not equals operator
+                    | *:
+                        .pNot % if there is anything else, emit pNot token and then reloop to scan the value we are inverting
                 ]
             | '+':
                 .pPlus
