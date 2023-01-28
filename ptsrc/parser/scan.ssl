@@ -75,8 +75,7 @@ Output :
         pModule
         pUnless
         pElsif
-        pRepeat
-        lastKeywordToken = pRepeat
+        lastKeywordToken = pElsif
 
         % Scanner tokens -
         %   These are the tokens actually recognized by the Scanner itself.
