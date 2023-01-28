@@ -74,6 +74,13 @@ Output :
         pCase
         pWhile
         pUsing
+        pVal
+        pDef
+        pBreak
+        pWhen
+        pModule
+        pUnless
+        pElsif
         pRepeat
         lastKeywordToken = pRepeat
 
