@@ -96,53 +96,54 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         pMod = 1;
         pOr = 2;
         pAnd = 3;
-        pNot = 4;
-        pThen = 5;
-        pElse = 6;
-        pOf = 7;
-        pEnd = 8;
-        pUntil = 9;
-        pDo = 10;
-        pArray = 11;
-        pFile = 12;
-        pProgram = 13;
-        pConst = 14;
-        pVar = 15;
-        pType = 16;
-        pProcedure = 17;
-        pBegin = 18;
-        pIf = 19;
-        pCase = 20;
-        pWhile = 21;
-        pRepeat = 22;
-        lastKeywordToken = 22;
-        pIdentifier = 23;
-        firstCompoundInputToken = 23;
-        pInteger = 24;
-        pStringLiteral = 25;
-        lastCompoundInputToken = 25;
-        pNewLine = 26;
-        pEndFile = 27;
-        pPlus = 28;
-        pMinus = 29;
-        pStar = 30;
-        pColonEquals = 31;
-        pDot = 32;
-        pComma = 33;
-        pSemicolon = 34;
-        pColon = 35;
-        pEquals = 36;
-        pNotEqual = 37;
-        pLess = 38;
-        pLessEqual = 39;
-        pGreaterEqual = 40;
-        pGreater = 41;
-        pLeftParen = 42;
-        pRightParen = 43;
-        pLeftBracket = 44;
-        pRightBracket = 45;
-        pDotDot = 46;
-        lastSyntaxToken = 46;
+        pThen = 4;
+        pElse = 5;
+        pOf = 6;
+        pEnd = 7;
+        pDo = 8;
+        pArray = 9;
+        pFile = 10;
+        pVar = 11;
+        pType = 12;
+        pIf = 13;
+        pCase = 14;
+        pWhile = 15;
+        pUsing = 16;
+        pVal = 17;
+        pDef = 18;
+        pBreak = 19;
+        pWhen = 20;
+        pModule = 21;
+        pUnless = 22;
+        pElsif = 23;
+        lastKeywordToken = 23;
+        pIdentifier = 24;
+        firstCompoundInputToken = 24;
+        pInteger = 25;
+        pStringLiteral = 26;
+        lastCompoundInputToken = 26;
+        pNewLine = 27;
+        pEndFile = 28;
+        pPlus = 29;
+        pMinus = 30;
+        pStar = 31;
+        pColonEquals = 32;
+        pDot = 33;
+        pComma = 34;
+        pSemicolon = 35;
+        pColon = 36;
+        pEquals = 37;
+        pNotEqual = 38;
+        pLess = 39;
+        pLessEqual = 40;
+        pGreaterEqual = 41;
+        pGreater = 42;
+        pLeftParen = 43;
+        pRightParen = 44;
+        pLeftBracket = 45;
+        pRightBracket = 46;
+        pDotDot = 47;
+        lastSyntaxToken = 47;
 
         { Input/Output Tokens }
 
@@ -232,7 +233,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         pRightBracket = 45;
         pDotDot = 46;
         lastSyntaxToken = 46;
-        }
+	}
 
         { Output Tokens }
         sIdentifier = 0;
@@ -327,7 +328,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         sslTblSize = 884;
         minSslTableValue = -32767;
         maxSslTableValue = 32767;
-        }
+	}
 
 { ===== End of contents of parser.def }
 

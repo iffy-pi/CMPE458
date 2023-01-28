@@ -4,30 +4,32 @@
 % Language keywords 
 %   These must be in the exact same order as the keyword token definitions 
 %   in the Output section of scan.ssl and the Input section of parser.ssl
+%   New quby identifiers added right above repeat
 
 div
 mod
 or
 and
-not
 then
 else
 of
 end
-until
 do
 array
 file
-program
-const
 var
 type
-procedure
-begin
 if
 case
 while
-repeat
+using
+val
+def
+break
+when
+module
+unless
+elsif
 
 % End of keywords
 
