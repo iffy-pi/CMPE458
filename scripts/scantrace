@@ -6,7 +6,7 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 PTSRC_DIR=$SCRIPT_DIR/../ptsrc
 LIB_PT_DIR=$PTSRC_DIR/lib/pt
 
-if test "$#" -ne ; then
+if (( $# < 1 )) ; then
     echo "Must specify test file"
     exit 0
 fi
