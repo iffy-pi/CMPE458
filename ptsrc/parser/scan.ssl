@@ -181,7 +181,10 @@ Scan :
                     | *:
                 ]
             | '=':
-                .pEquals
+                [
+                    | '=':
+                        .pEquals % choice operator for this, if it sees = followed by =, means == which is comparison operator so emit pEquals
+                ]
             | '+':
                 .pPlus
             | lQuote:
