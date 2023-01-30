@@ -65,6 +65,8 @@ Input :
         pDot                    '.'
         pComma                  ','
         pSemicolon              ';'
+        pQuestion               '?'
+        pDollar                 '$'
         pColon                  ':'
         pEquals                 '='
         pNotEqual               '<>'
@@ -123,6 +125,8 @@ Output :
         sGE
         sAdd
         sSubtract
+        sSubStr
+        sStrIndex
         sMultiply
         sDivide
         sModulus

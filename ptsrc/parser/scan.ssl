@@ -48,10 +48,10 @@ Input :
 
 Output :
         % Keyword tokens -
-        %   Tokens pDiv through pRepeat are keywords which will be 
+        %   Tokens pDiv through pElsif are keywords which will be
         %   separated from user defined identifiers by the Screener.
         %   This Scanner treats them all as identifiers.
-        %   New Quby identifiers added right above pRepeat
+        %   New Quby identifiers added right above pElsif
         pDiv 
         firstKeywordToken = pDiv
         pMod
