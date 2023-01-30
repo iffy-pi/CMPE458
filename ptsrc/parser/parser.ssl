@@ -77,6 +77,8 @@ Input :
         pLeftBracket            '['
         pRightBracket           ']'
         pDotDot                 '..'
+        pHash                   '#'
+        pExclamation            '!'
         lastSyntaxToken = pDotDot;
 
 Output :
