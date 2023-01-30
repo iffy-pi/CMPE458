@@ -25,6 +25,8 @@ Input :
         lDot            '.'
         lComma          ','
         lSemicolon      ';'
+        lQuestion       '?'
+        lDollar         '$'
         lQuote
         lBackslash
         lLeftAngle      '<'
@@ -99,6 +101,8 @@ Output :
         pDot
         pComma
         pSemicolon
+        pQuestion
+        pDollar
         pColon
         pEquals
         pNotEqual
@@ -148,6 +152,10 @@ Scan :
             | lTab:
             | ';':
                 .pSemicolon
+            | '?':
+                .pQuestion
+            | '$':
+                .pDollar
             | '(':
                 [
                     | '*':
