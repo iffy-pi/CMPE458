@@ -25,6 +25,8 @@ Input :
         lDot            '.'
         lComma          ','
         lSemicolon      ';'
+        lQuestion       '?'
+        lDollar         '$'
         lQuote
         lBackslash
         lLeftAngle      '<'
@@ -35,6 +37,8 @@ Input :
         lRightBracket   ']'
         lLeftBrace      '{'
         lRightBrace     '}'
+        lExclamation    '!'
+        lHash           '#'
         lBlank
         lIllegal
         lNewLine
@@ -42,41 +46,40 @@ Input :
         lTab
         lNewPage 
         lEndFile
-        lastCharClass = lEndFile
-        lHash           '#'
-        lExclamation    '!';
+        lastCharClass = lEndFile;
 
 Output :
         % Keyword tokens -
-        %   Tokens pDiv through pRepeat are keywords which will be 
+        %   Tokens pDiv through pElsif are keywords which will be
         %   separated from user defined identifiers by the Screener.
         %   This Scanner treats them all as identifiers.
+        %   New Quby identifiers added right above pElsif
         pDiv 
         firstKeywordToken = pDiv
         pMod
         pOr
         pAnd
-        pNot
         pThen
         pElse
         pOf
         pEnd
-        pUntil
         pDo
         pArray
         pFile
-        pProgram
-        pConst
         pVar
         pType
-        pProcedure
-        pBegin
         pIf
         pCase
         pWhile
-        pRepeat
-        lastKeywordToken = pRepeat
-      
+        pUsing
+        pVal
+        pDef
+        pBreak
+        pWhen
+        pModule
+        pUnless
+        pElsif
+        lastKeywordToken = pElsif
 
         % Scanner tokens -
         %   These are the tokens actually recognized by the Scanner itself.
@@ -96,10 +99,13 @@ Output :
         pPlus
         pMinus
         pStar
-        pColonEquals
+        pAssignEquals % renamed from pColonEquals to pAssignEquals as it is more descriptive for the assignment operator
+        pNot % added as a non-compound token as it is just an operator
         pDot
         pComma
         pSemicolon
+        pQuestion
+        pDollar
         pColon
         pEquals
         pNotEqual
@@ -111,9 +117,8 @@ Output :
         pRightParen
         pLeftBracket
         pRightBracket
-        pDotDot
         pHash
-        pExclamation
+        pDotDot
         lastSyntaxToken = pDotDot;
 
 Error :
@@ -151,6 +156,10 @@ Scan :
             | lTab:
             | ';':
                 .pSemicolon
+            | '?':
+                .pQuestion
+            | '$':
+                .pDollar
             | '(':
                 [
                     | '*':
@@ -167,12 +176,7 @@ Scan :
             | ',':
                 .pComma
             | ':':
-                [
-                    | '=':
-                        .pColonEquals
-                    | *:
-                        .pColon
-                ]
+                .pColon % not assignment operator anymore so just emit pColon
             | lDigit:
                 oBufferSave
                 @Integer
@@ -184,7 +188,20 @@ Scan :
                     | *:
                 ]
             | '=':
-                .pEquals
+                [
+                    | '=':
+                        .pEquals % choice operator for this, if it sees = followed by =, means == which is comparison operator so emit pEquals
+                    
+                    | *: % if there is anything else, then reloop to handle it since it is the assignment operator
+                        .pAssignEquals
+                ]
+            | '!':
+                [
+                    | '=':
+                        .pNotEqual % if we see ! followed by =, means != which is our not equals operator
+                    | *:
+                        .pNot % if there is anything else, emit pNot token and then reloop to scan the value we are inverting
+                ]
             | '+':
                 .pPlus
             | lQuote:
@@ -224,11 +241,7 @@ Scan :
                 >
             | lHash:
                 .pHash
-                @Identifier
             
-            | lExclamation:
-                .pExclamation
-                @Integer
             | *:
                 ?
                 #eIllegalChar
