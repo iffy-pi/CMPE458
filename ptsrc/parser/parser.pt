@@ -81,14 +81,15 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         lRightBracket = 17;
         lLeftBrace = 18;
         lRightBrace = 19;
-        lBlank = 20;
-        lIllegal = 21;
-        lNewLine = 22;
-        lCarriageReturn = 23;
-        lTab = 24;
-        lNewPage = 25;
-        lEndFile = 26;
-        lastCharClass = 26;
+        lExclamation = 20;
+        lBlank = 21;
+        lIllegal = 22;
+        lNewLine = 23;
+        lCarriageReturn = 24;
+        lTab = 25;
+        lNewPage = 26;
+        lEndFile = 27;
+        lastCharClass = 27;
 
         { Output Tokens }
         pDiv = 0;
@@ -127,23 +128,24 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         pPlus = 29;
         pMinus = 30;
         pStar = 31;
-        pColonEquals = 32;
-        pDot = 33;
-        pComma = 34;
-        pSemicolon = 35;
-        pColon = 36;
-        pEquals = 37;
-        pNotEqual = 38;
-        pLess = 39;
-        pLessEqual = 40;
-        pGreaterEqual = 41;
-        pGreater = 42;
-        pLeftParen = 43;
-        pRightParen = 44;
-        pLeftBracket = 45;
-        pRightBracket = 46;
-        pDotDot = 47;
-        lastSyntaxToken = 47;
+        pAssignEquals = 32;
+        pNot = 33;
+        pDot = 34;
+        pComma = 35;
+        pSemicolon = 36;
+        pColon = 37;
+        pEquals = 38;
+        pNotEqual = 39;
+        pLess = 40;
+        pLessEqual = 41;
+        pGreaterEqual = 42;
+        pGreater = 43;
+        pLeftParen = 44;
+        pRightParen = 45;
+        pLeftBracket = 46;
+        pRightBracket = 47;
+        pDotDot = 48;
+        lastSyntaxToken = 48;
 
         { Input/Output Tokens }
 
@@ -160,15 +162,15 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
 
         { S/SL Rule Table Addresses } {
         Scan = 0;
-        Identifier = 212;
-        AlternateComment = 325;
-        Integer = 229;
-        StringLiteral = 244;
-        Comment = 296;
+        Identifier = 227;
+        AlternateComment = 340;
+        Integer = 244;
+        StringLiteral = 259;
+        Comment = 311;
         }
 
         { S/SL Table Parameters }
-        sslTblSize = 361;
+        sslTblSize = 376;
         minSslTableValue = -32767;
         maxSslTableValue = 32767;
 
@@ -410,7 +412,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         { misc. }
         tab = '	';
         blank = ' ';
-        quote = '''';
+        quote = '"';
         null = 0;
 
         { Phase identification values - for use by common routines }
@@ -920,6 +922,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
             charClassMap[ord(']')] := lRightBracket;
             charClassMap[ord('{')] := lLeftBrace;
             charClassMap[ord('}')] := lRightBrace;
+            charClassMap[ord('!')] := lExclamation; { new addition to the table }
 
             { Initialize the scan ssl table }
             reset(scanSsl {==, NscanSsl ==} );
