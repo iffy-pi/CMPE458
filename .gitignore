@@ -4,10 +4,10 @@
 # required files
 
 # generated library
-/ptsrc/lib/pt/
+/ptsrc/lib/pt
 
 # binaries folder
-/ptsrc/bin/
+/ptsrc/bin
 
 # random ptc binary
 /ptsrc/cmd/ptc
@@ -29,10 +29,10 @@
 /**/*.out
 
 # generated library
-/ptsrc-ref/lib/pt/
+/ptsrc-ref/lib/pt
 
 # binaries folder
-/ptsrc-ref/bin/
+/ptsrc-ref/bin
 
 # random ptc binary
 /ptsrc-ref/cmd/ptc
