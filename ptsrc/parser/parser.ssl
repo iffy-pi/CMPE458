@@ -65,8 +65,6 @@ Input :
         pDot                    '.'
         pComma                  ','
         pSemicolon              ';'
-        pQuestion               '?'
-        pDollar                 '$'
         pColon                  ':'
         pEquals                 '='
         pNotEqual               '<>'
@@ -79,8 +77,6 @@ Input :
         pLeftBracket            '['
         pRightBracket           ']'
         pDotDot                 '..'
-        pHash                   '#'
-        pExclamation            '!'
         lastSyntaxToken = pDotDot;
 
 Output :
@@ -127,8 +123,6 @@ Output :
         sGE
         sAdd
         sSubtract
-        sSubStr
-        sStrIndex
         sMultiply
         sDivide
         sModulus
