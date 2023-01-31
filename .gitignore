@@ -27,3 +27,25 @@
 
 # Generated output files
 /**/*.out
+
+# generated library
+/ptsrc-ref/lib/pt/
+
+# binaries folder
+/ptsrc-ref/bin/
+
+# random ptc binary
+/ptsrc-ref/cmd/ptc
+
+# safe regex because fresh tarball does not have any .sst files
+/ptsrc-ref/**/*.sst
+
+# safe regex because fresh tarball does not have any .def files
+/ptsrc-ref/**/*.def
+
+# Excluding out files but leaving the important one that was already present
+/ptsrc-ref/**/*.out
+!/ptsrc-ref/primes.out
+
+# Object file
+/ptsrc-ref/ptruntime/ptruntime.o
