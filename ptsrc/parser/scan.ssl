@@ -235,8 +235,8 @@ Scan :
             | lEndFile:
                 .pEndFile
                 >
-            | lHash:
-                .pHash
+            | lHash: 
+                .pHash %For hash string length operator 
             
             | *:
                 ?
