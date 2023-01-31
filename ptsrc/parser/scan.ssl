@@ -301,12 +301,12 @@ Comment :
         {[
             | lNewLine:
                 .pNewLine
-                >
-            | lEndFile:         % comment must be closed before EOF
+                > % Terminate comment with new line
+            | lEndFile:         
                 .pEndFile
-                >
-            | *:        % comment may contain any other character
-                ?
+                > % Terminate comment with end of file
+            | *:       
+                ? % consume and discard input that is part of comment
         ]};
 
 end
