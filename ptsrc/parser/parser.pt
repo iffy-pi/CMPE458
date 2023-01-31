@@ -90,7 +90,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         lTab = 26;
         lNewPage = 27;
         lEndFile = 28;
-        lastCharClass = 29;
+        lastCharClass = 28;
 
         { Output Tokens }
         pDiv = 0;
@@ -147,7 +147,7 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         pLeftBracket = 47;
         pRightBracket = 48;
         pDotDot = 49;
-        lastSyntaxToken = 50;
+        lastSyntaxToken = 49;
 
         { Input/Output Tokens }
 
@@ -164,15 +164,15 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
 
         { S/SL Rule Table Addresses } {
         Scan = 0;
-        Identifier = 212;
-        AlternateComment = 325;
-        Integer = 229;
-        StringLiteral = 244;
-        Comment = 296;
+        Identifier = 224;
+        AlternateComment = 337;
+        Integer = 241;
+        StringLiteral = 256;
+        Comment = 308;
         }
 
         { S/SL Table Parameters }
-        sslTblSize = 361;
+        sslTblSize = 373;
         minSslTableValue = -32767;
         maxSslTableValue = 32767;
 
@@ -224,21 +224,19 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         pDot = 32;
         pComma = 33;
         pSemicolon = 34;
-        pQuestion = 35;
-        pDollar = 36;
-        pColon = 37;
-        pEquals = 38;
-        pNotEqual = 39;
-        pLess = 40;
-        pLessEqual = 41;
-        pGreaterEqual = 42;
-        pGreater = 43;
-        pLeftParen = 44;
-        pRightParen = 45;
-        pLeftBracket = 46;
-        pRightBracket = 47;
-        pDotDot = 48;
-        lastSyntaxToken = 49;
+        pColon = 35;
+        pEquals = 36;
+        pNotEqual = 37;
+        pLess = 38;
+        pLessEqual = 39;
+        pGreaterEqual = 40;
+        pGreater = 41;
+        pLeftParen = 42;
+        pRightParen = 43;
+        pLeftBracket = 44;
+        pRightBracket = 45;
+        pDotDot = 46;
+        lastSyntaxToken = 46;
 	}
 
         { Output Tokens }
