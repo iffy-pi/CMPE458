@@ -1,9 +1,0 @@
-program p(output);
-var i: boolean;
-
-begin
-    i:= true;
-    begin write (!i);
-    begin write (#"Karim");
-
-

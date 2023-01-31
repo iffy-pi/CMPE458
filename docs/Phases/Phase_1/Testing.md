@@ -363,4 +363,18 @@ The following is the output from running scantrace on comments.pt.
   .pEndFile
 ```
 
-## 
+## Testing hash
+The test file hash.pt is testing for hash in Quby.
+The following is the output from running scantrace on hash.pt.
+```
+@Scan
+ [ (lHash)
+ | lHash:
+ .pHash
+ ] or >
+ }
+ [ (lEndFile)
+ | lEndFile:
+ .pEndFile
+```
+
