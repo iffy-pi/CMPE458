@@ -378,3 +378,19 @@ The following is the output from running scantrace on hash.pt.
  .pEndFile
 ```
 
+## Testing exclamation
+The test file exclamation.pt is testing for not (!) in Quby.
+The following is the output from running scantrace on exclamation.pt.
+```
+@Scan
+ [ (lExclamation)
+ | lExclamation:
+ [ (lEndFile)
+ | *:
+ .pNot
+ ] or >
+ }
+ [ (lEndFile)
+ | lEndFile:
+ .pEndFile
+ ```
