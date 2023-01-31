@@ -39,7 +39,7 @@ elsif
 
 % Predeclared type names
 integer
-char
+String
 boolean
 text
 
