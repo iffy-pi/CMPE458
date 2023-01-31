@@ -38,6 +38,7 @@ Input :
         lLeftBrace      '{'
         lRightBrace     '}'
         lExclamation    '!'
+        lHash           '#'
         lBlank
         lIllegal
         lNewLine
@@ -116,6 +117,7 @@ Output :
         pRightParen
         pLeftBracket
         pRightBracket
+        pHash
         pDotDot
         lastSyntaxToken = pDotDot;
 
@@ -237,6 +239,9 @@ Scan :
             | lEndFile:
                 .pEndFile
                 >
+            | lHash:
+                .pHash
+            
             | *:
                 ?
                 #eIllegalChar

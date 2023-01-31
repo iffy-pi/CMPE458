@@ -280,17 +280,19 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         sGE = 36;
         sAdd = 37;
         sSubtract = 38;
-        sMultiply = 39;
-        sDivide = 40;
-        sModulus = 41;
-        sInfixOr = 42;
-        sOr = 43;
-        sInfixAnd = 44;
-        sAnd = 45;
-        sNot = 46;
-        sNewLine = 47;
-        sEndOfFile = 48;
-        lastSemanticToken = 48;
+        sSubStr = 39;
+        sStrIndex = 40;
+        sMultiply = 41;
+        sDivide = 42;
+        sModulus = 43;
+        sInfixOr = 44;
+        sOr = 45;
+        sInfixAnd = 46;
+        sAnd = 47;
+        sNot = 48;
+        sNewLine = 49;
+        sEndOfFile = 50;
+        lastSemanticToken = 50;
 
         { Input/Output Tokens }
 
