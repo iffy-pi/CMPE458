@@ -25,9 +25,6 @@
 # Object file
 /ptsrc/ptruntime/ptruntime.o
 
-# Generated output files
-/**/*.out
-
 # generated library
 /ptsrc-ref/lib/pt
 
