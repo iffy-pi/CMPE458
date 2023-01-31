@@ -39,6 +39,7 @@ Input :
         lRightBrace     '}'
         lExclamation    '!'
         lHash           '#'
+        lPercent        '%'
         lBlank
         lIllegal
         lNewLine
