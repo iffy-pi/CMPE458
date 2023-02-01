@@ -1,7 +1,39 @@
 # Phase 1 Testing Documentation
 All files referred to are in ptsrc/test.
 
-## Testing comments 
+## Testing hash
+The test file hash.pt is testing for hash in Quby.
+The following is the output from running scantrace on hash.pt.
+```
+@Scan
+ [ (lHash)
+ | lHash:
+ .pHash
+ ] or >
+ }
+ [ (lEndFile)
+ | lEndFile:
+ .pEndFile
+```
+
+## Testing exclamation
+The test file exclamation.pt is testing for not (!) in Quby.
+The following is the output from running scantrace on exclamation.pt.
+```
+@Scan
+ [ (lExclamation)
+ | lExclamation:
+ [ (lEndFile)
+ | *:
+ .pNot
+ ] or >
+ }
+ [ (lEndFile)
+ | lEndFile:
+ .pEndFile
+ ```
+
+ ## Testing comments 
 The test file comments.pt is testing for comments in Quby.
 The following is the output from running scantrace on comments.pt.
 ```
@@ -362,35 +394,3 @@ The following is the output from running scantrace on comments.pt.
   | lEndFile:
   .pEndFile
 ```
-
-## Testing hash
-The test file hash.pt is testing for hash in Quby.
-The following is the output from running scantrace on hash.pt.
-```
-@Scan
- [ (lHash)
- | lHash:
- .pHash
- ] or >
- }
- [ (lEndFile)
- | lEndFile:
- .pEndFile
-```
-
-## Testing exclamation
-The test file exclamation.pt is testing for not (!) in Quby.
-The following is the output from running scantrace on exclamation.pt.
-```
-@Scan
- [ (lExclamation)
- | lExclamation:
- [ (lEndFile)
- | *:
- .pNot
- ] or >
- }
- [ (lEndFile)
- | lEndFile:
- .pEndFile
- ```
