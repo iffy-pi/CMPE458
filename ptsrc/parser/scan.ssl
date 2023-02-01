@@ -213,8 +213,7 @@ Scan :
                 ]
             | '<':
                 [
-                    | '>':
-                        .pNotEqual
+                    % removed old not equals parsing since it is now invalid
                     | '=':
                         .pLessEqual
                     | *:
