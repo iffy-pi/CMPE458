@@ -191,7 +191,9 @@ Below is the scantrace output for question.pt.
  .pNewLine
  .pEndFile
 ```
-As shown above, the `pQuestion` token is emitted correctly.
+As seen above, the `pQuestion` token is emitted correctly. 
+If the scanning of ? symbols were implemented incorrectly, 
+the compiler would identify it as an illegal character.
 
 ## Testing Substring Operator
 The test file dollar.pt is testing for substring operator ($) recognition. 
@@ -201,4 +203,6 @@ Below is the scantrace output for dollar.pt.
  .pNewLine
  .pEndFile
 ```
-As seen above, the `pDollar` token is emitted correctly.
+As seen above, the `pDollar` token is emitted correctly. 
+If the scanning of $ symbols were implemented incorrectly, 
+the compiler would identify it as an illegal character.
