@@ -186,6 +186,7 @@ The following is the output from running scantrace on comments.pt.
 ## Testing String Index Operator
 The test file question.pt is testing for the recognition of the string index operator (?). 
 Below is the scantrace output for question.pt.
+
 ```
  .pQuestion
  .pNewLine
@@ -198,6 +199,7 @@ the compiler would identify it as an illegal character.
 ## Testing Substring Operator
 The test file dollar.pt is testing for substring operator ($) recognition. 
 Below is the scantrace output for dollar.pt.
+
 ```
  .pDollar
  .pNewLine
