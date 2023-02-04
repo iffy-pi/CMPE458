@@ -11,4 +11,11 @@ if (( $# < 1 )) ; then
     exit 0
 fi
 
-ssltrace "ptc -o1 -t1 -L $LIB_PT_DIR $1" $LIB_PT_DIR/scan.def $2
+
+if [[ "$2" = "" ]]; then
+    flag=-e
+else
+    flag=$2
+fi
+
+ssltrace "ptc -o1 -t1 -L $LIB_PT_DIR $1" $LIB_PT_DIR/scan.def $flag
