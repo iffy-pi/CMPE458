@@ -29,6 +29,16 @@ source ~/.bash_profile
 
 which can be run automatically by adding it to your ~/.bashrc file.
 
+## Building Compiler
+You can rebuild the compiler by running:
+
+```
+make clean
+make scanner
+```
+
+Where `scanner` can be replaced with whatever make tag.
+
 # Scripts ( /scripts )
 ## scantrace
 Implements the scanner trace command:
