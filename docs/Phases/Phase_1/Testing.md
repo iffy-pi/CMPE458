@@ -11,6 +11,11 @@ ssltrace "ptc -o1 -t1 -L CMPE458/ptsrc/lib/pt test.pt" CMPE458/ptsrc/lib/pt/scan
 
 This was implemented with a shell script.
 
+## TODO
+- Need to add error checking tests (i.e. verify that it doesnt do the old stuff anymore)
+  - Comments checking for old commenting version
+- Need to do documentation
+
 ## Testing new keywords
 Quby adds the following keywords to the program:
 - using
