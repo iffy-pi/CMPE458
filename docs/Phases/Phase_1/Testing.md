@@ -182,3 +182,23 @@ The following is the output from running scantrace on comments.pt.
  .pNewLine
   .pEndFile
 ```
+
+## Testing String Index Operator
+The test file question.pt is testing for the recognition of the string index operator (?). 
+Below is the scantrace output for question.pt.
+```
+ .pQuestion
+ .pNewLine
+ .pEndFile
+```
+As shown above, the `pQuestion` token is emitted correctly.
+
+## Testing String Index Operator
+The test file dollar.pt is testing for substring operator (?) recognition. 
+Below is the scantrace output for dollar.pt.
+```
+ .pDollar
+ .pNewLine
+ .pEndFile
+```
+As seen above, the `pDollar` token is emitted correctly.
