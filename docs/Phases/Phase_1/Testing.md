@@ -1,5 +1,5 @@
 # Phase 1 Testing Documentation
-All files referred to are in ptsrc/test.
+All files referred to are in ptsrc/test/phase-1.
 
 The testing document also uses the term scantrace, this is a short form referring to using the SSL trace command on our built compiler for only the first phase, i.e. the scanning phase.
 
