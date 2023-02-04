@@ -169,6 +169,10 @@ Scan :
                 .pLeftBracket
             | ']':
                 .pRightBracket
+            | '{':
+                .pLeftBracket
+            | '}':
+                .pRightBracket
             | ',':
                 .pComma
             | ':':
