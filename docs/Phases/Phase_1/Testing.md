@@ -193,8 +193,8 @@ Below is the scantrace output for question.pt.
 ```
 As shown above, the `pQuestion` token is emitted correctly.
 
-## Testing String Index Operator
-The test file dollar.pt is testing for substring operator (?) recognition. 
+## Testing Substring Operator
+The test file dollar.pt is testing for substring operator ($) recognition. 
 Below is the scantrace output for dollar.pt.
 ```
  .pDollar
