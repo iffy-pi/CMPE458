@@ -183,6 +183,33 @@ The following is the output from running scantrace on comments.pt.
   .pEndFile
 ```
 
+The following is the output run from bad_comments.pt that tests previous Pascal comment syntax that is now deprecated in Quby, and as expected, this fails.
+```
+ .pNewLine
+ #eIllegalChar
+  .pIdentifier
+  % Output token text 'bad'
+  .pIdentifier
+  % Output token text 'comment'
+  .pInteger
+  % Output token text '1'
+ #eIllegalChar
+ .pNewLine
+ .pNewLine
+ .pLeftParen
+ .pStar
+  .pIdentifier
+  % Output token text 'bad'
+  .pIdentifier
+  % Output token text 'comment'
+  .pInteger
+  % Output token text '2'
+ .pStar
+ .pRightParen
+ .pNewLine
+ .pEndFile
+ ```
+
 ## Testing String Index Operator
 The test file question.pt is testing for the recognition of the string index operator (?). 
 Below is the scantrace output for question.pt.
