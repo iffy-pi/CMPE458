@@ -172,7 +172,7 @@ The following is the output from running scantrace on exclamation.pt.
  .pEndFile
  ```
 
- ## Testing comments 
+## Testing comments 
 The test file comments.pt is testing for comments in Quby.
 The following is the output from running scantrace on comments.pt.
 
