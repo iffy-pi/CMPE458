@@ -177,8 +177,20 @@ Block :
                 pIdentifier  .sIdentifier
                 @ProcedureHeading
                 @Block  ';'
-            | *:
-                >
+            | pIdentifier:
+                @AssignmentOrCallStmt
+            | 'begin':
+                @BeginStmt
+            | 'if':
+                @IfStmt
+            | 'while':
+                @WhileStmt
+            | 'case':
+                @CaseStmt
+            | 'repeat':
+                @RepeatStmt
+            |*:
+               >
         ]}
         'begin'
         @BeginStmt;
@@ -312,24 +324,6 @@ ProcedureHeading :
         ';'
         .sParmEnd;
 
-Statement :
-        [
-            | pIdentifier:
-                @AssignmentOrCallStmt
-            | 'begin':
-                @BeginStmt
-            | 'if':
-                @IfStmt
-            | 'while':
-                @WhileStmt
-            | 'case':
-                @CaseStmt
-            | 'repeat':
-                @RepeatStmt
-            | *:
-                .sNullStmt
-        ];
-
 AssignmentOrCallStmt :
         [
             | ':=':
@@ -382,7 +376,7 @@ CallStmt :
 BeginStmt :
         .sBegin
         {
-            @Statement
+            @Block
             [
                 | ';':
                 | 'end':
@@ -396,11 +390,11 @@ IfStmt :
         @Expression
         .sExpnEnd
         'then'  .sThen
-        @Statement
+        @Block
         [
             | 'else':
                 .sElse
-                @Statement
+                @Block
             | *:
         ];
 
@@ -439,19 +433,19 @@ CaseAlternative :
             ]
         }
         .sLabelEnd
-        ':'  @Statement;
+        ':'  @Block;
 
 WhileStmt :
         .sWhileStmt
         @Expression
         .sExpnEnd
         'do'
-        @Statement;
+        @Block;
 
 RepeatStmt :
         .sRepeatStmt
         {
-            @Statement
+            @Block
             [
                 | ';':
                 | 'until':
