@@ -79,6 +79,14 @@ Output :
         pWhen
         pModule
         pUnless
+        % remove these old tokens
+        pProgram                'program'
+        pConst                  'const'
+        pProcedure              'procedure'
+        pBegin                  'begin'
+        pRepeat                 'repeat'
+        pUntil                  'until'
+        % end remove these old tokens
         pElsif
         lastKeywordToken = pElsif
 
