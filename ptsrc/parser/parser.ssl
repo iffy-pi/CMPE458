@@ -41,6 +41,14 @@ Input :
         pWhen                   'when'
         pModule                 'module'
         pUnless                 'unless'
+        % remove these old tokens
+        pProgram                'program'
+        pConst                  'const'
+        pProcedure              'procedure'
+        pBegin                  'begin'
+        pRepeat                 'repeat'
+        pUntil                  'until'
+        % end remove these old tokens
         pElsif                  'elsif'
         lastKeywordToken = pElsif
 
@@ -120,8 +128,8 @@ Output :
         sThen
         sElse
         sWhileStmt
-        sRepeatStmt
-        sRepeatEnd
+        sRepeatStmt % remove this 
+        sRepeatEnd % remove this
         sEq
         sNE
         sLT
@@ -139,6 +147,14 @@ Output :
         sAnd
         sNot
         sNewLine
+        % added semantic tokens
+        sModule
+        sDoStmt
+        sBreakIf
+        sSubstring
+        sLength
+        sIndex
+        % end added semantic tokens
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 
@@ -333,7 +349,7 @@ ProcedureHeading :
 
 AssignmentOrCallStmt :
         [
-            | ':=':
+            | pAssignEquals:
                 .sAssignmentStmt
                 .sIdentifier    % identifier accepted in the Statement rule
                 @Expression
@@ -344,7 +360,7 @@ AssignmentOrCallStmt :
                 .sSubscript
                 @Expression
                 .sExpnEnd
-                ']'  ':='
+                ']'  pAssignEquals
                 @Expression
                 .sExpnEnd
             | *:
@@ -468,7 +484,7 @@ Expression :
         [
             | '=':
                 @SimpleExpression  .sEq
-            | '<>':
+            | pNotEqual:
                 @SimpleExpression  .sNE
             | '<':
                 @SimpleExpression  .sLT
@@ -525,7 +541,7 @@ Factor :
                 .sInteger
             | '(':
                 @Expression  ')'
-            | 'not':
+            | pNot:
                 @Factor
                 .sNot
             | pStringLiteral:
