@@ -314,7 +314,8 @@ VariableDeclarations :
         {[
             | ',' :
                 % if we see a comma, it should be proceeded by another identifier name and value
-                pIdentifier .sIdentifier
+                % we also emit an sVar to make it understandable to semantic analyzer
+                .sVar pIdentifier .sIdentifier
         ]}
 
         % variable declarations should always end with a colon then the type
