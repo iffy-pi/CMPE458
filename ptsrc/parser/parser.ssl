@@ -526,16 +526,16 @@ SimpleExpression :
         ]};
 
 Term :
-        @Factor
+        @Subterm
         {[
             | '*':
-                @Factor  .sMultiply
+                @Subterm  .sMultiply
             | 'div':
-                @Factor  .sDivide
+                @Subterm  .sDivide
             | 'mod':
-                @Factor  .sModulus
+                @Subterm  .sModulus
             | 'and':
-                .sInfixAnd  @Factor  .sAnd
+                .sInfixAnd  @Subterm  .sAnd
             | '?':
                 % String index operator
                 @Expression
@@ -543,6 +543,18 @@ Term :
             | *:
                 >
         ]};
+
+Subterm:
+    [
+        | '$':
+            @Expression '..' @Expression
+            .sSubstring
+
+        | *:
+            % call factor here
+            @Factor
+    ]
+    ;
 
 Factor :
         [
