@@ -229,7 +229,7 @@ ConstantDefinitions :
         [
             | pNewLine:
             | ';':
-        ]
+        ];
         
         % only has support for one constant definition so other calls are removed
 
@@ -264,7 +264,7 @@ TypeDefinitions :
         [
             | pNewLine:
             | ';':
-        ]
+        ];
 
 TypeBody :
         [
@@ -310,15 +310,21 @@ OptionallySignedIntegerConstant :
 
 VariableDeclarations :
         % Accept one or more variable declarations.
-        pIdentifier  .sIdentifier
-        ':'  @TypeBody  ';'
+        pIdentifier .sIdentifier
         {[
-            | pIdentifier:
-                .sIdentifier
-                ':'  @TypeBody  ';'
-            | *:
-                >
-        ]};
+            | ',' :
+                % if we see a comma, it should be proceeded by another identifier name and value
+                pIdentifier .sIdentifier
+        ]}
+
+        % variable declarations should always end with a colon then the type
+        ':' @TypeBody
+
+        % handle newline or semicolon end of statement
+        [
+            | pNewLine:
+            | ';':
+        ];
 
 ProcedureHeading :
         % Accept zero or more procedure formal parameter declarations.
