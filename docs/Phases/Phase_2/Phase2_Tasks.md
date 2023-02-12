@@ -13,7 +13,7 @@
 		- sLength
 		- sIndex
 	- Make sure to update parser.pt with new semantic output tokens (can be done with python script)
-- Update the Block rule ***Ethan***
+- Update the Block rule (modifying Programs rule) ***Ethan***
 	- So you will have to change the main loop of the Block rule to accept a sequence of any number of declarations or statements in any order.
 	- I suggest that you merge the alternatives in the existing Statement rule into the alternatives in the Block rule to do this.
 	- Emit an sBegin token before the sequence (i.e., at the beginning of the Block rule) and and sEnd after it (at the end of the rule)
