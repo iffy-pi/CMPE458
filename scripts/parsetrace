@@ -12,10 +12,14 @@ if (( $# < 1 )) ; then
 fi
 
 
-if [[ "$2" = "" ]]; then
+flag=$2
+
+if [[ "$flag" = "-a" ]]; then
+    flag=""
+
+elif [[ "$flag" = "" ]]; then
     flag=-e
-else
-    flag=$2
+
 fi
 
 ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def $flag
