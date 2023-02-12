@@ -182,8 +182,9 @@ Program :
         @EndOfStatement
 
         % Block rule!
-        % @Block;
-        ;
+        @Block;
+
+
         % 'program'  .sProgram
         % % program name
         % pIdentifier
@@ -240,7 +241,6 @@ Block :
             |*:
                >
         ]}
-        @BeginStmt
         .sEnd;
 
 ConstantDefinitions :
@@ -613,7 +613,9 @@ EndOfStatement:
         % choice rule to support the semicolon or newline as end of statement token
         % newline is first alternative to ensure proper recovery if that happens
         [
-            | pNewLine:
             | ';':
+                % keeping support for semicolon by saying it has to be followed by 
+                % is not expecting any valid statements after semicolon
+            | pNewLine:
         ];
 end
