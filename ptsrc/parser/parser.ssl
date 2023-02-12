@@ -179,10 +179,7 @@ Program :
         .sParmEnd
 
         % handle newline or semicolon end of statement
-        [
-            | pNewLine:
-            | ';':
-        ]
+        @EndOfStatement
 
         % Block rule!
         % @Block;
@@ -209,6 +206,7 @@ Block :
         % appear only in the order consts, types, vars, procedures.
         % We allow arbitrary intermixing of these instead to preserve
         % programmer sanity.
+        .sBegin
         {[
             | 'val': % changed from const to val
                 .sConst
@@ -242,19 +240,14 @@ Block :
             |*:
                >
         ]}
-        'begin'
-        @BeginStmt;
+        @BeginStmt
+        .sEnd;
 
 ConstantDefinitions :
         % Accept one named constant definitions
         pIdentifier  .sIdentifier
         '=' @ConstantValue
-        % choice rule to support the semicolon or newline as end of statement token
-        % newline is first alternative to ensure proper recovery if that happens
-        [
-            | pNewLine:
-            | ';':
-        ];
+        @EndOfStatement;
         
         % only has support for one constant definition so other calls are removed
 
@@ -286,10 +279,7 @@ TypeDefinitions :
         pIdentifier  .sIdentifier
         ':'  @TypeBody 
         % same newline or semicolon, explanation in Constant Definitions
-        [
-            | pNewLine:
-            | ';':
-        ];
+        @EndOfStatement;
 
 TypeBody :
         [
@@ -349,11 +339,7 @@ VariableDeclarations :
         % variable declarations should always end with a colon then the type
         ':' @TypeBody
 
-        % handle newline or semicolon end of statement
-        [
-            | pNewLine:
-            | ';':
-        ];
+        @EndOfStatement;
 
 ProcedureHeading :
         % Accept zero or more procedure formal parameter declarations.
@@ -622,4 +608,12 @@ IdentifierExtension :
             | *:
         ];
 
+EndOfStatement:
+        % Parses the end of statement rule which can be a newline, semicolon
+        % choice rule to support the semicolon or newline as end of statement token
+        % newline is first alternative to ensure proper recovery if that happens
+        [
+            | pNewLine:
+            | ';':
+        ];
 end
