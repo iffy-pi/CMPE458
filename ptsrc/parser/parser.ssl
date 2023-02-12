@@ -162,22 +162,47 @@ Output :
 rules
 
 Program :
-        'program'  .sProgram
-        % program name
-        pIdentifier
-        % program parameters
-        '('
-        {
-            pIdentifier  .sIdentifier
-            [
-                | ',':
-                | *:
-                    >
-            ]
-        }
-        ')'
+        % Iffy doing his own editing of program to allow for testing of his code
+        % Throw out iffys changes to Program rule on merge
+        'using' .sProgram
+        pIdentifier .sIdentifier
+        {[
+            | ',' :
+                % if we see a comma, it should be proceeded by another identifier name and value
+                % we also emit an sVar to make it understandable to semantic analyzer
+                pIdentifier .sIdentifier
+
+            | *:
+                >
+        ]}
+        % emit sParmEnd token
         .sParmEnd
-        ';'  @Block  '.';
+
+        % handle newline or semicolon end of statement
+        [
+            | pNewLine:
+            | ';':
+        ]
+
+        % Block rule!
+        % @Block;
+        ;
+        % 'program'  .sProgram
+        % % program name
+        % pIdentifier
+        % % program parameters
+        % '('
+        % {
+        %     pIdentifier  .sIdentifier
+        %     [
+        %         | ',':
+        %         | *:
+        %             >
+        %     ]
+        % }
+        % ')'
+        % .sParmEnd
+        % ';'  @Block  '.';
 
 Block :
         % Strictly speaking, standard Pascal requires that declarations
@@ -316,6 +341,9 @@ VariableDeclarations :
                 % if we see a comma, it should be proceeded by another identifier name and value
                 % we also emit an sVar to make it understandable to semantic analyzer
                 .sVar pIdentifier .sIdentifier
+
+            | *:
+                >
         ]}
 
         % variable declarations should always end with a colon then the type
