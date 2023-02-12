@@ -536,6 +536,10 @@ Term :
                 @Factor  .sModulus
             | 'and':
                 .sInfixAnd  @Factor  .sAnd
+            | '?':
+                % String index operator
+                @Expression
+                .sIndex
             | *:
                 >
         ]};
@@ -557,6 +561,10 @@ Factor :
             | 'file':
                 .sFile '(' @Expression ')'
                 .sExpnEnd
+            | '#':
+                % String length operand, it is expecting an expression hence we call the expression rule
+                @Expression
+                .sLength
         ];
 
 IdentifierExtension :
