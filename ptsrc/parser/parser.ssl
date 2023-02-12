@@ -185,7 +185,7 @@ Block :
         % We allow arbitrary intermixing of these instead to preserve
         % programmer sanity.
         {[
-            | 'const':
+            | 'val': % changed from const to val
                 .sConst
                 @ConstantDefinitions
             | 'type':
@@ -221,7 +221,7 @@ Block :
         @BeginStmt;
 
 ConstantDefinitions :
-        % Accept one or more named constant definitions
+        % Accept one named constant definitions
         pIdentifier  .sIdentifier
         '=' @ConstantValue
         % choice rule to support the semicolon or newline as end of statement token
@@ -259,14 +259,12 @@ UnsignedIntegerConstant :
 TypeDefinitions :
         % Accept one or more named type definitions.
         pIdentifier  .sIdentifier
-        '='  @TypeBody  ';'
-        {[
-            | pIdentifier:
-                .sIdentifier
-                '='  @TypeBody  ';'
-            | *:
-                >
-        ]};
+        ':'  @TypeBody 
+        % same newline or semicolon, explanation in Constant Definitions
+        [
+            | pNewLine:
+            | ';':
+        ]
 
 TypeBody :
         [
