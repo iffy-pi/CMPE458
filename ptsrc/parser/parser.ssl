@@ -212,6 +212,8 @@ Block :
                 @CaseStmt
             | 'repeat':
                 @RepeatStmt
+            | pSemicolon:
+                % semicolons are considered null declarations so we dont care for them
             |*:
                >
         ]}
@@ -221,14 +223,15 @@ Block :
 ConstantDefinitions :
         % Accept one or more named constant definitions
         pIdentifier  .sIdentifier
-        '=' @ConstantValue ';'
-        {[
-            | pIdentifier:
-                .sIdentifier
-                '=' @ConstantValue ';'
-            | *:
-                >
-        ]};
+        '=' @ConstantValue
+        % choice rule to support the semicolon or newline as end of statement token
+        % newline is first alternative to ensure proper recovery if that happens
+        [
+            | pNewLine:
+            | ';':
+        ]
+        
+        % only has support for one constant definition so other calls are removed
 
 ConstantValue :
         [
