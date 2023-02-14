@@ -422,11 +422,11 @@ IfStmt :
         @Expression
         .sExpnEnd
         'then'  .sThen
-        @Block
+        @BeginStmt        
         [
             | 'else':
                 .sElse
-                @Block
+                @BeginStmt               
             | *:
         ];
 
