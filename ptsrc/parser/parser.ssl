@@ -128,8 +128,6 @@ Output :
         sThen
         sElse
         sWhileStmt
-        sRepeatStmt % remove this 
-        sRepeatEnd % remove this
         sEq
         sNE
         sLT
@@ -149,7 +147,7 @@ Output :
         sNewLine
         % added semantic tokens
         sModule
-        sDoStmt
+        sDo
         sBreakIf
         sSubstring
         sLength
@@ -210,8 +208,8 @@ Block :
                 @WhileStmt
             | 'case':
                 @CaseStmt
-            | 'repeat':
-                @RepeatStmt
+            | 'do':
+                @DoStmt
             | 'unless':
                 @UnlessStmt
             |*:
@@ -469,19 +467,21 @@ WhileStmt :
         'do'
         @Block;
 
-RepeatStmt :
-        .sRepeatStmt
-        {
+DoStmt :
+    .sDo
+    .sBegin
+    {[
+        | 'break':
+             'if'
+             .sBreakIf
+             @Expression
+             .sExpnEnd
+        | 'end':
+            .sEnd
+            >
+        | *:
             @Block
-            [
-                | ';':
-                | 'until':
-                    .sRepeatEnd
-                    >
-            ]
-        }
-        @Expression
-        .sExpnEnd;
+    ]};
 
 Expression :
         @SimpleExpression
