@@ -22,37 +22,26 @@ Input :
         pMod                    'mod'
         pOr                     'or'
         pAnd                    'and'
+        pNot                    'not'
         pThen                   'then'
         pElse                   'else'
         pOf                     'of'
         pEnd                    'end'
+        pUntil                  'until'
         pDo                     'do'
         pArray                  'array'
         pFile                   'file'
+        pProgram                'program'
+        pConst                  'const'
         pVar                    'var'
         pType                   'type'
+        pProcedure              'procedure'
+        pBegin                  'begin'
         pIf                     'if'
         pCase                   'case'
         pWhile                  'while'
-        pUsing                  'using'
-        pVal                    'val'
-        pDef                    'def'
-        pBreak                  'break'
-        pWhen                   'when'
-        pModule                 'module'
-        pUnless                 'unless'
-        % remove these old tokens
-        pProgram                'program'
-        pConst                  'const'
-        pProcedure              'procedure'
-        pBegin                  'begin'
         pRepeat                 'repeat'
-        pUntil                  'until'
-        % end remove these old tokens
-        pElsif                  'elsif'
-        lastKeywordToken = pElsif
-
-         
+        lastKeywordToken = pRepeat 
 
         % Scanner tokens -
         %   These are the tokens actually recognized by the Scanner itself.
@@ -72,16 +61,13 @@ Input :
         pPlus                   '+'
         pMinus                  '-'
         pStar                   '*'
-        pAssignEquals           '='
-        pNot                    '!'
+        pColonEquals            ':='
         pDot                    '.'
         pComma                  ','
         pSemicolon              ';'
-        pQuestion               '?'
-        pDollar                 '$'
         pColon                  ':'
-        pEquals                 '=='
-        pNotEqual               '!='
+        pEquals                 '='
+        pNotEqual               '<>'
         pLess                   '<'
         pLessEqual              '<='
         pGreaterEqual           '>='
@@ -90,7 +76,6 @@ Input :
         pRightParen             ')'
         pLeftBracket            '['
         pRightBracket           ']'
-        pHash                   '#'
         pDotDot                 '..'
         lastSyntaxToken = pDotDot;
 
@@ -128,8 +113,8 @@ Output :
         sThen
         sElse
         sWhileStmt
-        sRepeatStmt % remove this 
-        sRepeatEnd % remove this
+        sRepeatStmt
+        sRepeatEnd
         sEq
         sNE
         sLT
@@ -147,14 +132,6 @@ Output :
         sAnd
         sNot
         sNewLine
-        % added semantic tokens
-        sModule
-        sDoStmt
-        sBreakIf
-        sSubstring
-        sLength
-        sIndex
-        % end added semantic tokens
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 
@@ -200,20 +177,8 @@ Block :
                 pIdentifier  .sIdentifier
                 @ProcedureHeading
                 @Block  ';'
-            | pIdentifier:
-                @AssignmentOrCallStmt
-            | 'begin':
-                @BeginStmt
-            | 'if':
-                @IfStmt
-            | 'while':
-                @WhileStmt
-            | 'case':
-                @CaseStmt
-            | 'repeat':
-                @RepeatStmt
-            |*:
-               >
+            | *:
+                >
         ]}
         'begin'
         @BeginStmt;
@@ -347,9 +312,27 @@ ProcedureHeading :
         ';'
         .sParmEnd;
 
+Statement :
+        [
+            | pIdentifier:
+                @AssignmentOrCallStmt
+            | 'begin':
+                @BeginStmt
+            | 'if':
+                @IfStmt
+            | 'while':
+                @WhileStmt
+            | 'case':
+                @CaseStmt
+            | 'repeat':
+                @RepeatStmt
+            | *:
+                .sNullStmt
+        ];
+
 AssignmentOrCallStmt :
         [
-            | pAssignEquals:
+            | ':=':
                 .sAssignmentStmt
                 .sIdentifier    % identifier accepted in the Statement rule
                 @Expression
@@ -360,7 +343,7 @@ AssignmentOrCallStmt :
                 .sSubscript
                 @Expression
                 .sExpnEnd
-                ']'  pAssignEquals
+                ']'  ':='
                 @Expression
                 .sExpnEnd
             | *:
@@ -399,7 +382,7 @@ CallStmt :
 BeginStmt :
         .sBegin
         {
-            @Block
+            @Statement
             [
                 | ';':
                 | 'end':
@@ -413,11 +396,11 @@ IfStmt :
         @Expression
         .sExpnEnd
         'then'  .sThen
-        @Block
+        @Statement
         [
             | 'else':
                 .sElse
-                @Block
+                @Statement
             | *:
         ];
 
@@ -456,19 +439,19 @@ CaseAlternative :
             ]
         }
         .sLabelEnd
-        ':'  @Block;
+        ':'  @Statement;
 
 WhileStmt :
         .sWhileStmt
         @Expression
         .sExpnEnd
         'do'
-        @Block;
+        @Statement;
 
 RepeatStmt :
         .sRepeatStmt
         {
-            @Block
+            @Statement
             [
                 | ';':
                 | 'until':
@@ -484,7 +467,7 @@ Expression :
         [
             | '=':
                 @SimpleExpression  .sEq
-            | pNotEqual:
+            | '<>':
                 @SimpleExpression  .sNE
             | '<':
                 @SimpleExpression  .sLT
@@ -541,7 +524,7 @@ Factor :
                 .sInteger
             | '(':
                 @Expression  ')'
-            | pNot:
+            | 'not':
                 @Factor
                 .sNot
             | pStringLiteral:

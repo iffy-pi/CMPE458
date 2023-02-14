@@ -11,13 +11,6 @@ ssltrace "ptc -o1 -t1 -L CMPE458/ptsrc/lib/pt test.pt" CMPE458/ptsrc/lib/pt/scan
 
 This was implemented with a shell script.
 
-## TODO
-- Need to add error checking tests (i.e. verify that it doesnt do the old stuff anymore)
-  - Comments checking for old commenting version
-- Need to do documentation
-- Testing question mark
-- Testing dollar sign
-
 ## Testing new keywords
 Quby adds the following keywords to the program:
 - using
@@ -88,7 +81,7 @@ old-keywords.pt was written to verify that these are no longer scanned as keywor
  .pEndFile
 ```
 
-## Testing Assignment Operator and Equals Operator
+## Testing Assignment Operator and Equals Operator 
 Quby modifies the operators for assignment and equals comparison. In Quby the assignment operator is now `=` , and the comparison operator is now `==`.
 
 These changes were implemented in the source files, and the test file equals.pt was designed to verify the scanning correctness.
@@ -131,7 +124,7 @@ As seen above, the string `!=` is properly parsed to the `pNotEquals` token. If 
 ```
 
 
-## Testing quotation character replacement
+## Testing New Quotation Character
 Quby also replaces the string quotation character from single quotes to double quotes. To test this, the file string.pt was created and contains a single string surrounded in double quotes. The output of the scantrace on string.pt is shown below:
 
 ```
@@ -154,7 +147,7 @@ If the old string format is used, (i.e. using single quotes as done old-string.p
  .pEndFile
 ```
 
-## Testing hash
+## Testing Hash Character
 The test file hash.pt is testing for hash in Quby.
 The following is the output from running scantrace on hash.pt.
 
@@ -163,7 +156,7 @@ The following is the output from running scantrace on hash.pt.
  .pEndFile
 ```
 
-## Testing exclamation
+## Testing New Not (`!`) Operator
 The test file exclamation.pt is testing for not (!) in Quby.
 The following is the output from running scantrace on exclamation.pt.
 
@@ -172,7 +165,7 @@ The following is the output from running scantrace on exclamation.pt.
  .pEndFile
  ```
 
- ## Testing comments 
+## Testing Comments 
 The test file comments.pt is testing for comments in Quby.
 The following is the output from running scantrace on comments.pt.
 
@@ -183,14 +176,44 @@ The following is the output from running scantrace on comments.pt.
   .pEndFile
 ```
 
+The following is the output run from bad_comments.pt that tests previous Pascal comment syntax that is now deprecated in Quby, and as expected, this fails.
+
+```
+ .pNewLine
+ #eIllegalChar
+  .pIdentifier
+  % Output token text 'bad'
+  .pIdentifier
+  % Output token text 'comment'
+  .pInteger
+  % Output token text '1'
+ #eIllegalChar
+ .pNewLine
+ .pNewLine
+ .pLeftParen
+ .pStar
+  .pIdentifier
+  % Output token text 'bad'
+  .pIdentifier
+  % Output token text 'comment'
+  .pInteger
+  % Output token text '2'
+ .pStar
+ .pRightParen
+ .pNewLine
+ .pEndFile
+ ```
+
 ## Testing String Index Operator
 The test file question.pt is testing for the recognition of the string index operator (?). 
 Below is the scantrace output for question.pt.
+
 ```
  .pQuestion
  .pNewLine
  .pEndFile
 ```
+
 As seen above, the `pQuestion` token is emitted correctly. 
 If the scanning of ? symbols were implemented incorrectly, 
 the compiler would identify it as an illegal character.
@@ -198,11 +221,13 @@ the compiler would identify it as an illegal character.
 ## Testing Substring Operator
 The test file dollar.pt is testing for substring operator ($) recognition. 
 Below is the scantrace output for dollar.pt.
+
 ```
  .pDollar
  .pNewLine
  .pEndFile
 ```
+
 As seen above, the `pDollar` token is emitted correctly. 
 If the scanning of $ symbols were implemented incorrectly, 
 the compiler would identify it as an illegal character.

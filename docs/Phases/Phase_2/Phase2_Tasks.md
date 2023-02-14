@@ -1,0 +1,45 @@
+# Phase 2 Tasks
+- Updating tokens
+	- Update parser input tokens to match scanner output tokens xx
+	- Remove unused token semantics (including sNullStmt)
+	- New semantic output tokens xx
+		- sDoStmt
+		- sBreakIf
+		- sModule
+		- sPublic
+		- sVar
+		- sBreakIf
+		- sSubstring
+		- sLength
+		- sIndex
+	- Make sure to update parser.pt with new semantic output tokens (can be done with python script)
+- Update the Block rule (modifying Programs rule) ***Ethan***
+	- So you will have to change the main loop of the Block rule to accept a sequence of any number of declarations or statements in any order.
+	- I suggest that you merge the alternatives in the existing Statement rule into the alternatives in the Block rule to do this.
+	- Emit an sBegin token before the sequence (i.e., at the beginning of the Block rule) and and sEnd after it (at the end of the rule)
+- Update declarations ***Iffy***
+	- Modify constant, type and variable to meet the language spec
+	- To assist the semantic phase, if there is more than one identifier declared in a single Quby var declaration, then each one should be output with an sVar token, for example
+- Modify parsing of routines to match the Quby spec ***Ethan***
+	- In particular, the procedure's statements should be output preceded by an sBegin token and ended by an sEnd token as if begin...end were still in the language – that’s it, you can re-use your Block rule. For example, the procedure declaration
+	- For the Quby * that indicates a public function, output the sPublic semantic token, but following the function's identifier, for example, this Quby empty public function
+	- New semantic output token sPublic
+- Add parsing of modules ***Liam***
+	- Adds the new semantic output token sModule
+- Modify the parsing of if statement ***Liam***
+	- Make it identical to pascal output stream (see phase doc)
+- Modify parsing for while ***Liam***
+	- Modify parsing for while rule to match language specs
+- Remove begin rule ***Ethan***
+- Modify parsing to add parsing for unless statement ***Noah***
+- Modify parsing to add parsing for case statement ***Noah***
+- Add parsing for elsif statement ***Liam***
+	- Using option 2 where we do not add a new sElsIf token and instead implement parsing for the system
+- Modify repeat statement rule to become do rule ***Noah***
+	- Modify repeat rule to become do rule
+	- Adds new semantic token sDo and sBreakIf
+- Modify the string type - ***Iffy***
+	- Add new operators in the required precedence rules
+- Syntactic details ***Iffy***
+	- Replace pColonEquals with pAssignEquals
+	- Everything else **should** be fine.
