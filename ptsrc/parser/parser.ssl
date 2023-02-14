@@ -435,19 +435,13 @@ CaseStmt :
         .sCaseStmt
         @Expression
         .sExpnEnd
-        'of'
+        'when'
         @CaseAlternative
-        {[
-            | ';':
-                % since case alternatives cannot be null, allow
-                % for the common situation of an extra semicolon
-                % at the end of the list of case alternatives.
-                [
-                    | 'end':
-                        >
-                    | *:
-                        @CaseAlternative
-                ]
+        {[  | 'when':
+                @CaseAlternative
+            | 'else':
+                .sElse
+                @Block
             | 'end':
                 >
         ]}
@@ -466,7 +460,7 @@ CaseAlternative :
             ]
         }
         .sLabelEnd
-        ':'  @Block;
+        'then'  @Block;
 
 WhileStmt :
         .sWhileStmt
