@@ -178,9 +178,6 @@ Program :
         % emit sParmEnd token
         .sParmEnd
 
-        % handle newline or semicolon end of statement
-        @EndOfStatement
-
         % Block rule!
         @Block;
 
@@ -247,7 +244,7 @@ ConstantDefinitions :
         % Accept one named constant definitions
         pIdentifier  .sIdentifier
         '=' @ConstantValue
-        @EndOfStatement;
+        ;
         
         % only has support for one constant definition so other calls are removed
 
@@ -279,7 +276,7 @@ TypeDefinitions :
         pIdentifier  .sIdentifier
         ':'  @TypeBody 
         % same newline or semicolon, explanation in Constant Definitions
-        @EndOfStatement;
+        ;
 
 TypeBody :
         [
@@ -339,7 +336,7 @@ VariableDeclarations :
         % variable declarations should always end with a colon then the type
         ':' @TypeBody
 
-        @EndOfStatement;
+        ;
 
 ProcedureHeading :
         % Accept zero or more procedure formal parameter declarations.
@@ -608,14 +605,4 @@ IdentifierExtension :
             | *:
         ];
 
-EndOfStatement:
-        % Parses the end of statement rule which can be a newline, semicolon
-        % choice rule to support the semicolon or newline as end of statement token
-        % newline is first alternative to ensure proper recovery if that happens
-        [
-            | ';':
-                % keeping support for semicolon by saying it has to be followed by 
-                % is not expecting any valid statements after semicolon
-            | pNewLine:
-        ];
 end
