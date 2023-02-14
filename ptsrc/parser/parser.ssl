@@ -212,6 +212,8 @@ Block :
                 @CaseStmt
             | 'repeat':
                 @RepeatStmt
+            | 'unless':
+                @UnlessStmt
             |*:
                >
         ]}
@@ -407,6 +409,14 @@ BeginStmt :
                     >
             ]
         };
+
+UnlessStmt :
+        .sIfStmt
+        @Expression
+        .sNot
+        .sExpnEnd
+        'then'  .sThen
+        @Block
 
 IfStmt :
         .sIfStmt
