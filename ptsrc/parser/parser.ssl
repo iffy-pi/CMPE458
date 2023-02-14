@@ -212,10 +212,11 @@ Block :
                 @CaseStmt
             | 'repeat':
                 @RepeatStmt
+            | 'module':   %Adding in check for module declaration in block
+                @Module
             |*:
                >
         ]}
-        'begin'
         @BeginStmt;
 
 ConstantDefinitions :
@@ -230,6 +231,14 @@ ConstantDefinitions :
                 >
         ]};
 
+Module :
+        .sModule     %emit sModule first
+        pIdentifier  %Consume the identifier
+        .sIdentifier %Emit the identifier
+        @Block       %Emit begin followed by declarations and statements, then end. 
+       
+
+            
 ConstantValue :
         [
             | pInteger:
