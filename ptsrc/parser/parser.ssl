@@ -177,6 +177,20 @@ Block :
                 pIdentifier  .sIdentifier
                 @ProcedureHeading
                 @Block  ';'
+            | pIdentifier:
+                @AssignmentOrCallStmt
+            | 'begin':
+                @BeginStmt
+            | 'if':
+                @IfStmt
+            | 'while':
+                @WhileStmt
+            | 'case':
+                @CaseStmt
+            | 'repeat':
+                @RepeatStmt
+            | *:
+                .sNullStmt
             | *:
                 >
         ]}
@@ -382,7 +396,7 @@ CallStmt :
 BeginStmt :
         .sBegin
         {
-            @Statement
+            @Block
             [
                 | ';':
                 | 'end':
