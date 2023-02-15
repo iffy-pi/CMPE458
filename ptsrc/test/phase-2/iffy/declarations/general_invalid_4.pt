@@ -1,0 +1,3 @@
+% invalid var declaration, using keyword as name
+using output
+var unless : integer
