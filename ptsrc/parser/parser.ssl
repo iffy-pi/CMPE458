@@ -370,7 +370,7 @@ ProcedureHeading :
 
 AssignmentOrCallStmt :
         [
-            | pAssignEquals:
+            | pAssignEquals: % replaced pColonEquals
                 .sAssignmentStmt
                 .sIdentifier    % identifier accepted in the Statement rule
                 @Expression
@@ -381,7 +381,7 @@ AssignmentOrCallStmt :
                 .sSubscript
                 @Expression
                 .sExpnEnd
-                ']'  pAssignEquals
+                ']'  pAssignEquals % replaced pColonEquals
                 @Expression
                 .sExpnEnd
             | *:
@@ -505,7 +505,7 @@ Expression :
         [
             | '==':
                 @SimpleExpression  .sEq
-            | pNotEqual:
+            | pNotEqual: % replaced '<>'
                 @SimpleExpression  .sNE
             | '<':
                 @SimpleExpression  .sLT
@@ -578,7 +578,7 @@ Factor :
                 .sInteger
             | '(':
                 @Expression  ')'
-            | pNot:
+            | pNot: % replaced 'not' keyword
                 @Factor
                 .sNot
             | pStringLiteral:
