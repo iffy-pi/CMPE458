@@ -503,7 +503,7 @@ RepeatStmt :
 Expression :
         @SimpleExpression
         [
-            | '=':
+            | '==':
                 @SimpleExpression  .sEq
             | pNotEqual:
                 @SimpleExpression  .sNE
