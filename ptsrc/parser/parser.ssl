@@ -245,7 +245,7 @@ ConstantDefinitions :
         pIdentifier  .sIdentifier
         '=' @ConstantValue
         ;
-        
+        % removed semicolon ending token requirement
         % only has support for one constant definition so other calls are removed
 
 ConstantValue :
@@ -275,7 +275,7 @@ TypeDefinitions :
         % Accept one or more named type definitions.
         pIdentifier  .sIdentifier
         ':'  @TypeBody 
-        % same newline or semicolon, explanation in Constant Definitions
+        % removed semicolon ending token requirement
         ;
 
 TypeBody :
@@ -336,6 +336,8 @@ VariableDeclarations :
         % variable declarations should always end with a colon then the type
         ':' @TypeBody
 
+        % removed semicolon ending token requirement
+
         ;
 
 ProcedureHeading :
@@ -368,7 +370,7 @@ ProcedureHeading :
 
 AssignmentOrCallStmt :
         [
-            | pAssignEquals:
+            | pAssignEquals: % replaced pColonEquals
                 .sAssignmentStmt
                 .sIdentifier    % identifier accepted in the Statement rule
                 @Expression
@@ -379,7 +381,7 @@ AssignmentOrCallStmt :
                 .sSubscript
                 @Expression
                 .sExpnEnd
-                ']'  pAssignEquals
+                ']'  pAssignEquals % replaced pColonEquals
                 @Expression
                 .sExpnEnd
             | *:
@@ -501,9 +503,9 @@ RepeatStmt :
 Expression :
         @SimpleExpression
         [
-            | '=':
+            | '==':
                 @SimpleExpression  .sEq
-            | pNotEqual:
+            | pNotEqual: % replaced '<>'
                 @SimpleExpression  .sNE
             | '<':
                 @SimpleExpression  .sLT
@@ -576,7 +578,7 @@ Factor :
                 .sInteger
             | '(':
                 @Expression  ')'
-            | pNot:
+            | pNot: % replaced 'not' keyword
                 @Factor
                 .sNot
             | pStringLiteral:
