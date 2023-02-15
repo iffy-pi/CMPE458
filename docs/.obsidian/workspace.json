@@ -37,7 +37,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Iffy_Testing_Documentation.md",
                 "mode": "source",
                 "source": false
               }
@@ -94,7 +94,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "5a9344c1eee7f513",
@@ -110,7 +111,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Iffy_Testing_Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -127,7 +128,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Iffy_Testing_Documentation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -150,7 +151,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md"
+                "file": "Phases/Phase_2/Documentation/Iffy_Testing_Documentation.md"
               }
             }
           }
@@ -174,9 +175,9 @@
   },
   "active": "211dc884c9a1ab66",
   "lastOpenFiles": [
+    "Phases/Phase_2/Documentation/Iffy_Changelog_Documentation.md",
     "Phases/Phase_2/Documentation/Iffy_Testing_Documentation.md",
     "Phases/Phase_2/Documentation/Testing_Documentation.md",
-    "Phases/Phase_2/Documentation/Iffy_Changelog_Documentation.md",
     "Phases/Phase_2/Documentation/Changelog_Documentation.md",
     "Phases/Phase_1/Testing Documentation.md",
     "Phases/Phase_1/Phase_1_Task_Delegation.pdf",
