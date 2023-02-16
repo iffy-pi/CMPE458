@@ -426,7 +426,9 @@ IfStmt :
         [
             | 'else':
                 .sElse
-                @BeginStmt               
+                @BeginStmt  
+            | 'elsif':
+                @IfStmt             
             | *:
         ];
 
@@ -472,7 +474,7 @@ WhileStmt :
         @Expression
         .sExpnEnd
         'do'
-        @Block;
+        @BeginStmt;
 
 RepeatStmt :
         .sRepeatStmt
