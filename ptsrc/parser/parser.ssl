@@ -129,8 +129,6 @@ Output :
         sThen
         sElse
         sWhileStmt
-        sRepeatStmt % remove this 
-        sRepeatEnd % remove this
         sEq
         sNE
         sLT
@@ -150,7 +148,7 @@ Output :
         sNewLine
         % added semantic tokens
         sModule
-        sDoStmt
+        sDo
         sBreakIf
         sSubstring
         sLength
@@ -220,6 +218,8 @@ Block :
                 @DoStmt
             | 'module':   %Adding in check for module declaration in block
                 @Module
+            | 'unless':
+                @UnlessStmt
             | pSemicolon:
                 % semicolons are considered null declarations so we dont care for them
             |*:
@@ -423,6 +423,14 @@ BeginStmt :
             ]
         };
 
+UnlessStmt :
+        .sIfStmt
+        @Expression
+        .sNot
+        .sExpnEnd
+        'then'  .sThen
+        @BeginStmt
+
 IfStmt :
         .sIfStmt  %Emit if statement
         @Expression  %Expression handling rule
@@ -442,19 +450,13 @@ CaseStmt :
         .sCaseStmt
         @Expression
         .sExpnEnd
-        'of'
+        'when'
         @CaseAlternative
-        {[
-            | ';':
-                % since case alternatives cannot be null, allow
-                % for the common situation of an extra semicolon
-                % at the end of the list of case alternatives.
-                [
-                    | 'end':
-                        >
-                    | *:
-                        @CaseAlternative
-                ]
+        {[  | 'when':
+                @CaseAlternative
+            | 'else':
+                .sElse
+                @Block
             | 'end':
                 >
         ]}
@@ -473,7 +475,7 @@ CaseAlternative :
             ]
         }
         .sLabelEnd
-        ':'  @Block;
+        'then'  @Block;
 
 WhileStmt :
         .sWhileStmt %Emit whileStmt
@@ -482,19 +484,21 @@ WhileStmt :
         'do'        %Consumes the do that follows the loop
         @BeginStmt; %Begins a block to encapsulate the loop
 
-RepeatStmt :
-        .sRepeatStmt
-        {
+DoStmt :
+    .sDo
+    .sBegin
+    {[
+        | 'break':
+             'if'
+             .sBreakIf
+             @Expression
+             .sExpnEnd
+        | 'end':
+            .sEnd
+            >
+        | *:
             @Block
-            [
-                | ';':
-                | 'until':
-                    .sRepeatEnd
-                    >
-            ]
-        }
-        @Expression
-        .sExpnEnd;
+    ]};
 
 Expression :
         @SimpleExpression
