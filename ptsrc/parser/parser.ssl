@@ -40,6 +40,7 @@ Input :
         pBreak                  'break'
         pWhen                   'when'
         pModule                 'module'
+        pDef                    'def'
         pUnless                 'unless'
         % remove these old tokens
         pProgram                'program'
@@ -158,11 +159,10 @@ Output :
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 
-
 rules
 
 Program :
-        'program'  .sProgram
+        'using'  .sProgram
         % program name
         pIdentifier
         % program parameters
@@ -177,15 +177,16 @@ Program :
         }
         ')'
         .sParmEnd
-        ';'  @Block  '.';
+        @Block;
 
 Block :
         % Strictly speaking, standard Pascal requires that declarations
         % appear only in the order consts, types, vars, procedures.
         % We allow arbitrary intermixing of these instead to preserve
         % programmer sanity.
+        .sBegin
         {[
-            | 'const':
+            | 'val':
                 .sConst
                 @ConstantDefinitions
             | 'type':
@@ -194,29 +195,31 @@ Block :
             | 'var':
                 .sVar
                 @VariableDeclarations
-            | 'procedure':
+            | 'def':
                 .sProcedure
                 % procedure name
                 pIdentifier  .sIdentifier
                 @ProcedureHeading
-                @Block  ';'
+                @Block
+            | 'module':
+                .sModule
+                pIdentifier  .sIdentifier
+                @ModuleHeading
+                @Block
             | pIdentifier:
                 @AssignmentOrCallStmt
-            | 'begin':
-                @BeginStmt
             | 'if':
                 @IfStmt
             | 'while':
                 @WhileStmt
             | 'case':
                 @CaseStmt
-            | 'repeat':
-                @RepeatStmt
+            | 'do':
+                @DoStmt
             |*:
                >
         ]}
-        'begin'
-        @BeginStmt;
+        .sEnd;
 
 ConstantDefinitions :
         % Accept one or more named constant definitions

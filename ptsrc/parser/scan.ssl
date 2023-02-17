@@ -78,6 +78,7 @@ Output :
         pBreak
         pWhen
         pModule
+        pDef
         pUnless
         % remove these old tokens
         pProgram                'program'
