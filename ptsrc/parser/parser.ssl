@@ -227,6 +227,13 @@ Block :
         ]}
         .sEnd;
 
+
+Module :
+        .sModule     %emit sModule first
+        pIdentifier  %Consume the identifier
+        .sIdentifier %Emit the identifier
+        @Block       %Emit begin followed by declarations and statements, then end. 
+
 ConstantDefinitions :
         % Accept one named constant definitions
         pIdentifier  .sIdentifier
@@ -234,15 +241,6 @@ ConstantDefinitions :
         ;
         % removed semicolon ending token requirement
         % only has support for one constant definition so other calls are removed
-
-
-Module :
-        .sModule     %emit sModule first
-        pIdentifier  %Consume the identifier
-        .sIdentifier %Emit the identifier
-        @Block       %Emit begin followed by declarations and statements, then end. 
-       
-
             
 ConstantValue :
         [
