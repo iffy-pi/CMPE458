@@ -181,24 +181,6 @@ Program :
         % Block rule!
         @Block;
 
-
-        % 'program'  .sProgram
-        % % program name
-        % pIdentifier
-        % % program parameters
-        % '('
-        % {
-        %     pIdentifier  .sIdentifier
-        %     [
-        %         | ',':
-        %         | *:
-        %             >
-        %     ]
-        % }
-        % ')'
-        % .sParmEnd
-        % ';'  @Block  '.';
-
 Block :
         % Strictly speaking, standard Pascal requires that declarations
         % appear only in the order consts, types, vars, procedures.
