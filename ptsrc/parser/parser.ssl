@@ -161,18 +161,16 @@ rules
 Program :
         'using'  .sProgram
         % program name
-        pIdentifier
+        pIdentifier .sIdentifier % consume first required identifier
         % program parameters
-        '('
         {
-            pIdentifier  .sIdentifier
             [
                 | ',':
+                    pIdentifier  .sIdentifier % consume more identifiers if present
                 | *:
                     >
             ]
         }
-        ')'
         .sParmEnd
 
         % Block rule!
@@ -426,7 +424,7 @@ UnlessStmt :
         'then'  .sThen
         @BeginStmt
         ;
-        
+
 IfStmt :
         .sIfStmt  %Emit if statement
         @Expression  %Expression handling rule
