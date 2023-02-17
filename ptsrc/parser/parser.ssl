@@ -418,16 +418,16 @@ BeginStmt :
         };
 
 IfStmt :
-        .sIfStmt
-        @Expression
+        .sIfStmt  %Emit if statement
+        @Expression  %Expression handling rule
         .sExpnEnd
-        'then'  .sThen
-        @BeginStmt        
+        'then'  .sThen %Consume the then
+        @BeginStmt        %Begin block to encapsulate declarations
         [
-            | 'else':
-                .sElse
+            | 'else': %Event if is followed by an else statemenet
+                .sElse 
                 @BeginStmt  
-            | 'elsif':
+            | 'elsif': % Event that there is an elsif, then treated as a nested if rule 
                 @IfStmt             
             | *:
         ];
@@ -470,11 +470,11 @@ CaseAlternative :
         ':'  @Block;
 
 WhileStmt :
-        .sWhileStmt
-        @Expression
-        .sExpnEnd
-        'do'
-        @BeginStmt;
+        .sWhileStmt %Emit whileStmt
+        @Expression %The comparison used to exit loop
+        .sExpnEnd %End of the expression
+        'do'        %Consumes the do that follows the loop
+        @BeginStmt; %Begins a block to encapsulate the loop
 
 RepeatStmt :
         .sRepeatStmt
