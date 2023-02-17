@@ -30,12 +30,6 @@ when
 module
 unless
 % remove these old tokens
-program
-const
-procedure
-begin
-repeat
-until
 % end remove these tokens
 elsif
 

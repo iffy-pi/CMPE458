@@ -42,12 +42,6 @@ Input :
         pModule                 'module'
         pUnless                 'unless'
         % remove these old tokens
-        pProgram                'program'
-        pConst                  'const'
-        pProcedure              'procedure'
-        pBegin                  'begin'
-        pRepeat                 'repeat'
-        pUntil                  'until'
         % end remove these old tokens
         pElsif                  'elsif'
         lastKeywordToken = pElsif
