@@ -329,33 +329,34 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
 
         { S/SL Rule Table Addresses } {
         Program = 0;
-        Block = 34;
-        ConstantDefinitions = 122;
-        TypeDefinitions = 212;
-        VariableDeclarations = 323;
-        ProcedureHeading = 353;
-        AssignmentOrCallStmt = 401;
-        BeginStmt = 485;
-        IfStmt = 511;
-        WhileStmt = 598;
-        CaseStmt = 535;
-        RepeatStmt = 609;
-        ConstantValue = 152;
-        UnsignedIntegerConstant = 192;
-        TypeBody = 242;
-        SimpleType = 274;
-        OptionallySignedIntegerConstant = 303;
-        Expression = 639;
-        CallStmt = 441;
-        CaseAlternative = 578;
-        SimpleExpression = 693;
-        Term = 746;
-        Factor = 790;
-        IdentifierExtension = 848;
+        Block = 28;
+        ConstantDefinitions = 120;
+        TypeDefinitions = 189;
+        VariableDeclarations = 279;
+        ProcedureHeading = 305;
+        AssignmentOrCallStmt = 353;
+        BeginStmt = 437;
+        IfStmt = 463;
+        WhileStmt = 550;
+        CaseStmt = 487;
+        RepeatStmt = 561;
+        ConstantValue = 129;
+        UnsignedIntegerConstant = 169;
+        TypeBody = 198;
+        SimpleType = 230;
+        OptionallySignedIntegerConstant = 259;
+        Expression = 591;
+        CallStmt = 393;
+        CaseAlternative = 530;
+        SimpleExpression = 645;
+        Term = 698;
+        Subterm = 750;
+        Factor = 768;
+        IdentifierExtension = 834;
         }
 
         { S/SL Table Parameters } {
-        sslTblSize = 878;
+        sslTblSize = 864;
         minSslTableValue = -32767;
         maxSslTableValue = 32767;
 	}

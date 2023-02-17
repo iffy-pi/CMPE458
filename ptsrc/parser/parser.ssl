@@ -177,7 +177,27 @@ Program :
         }
         ')'
         .sParmEnd
+
+        % Block rule!
         @Block;
+
+
+        % 'program'  .sProgram
+        % % program name
+        % pIdentifier
+        % % program parameters
+        % '('
+        % {
+        %     pIdentifier  .sIdentifier
+        %     [
+        %         | ',':
+        %         | *:
+        %             >
+        %     ]
+        % }
+        % ')'
+        % .sParmEnd
+        % ';'  @Block  '.';
 
 Block :
         % Strictly speaking, standard Pascal requires that declarations
@@ -186,7 +206,7 @@ Block :
         % programmer sanity.
         .sBegin
         {[
-            | 'val':
+            | 'val': % changed from const to val
                 .sConst
                 @ConstantDefinitions
             | 'type':
@@ -216,22 +236,20 @@ Block :
                 @CaseStmt
             | 'do':
                 @DoStmt
+            | pSemicolon:
+                % semicolons are considered null declarations so we dont care for them
             |*:
                >
         ]}
         .sEnd;
 
 ConstantDefinitions :
-        % Accept one or more named constant definitions
+        % Accept one named constant definitions
         pIdentifier  .sIdentifier
-        '=' @ConstantValue ';'
-        {[
-            | pIdentifier:
-                .sIdentifier
-                '=' @ConstantValue ';'
-            | *:
-                >
-        ]};
+        '=' @ConstantValue
+        ;
+        % removed semicolon ending token requirement
+        % only has support for one constant definition so other calls are removed
 
 ConstantValue :
         [
@@ -259,14 +277,9 @@ UnsignedIntegerConstant :
 TypeDefinitions :
         % Accept one or more named type definitions.
         pIdentifier  .sIdentifier
-        '='  @TypeBody  ';'
-        {[
-            | pIdentifier:
-                .sIdentifier
-                '='  @TypeBody  ';'
-            | *:
-                >
-        ]};
+        ':'  @TypeBody 
+        % removed semicolon ending token requirement
+        ;
 
 TypeBody :
         [
@@ -312,15 +325,23 @@ OptionallySignedIntegerConstant :
 
 VariableDeclarations :
         % Accept one or more variable declarations.
-        pIdentifier  .sIdentifier
-        ':'  @TypeBody  ';'
+        pIdentifier .sIdentifier
         {[
-            | pIdentifier:
-                .sIdentifier
-                ':'  @TypeBody  ';'
+            | ',' :
+                % if we see a comma, it should be proceeded by another identifier name and value
+                % we also emit an sVar to make it understandable to semantic analyzer
+                .sVar pIdentifier .sIdentifier
+
             | *:
                 >
-        ]};
+        ]}
+
+        % variable declarations should always end with a colon then the type
+        ':' @TypeBody
+
+        % removed semicolon ending token requirement
+
+        ;
 
 ProcedureHeading :
         % Accept zero or more procedure formal parameter declarations.
@@ -352,7 +373,7 @@ ProcedureHeading :
 
 AssignmentOrCallStmt :
         [
-            | pAssignEquals:
+            | pAssignEquals: % replaced pColonEquals
                 .sAssignmentStmt
                 .sIdentifier    % identifier accepted in the Statement rule
                 @Expression
@@ -363,7 +384,7 @@ AssignmentOrCallStmt :
                 .sSubscript
                 @Expression
                 .sExpnEnd
-                ']'  pAssignEquals
+                ']'  pAssignEquals % replaced pColonEquals
                 @Expression
                 .sExpnEnd
             | *:
@@ -485,9 +506,9 @@ RepeatStmt :
 Expression :
         @SimpleExpression
         [
-            | '=':
+            | '==':
                 @SimpleExpression  .sEq
-            | pNotEqual:
+            | pNotEqual: % replaced '<>'
                 @SimpleExpression  .sNE
             | '<':
                 @SimpleExpression  .sLT
@@ -521,19 +542,35 @@ SimpleExpression :
         ]};
 
 Term :
-        @Factor
+        @Subterm
         {[
             | '*':
-                @Factor  .sMultiply
+                @Subterm  .sMultiply
             | 'div':
-                @Factor  .sDivide
+                @Subterm  .sDivide
             | 'mod':
-                @Factor  .sModulus
+                @Subterm  .sModulus
             | 'and':
-                .sInfixAnd  @Factor  .sAnd
+                .sInfixAnd  @Subterm  .sAnd
+            | '?':
+                % String index operator
+                @Expression
+                .sIndex
             | *:
                 >
         ]};
+
+Subterm:
+    [
+        | '$':
+            @Expression '..' @Expression
+            .sSubstring
+
+        | *:
+            % call factor here
+            @Factor
+    ]
+    ;
 
 Factor :
         [
@@ -544,7 +581,7 @@ Factor :
                 .sInteger
             | '(':
                 @Expression  ')'
-            | pNot:
+            | pNot: % replaced 'not' keyword
                 @Factor
                 .sNot
             | pStringLiteral:
@@ -552,6 +589,10 @@ Factor :
             | 'file':
                 .sFile '(' @Expression ')'
                 .sExpnEnd
+            | '#':
+                % String length operand, it is expecting an expression hence we call the expression rule
+                @Expression
+                .sLength
         ];
 
 IdentifierExtension :
