@@ -218,6 +218,8 @@ Block :
                 @CaseStmt
             | 'do':
                 @DoStmt
+            | 'module':   %Adding in check for module declaration in block
+                @Module
             | pSemicolon:
                 % semicolons are considered null declarations so we dont care for them
             |*:
@@ -233,6 +235,15 @@ ConstantDefinitions :
         % removed semicolon ending token requirement
         % only has support for one constant definition so other calls are removed
 
+
+Module :
+        .sModule     %emit sModule first
+        pIdentifier  %Consume the identifier
+        .sIdentifier %Emit the identifier
+        @Block       %Emit begin followed by declarations and statements, then end. 
+       
+
+            
 ConstantValue :
         [
             | pInteger:
@@ -415,15 +426,17 @@ BeginStmt :
         };
 
 IfStmt :
-        .sIfStmt
-        @Expression
+        .sIfStmt  %Emit if statement
+        @Expression  %Expression handling rule
         .sExpnEnd
-        'then'  .sThen
-        @Block
+        'then'  .sThen %Consume the then
+        @BeginStmt        %Begin block to encapsulate declarations
         [
-            | 'else':
-                .sElse
-                @Block
+            | 'else': %Event if is followed by an else statemenet
+                .sElse 
+                @BeginStmt  
+            | 'elsif': % Event that there is an elsif, then treated as a nested if rule 
+                @IfStmt             
             | *:
         ];
 
@@ -465,11 +478,11 @@ CaseAlternative :
         ':'  @Block;
 
 WhileStmt :
-        .sWhileStmt
-        @Expression
-        .sExpnEnd
-        'do'
-        @Block;
+        .sWhileStmt %Emit whileStmt
+        @Expression %The comparison used to exit loop
+        .sExpnEnd %End of the expression
+        'do'        %Consumes the do that follows the loop
+        @BeginStmt; %Begins a block to encapsulate the loop
 
 RepeatStmt :
         .sRepeatStmt
