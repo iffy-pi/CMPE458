@@ -201,11 +201,6 @@ Block :
                 pIdentifier  .sIdentifier
                 @ProcedureHeading
                 @Block
-            | 'module':
-                .sModule
-                pIdentifier  .sIdentifier
-                @ModuleHeading
-                @Block
             | pIdentifier:
                 @AssignmentOrCallStmt
             | 'if':
