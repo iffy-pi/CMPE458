@@ -40,7 +40,6 @@ Input :
         pBreak                  'break'
         pWhen                   'when'
         pModule                 'module'
-        pDef                    'def'
         pUnless                 'unless'
         % remove these old tokens
         pProgram                'program'
@@ -228,6 +227,7 @@ Module :
         pIdentifier  %Consume the identifier
         .sIdentifier %Emit the identifier
         @Block       %Emit begin followed by declarations and statements, then end. 
+        ;
 
 ConstantDefinitions :
         % Accept one named constant definitions
@@ -425,7 +425,8 @@ UnlessStmt :
         .sExpnEnd
         'then'  .sThen
         @BeginStmt
-
+        ;
+        
 IfStmt :
         .sIfStmt  %Emit if statement
         @Expression  %Expression handling rule
