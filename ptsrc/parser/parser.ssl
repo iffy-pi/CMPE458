@@ -433,7 +433,6 @@ IfStmt :
                 .sElse
                 @IfStmt   
             | *:
-                >
         ];
 
 CaseStmt :
