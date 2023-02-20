@@ -194,7 +194,7 @@ Block :
                 @Block
             | pIdentifier:
                 @AssignmentOrCallStmt
-            | 'if', 'elsif': %Added elsif to work as nested if 
+            | 'if': 
                 @IfStmt    
             | 'while':
                 @WhileStmt
@@ -428,7 +428,10 @@ IfStmt :
         [
             | 'else': %Event if is followed by an else statemenet
                 .sElse 
-                @Block      
+                @Block   
+            | 'elsif': %Added elsif to work as nested if 
+                .sElse
+                @IfStmt   
             | *:
                 >
         ];
