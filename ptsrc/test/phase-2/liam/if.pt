@@ -1,0 +1,10 @@
+using output;
+
+if x==1 then
+    y == 2
+elsif x == 2 then 
+    y = 3
+else
+    y = 4
+end
+
