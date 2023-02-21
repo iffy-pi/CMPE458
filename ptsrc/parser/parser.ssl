@@ -431,7 +431,9 @@ IfStmt :
                 @Block   
             | 'elsif': %Added elsif to work as nested if 
                 .sElse
-                @IfStmt   
+                .sBegin
+                @IfStmt
+                .sEnd   
             | *:
         ];
 
