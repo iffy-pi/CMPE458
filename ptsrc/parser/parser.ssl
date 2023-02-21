@@ -214,8 +214,8 @@ Block :
         .sEnd;
 
 
-Module :
-        .sModule     %emit sModule first
+Module : %Module rule added to parser for module handling
+        .sModule     %emit sModule first so the subsequent identifier can be correlated to a module 
         pIdentifier  %Consume the identifier
         .sIdentifier %Emit the identifier
         @Block       %Emit begin followed by declarations and statements, then end. 
@@ -421,8 +421,8 @@ UnlessStmt :
 
 IfStmt :
         .sIfStmt  %Emit if statement
-        @Expression  %Expression handling rule
-        .sExpnEnd
+        @Expression  %Expression handling rule 
+        .sExpnEnd 
         'then'  .sThen %Consume the then
         @Block        %Begin block to encapsulate declarations
         [
@@ -432,7 +432,7 @@ IfStmt :
             | 'elsif': %Added elsif to work as nested if 
                 .sElse
                 .sBegin
-                @IfStmt
+                @IfStmt %Call to nested if
                 .sEnd   
             | *:
         ];
@@ -473,7 +473,7 @@ WhileStmt :
         @Expression %The comparison used to exit loop
         .sExpnEnd %End of the expression
         'do'        %Consumes the 'do' that begins the loop
-        @Block; %Begins a block to encapsulate the loop
+        @Block; %Begins a block to encapsulate the loop, this was the only part changed from PtPascal
 
 DoStmt :
     .sDo
