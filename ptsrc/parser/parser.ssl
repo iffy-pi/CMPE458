@@ -219,7 +219,7 @@ Module :
         pIdentifier  %Consume the identifier
         .sIdentifier %Emit the identifier
         @Block       %Emit begin followed by declarations and statements, then end. 
-        ;
+        
 
 ConstantDefinitions :
         % Accept one named constant definitions
