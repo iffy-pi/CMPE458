@@ -1,3 +1,0 @@
-unless x == 4 
-    y = x
-end

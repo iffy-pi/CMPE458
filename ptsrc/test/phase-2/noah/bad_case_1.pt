@@ -1,0 +1,7 @@
+% previous invalid syntax
+using output
+case (x) of
+   3 : y = 1;
+   4 : y = 2;
+   5 : y = 3;
+end;
