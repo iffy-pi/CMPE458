@@ -478,18 +478,26 @@ WhileStmt :
 DoStmt :
     .sDo
     .sBegin
-    {[
+    [
         | 'break':
              'if'
-             .sBreakIf
-             @Expression
-             .sExpnEnd
-        | 'end':
-            .sEnd
-            >
         | *:
             @Block
-    ]};
+            'break'
+            'if'
+    ]
+    .sBreakIf
+    @Expression
+    .sExpnEnd
+    [
+        | 'end':
+            .sEnd
+        | *:
+            @Block
+            'end'
+            .sEnd
+    ];
+    
 
 Expression :
         @SimpleExpression
