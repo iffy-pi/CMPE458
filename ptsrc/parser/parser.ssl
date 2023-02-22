@@ -489,14 +489,29 @@ DoStmt :
     .sBreakIf
     @Expression
     .sExpnEnd
-    [
+    {[
+        | 'break':
+            'if'
+            .sBreakIf
+            @Expression
+            .sExpnEnd        
         | 'end':
             .sEnd
+            >
         | *:
             @Block
-            'end'
-            .sEnd
-    ];
+            [  
+                | 'break':
+                    'if'
+                    .sBreakIf
+                    @Expression
+                    .sExpnEnd
+                | *:
+                    'end'
+                    .sEnd
+                    >
+            ]
+    ]};
     
 
 Expression :
