@@ -187,7 +187,7 @@ And thirdly, the last test file, 'bad_case_3.pt' tests a case statement that doe
 
 ## Do Statement
 ### Valid Examples
-The do statement in Quby must start with the keyword `do` and end with the keyword `end` and in its body must contain exactly one `break if` statement. The testing file 'do.pt' adheres to the proper syntax and as expected produces the following valid token output stream:
+The do statement in Quby must start with the keyword `do` and end with the keyword `end` and in its body must contain one or more `break if` statement. The testing file 'do_1.pt' adheres to the proper syntax and as expected produces the following valid token output stream:
 ```
  .sProgram
  % .sNewLine
@@ -217,6 +217,52 @@ The do statement in Quby must start with the keyword `do` and end with the keywo
           .sInteger
      .sExpnEnd
     .sEnd
+   .sEnd
+  .sEnd
+  ```
+  As well, the do statement has the option to include more than one `break if` statement. This behaviour is testing in the file 'do_2.pt', and as expected, it parses successfully with the following output:
+  ```
+ % .sNewLine
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+  % .sNewLine
+   .sDo
+   .sBegin
+    .sBegin
+     .sAssignmentStmt
+     .sIdentifier
+          % .sNewLine
+          .sInteger
+     .sExpnEnd
+    .sEnd
+   .sBreakIf
+        .sIdentifier
+        % .sNewLine
+        .sInteger
+    .sEq
+   .sExpnEnd
+    .sBegin
+     .sAssignmentStmt
+     .sIdentifier
+          % .sNewLine
+          .sInteger
+     .sExpnEnd
+    .sEnd
+   .sBreakIf
+        .sIdentifier
+        % .sNewLine
+        .sInteger
+    .sEq
+   .sExpnEnd
+   .sBreakIf
+        .sIdentifier
+        % .sNewLine
+        .sInteger
+    .sEq
+   .sExpnEnd
    .sEnd
   .sEnd
   ```
@@ -250,10 +296,10 @@ The do loop is coming into the Quby language as a form of replacing the repeat l
 scan/parse error, line 5: syntax error at: =
 ```
 
-To test the new do syntax more rigorously, two more test files are provided. The first, 'do_1.pt' tests a do statement without the required `break if`, and as expected, it fails.
+To test the new do syntax more rigorously, an additional test file is provided, 'bad_do.pt'. In this file a do statement is tested without the required `break if`, and as expected, it fails.
 ```
 ...
-  [ (pEnd)
+    [ (pEnd)
     | *:
     ] or >
     .sEnd
@@ -268,29 +314,5 @@ To test the new do syntax more rigorously, two more test files are provided. The
      [ (pEnd)
      | *:
      @Term
-...
-```
-In the second file, a second break if statement is used in the loop which is not allowed. Following this rule, the program fails as shown.
-```
-...
-   ] or >
-    }
-    [ (pBreak)
-    | *:
-    ] or >
-    .sEnd
-    >>
-   ;Block
-   ?pEnd (pBreak)
-   scan/parse error, line 7: syntax error at: break
-   .sEnd
-   >>
-  ;DoStmt
-  ] or >
-  }
-  [ (pBreak)
-  | *:
-  ] or >
-  .sEnd
 ...
 ```

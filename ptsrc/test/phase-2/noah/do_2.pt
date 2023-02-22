@@ -1,8 +1,9 @@
-% too many break ifs
+% checking with multiple break ifs
 using output
 do 
     y = 7
     break if x == 4
     y = 8
     break if y == 2
+    break if x == 3
 end
