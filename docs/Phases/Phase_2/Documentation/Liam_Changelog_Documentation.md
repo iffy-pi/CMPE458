@@ -1,6 +1,6 @@
 # All Changes made by Liam and how they were implemented
 
-- Added 'module' to parser
+-  Added 'module' to parser
 - 'while' loop updated to work with new changes to Block rule
 - 'if' statement changes
 - 'else' statement changes
