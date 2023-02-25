@@ -565,7 +565,7 @@ Term :
                 .sInfixAnd  @Subterm  .sAnd
             | '?':
                 % String index operator
-                @Expression
+                @Subterm
                 .sIndex
             | *:
                 >
