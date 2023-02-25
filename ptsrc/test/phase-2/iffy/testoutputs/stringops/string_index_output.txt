@@ -7,7 +7,7 @@
    .sAssignmentStmt
    .sIdentifier
         .sStringLiteral
-           .sStringLiteral
+        .sStringLiteral
       .sIndex
    .sExpnEnd
   .sEnd

@@ -212,7 +212,7 @@ This is verified by the parsetrace output on the test file:
    .sAssignmentStmt
    .sIdentifier
         .sStringLiteral
-           .sStringLiteral
+        .sStringLiteral
       .sIndex
    .sExpnEnd
   .sEnd
@@ -269,7 +269,7 @@ This is verified by the parsetrace output:
    .sIdentifier
          .sStringLiteral
         .sLength
-           .sStringLiteral
+        .sStringLiteral
       .sIndex
    .sExpnEnd
   .sEnd
@@ -288,7 +288,7 @@ We can force the `?` to have higher precedence by surrounding the expression in 
    .sAssignmentStmt
    .sIdentifier
               .sStringLiteral
-                 .sStringLiteral
+              .sStringLiteral
             .sIndex // index operation first
         .sLength // Then length operation next
    .sExpnEnd

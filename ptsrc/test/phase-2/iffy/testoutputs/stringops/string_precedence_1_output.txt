@@ -8,7 +8,7 @@
    .sIdentifier
          .sStringLiteral
         .sLength
-           .sStringLiteral
+        .sStringLiteral
       .sIndex
    .sExpnEnd
   .sEnd

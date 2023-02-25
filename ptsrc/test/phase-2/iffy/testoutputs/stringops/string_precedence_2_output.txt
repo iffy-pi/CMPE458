@@ -6,10 +6,10 @@
    .sAssignmentStmt
    .sIdentifier
         .sStringLiteral
-           .sStringLiteral
-           .sInteger
-           .sInteger
-          .sSubstring
+        .sStringLiteral
+        .sInteger
+        .sInteger
+       .sSubstring
       .sIndex
    .sExpnEnd
   .sEnd

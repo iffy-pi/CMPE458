@@ -6,7 +6,7 @@
    .sAssignmentStmt
    .sIdentifier
              .sStringLiteral
-                .sStringLiteral
+             .sStringLiteral
            .sIndex
         .sInteger
         .sInteger
