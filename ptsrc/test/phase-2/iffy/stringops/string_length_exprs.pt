@@ -1,2 +1,2 @@
 using output
-len = # "Hel" + "lo"
+len = # ("Hel" + "lo")

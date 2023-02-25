@@ -5,9 +5,9 @@
   .sBegin
    .sAssignmentStmt
    .sIdentifier
-         .sStringLiteral
+              .sStringLiteral
+              .sStringLiteral
+           .sAdd
         .sLength
-        .sStringLiteral
-     .sAdd
    .sExpnEnd
   .sEnd

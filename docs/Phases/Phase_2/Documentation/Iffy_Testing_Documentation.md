@@ -100,6 +100,8 @@ This is the same as the actual parsetrace output:
   .sEnd
 ```
 
+Note that the brackets are required because the Factor rule is called instead of the Expression rule in order to make sure precedence rules are obeyed. If the expression rule is called, lower binding operators can be binded before the current operator.
+
 ### Substring Operation
 The test file `string_substring.pt` tests the parsing of the substring operator on a string literal given integer constant ranges. The expected output would be
 
@@ -141,7 +143,7 @@ This is verified by the actual output from parsetrace:
 
 The file `string_substring_exprs.pt` is used to test that expressions can be used for the string subscript values. It performs simple integer calculations to determine the range. The expected output would be the post fix notation for each subscript expression.
 
-So for the range specification: `1+2 .. 3*4`, we expect the output to be:
+So for the range specification: `(1+2) .. (3*4)`, we expect the output to be:
 
 ```
 .sStringLiteral // The string we are subscripting
@@ -177,7 +179,7 @@ This is verified by the parsetrace on `string_substring_exprs.pt`:
   .sEnd
 ```
 
-The test file shows that expressions can properly be parsed following the call of Expression rule in parser.ssl. Since we did not modify the precedence of the standard arithmetic operations, we do not have to test those precedences.
+Note that the brackets are required because the Factor rule is called instead of the Expression rule in order to make sure precedence rules are obeyed. If the expression rule is called, lower binding operators can be binded before the current operator.
 
 ### Index Operation
 The file `string_index.pt` tests the how the string index operation when the `?` operator is used. Similar to `string_substring.pt` it performs the test with two static string literals. The expected output would be:
@@ -241,6 +243,165 @@ The index operator also can parse expressions, and this can be verified by the p
 - That $ > ? (string precedence 2)
 - That # > $ (string precedence 3) (override with the alternate)
 - 
+
+#### Testing Precedence(`#`) > Precedence(`?`)
+`string_precedence_1.pt` verifies that `#` has higher precedence than the `?`. It features a simple assignment `a = # "Hello World" ? "Hello"` which does not use any brackets.
+
+Following the precedence rules, the `#` should be binded first and then the `?`. This would result in the following token stream:
+
+```
+.sStringLiteral // String "Hello World"
+.sLength // Length operator bound to "Hello World"
+.sStringLiteral // String "Hello"
+.sIndex // Index operator performing on (# "Hello World") and "Hello"
+```
+
+This is verified by the parsetrace output:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+         .sStringLiteral
+        .sLength
+           .sStringLiteral
+      .sIndex
+   .sExpnEnd
+  .sEnd
+```
+
+Note that this program and assignment is technically illegal, however this would be identified by the semantic analysis stage. The parser is context free and therefore does not know the hash operation returns an integer.
+
+We can force the `?` to have higher precedence by surrounding the expression in brackets, since the Factor rule parses contents in brackets as expressions. This is what is done in `string_precedence_1_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+              .sStringLiteral
+                 .sStringLiteral
+            .sIndex // index operation first
+        .sLength // Then length operation next
+   .sExpnEnd
+  .sEnd
+```
+
+#### Testing Precedence(`$`) > Precedence(`?`)
+`string_precedence_2.pt` tests that the precedence of `$` is higher than that of the `?`, with the use of the statement `i = "Hello World" ? "Hello" $ 1 .. 2`.
+
+Following precedence rules, the `$` should bind to the "Hello" first, and then the `?`. This would generate the token stream:
+
+```
+.sStringLiteral // "Hello World"
+.sStringLiteral // "Hello"
+.sInteger // 1
+.sInteger // 2
+.sSubstring // appears first to do "Hello" $ 1 .. 2
+.sIndex // next to do ? on result i.e. "Hello World" ? ("Hello" $ 1 .. 2)
+```
+
+This is verified by the parsetrace output below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+           .sStringLiteral
+           .sInteger
+           .sInteger
+          .sSubstring
+      .sIndex
+   .sExpnEnd
+  .sEnd
+```
+
+We can force the `?` to have higher precedence by surrounding the expression in brackets. This is what is done in `string_precedence_2_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sStringLiteral
+                .sStringLiteral
+           .sIndex // Index operation is performed first
+        .sInteger
+        .sInteger
+       .sSubstring // Then the substring operation
+   .sExpnEnd
+  .sEnd
+```
+
+#### Testing Precedence(`#`) > Precedence(`$`)
+`string_precedence_3.pt` tests that the precedence of `#` is higher than that of the `$`, with the use of the statement `i = # "Hello World" $ 1 .. 4`.
+
+Following precedence rules, the `#` should bind to the "Hello World" first, and then the `$`. This would generate the token stream:
+
+```
+.sStringLiteral // "Hello World"
+.sLength // length operation on "Hello World"
+.sInteger // 1
+.sInteger // 2
+.sSubstring // substring on result i.e. ( # "Hello World" ) $ 1 .. 4
+```
+
+This is verified by the parsetrace output below:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+         .sStringLiteral
+        .sLength
+        .sInteger
+        .sInteger
+       .sSubstring
+   .sExpnEnd
+  .sEnd
+```
+
+We can force the `$` to have higher precedence by surrounding the expression in brackets. This is what is done in `string_precedence_3_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+              .sStringLiteral
+              .sInteger
+              .sInteger
+             .sSubstring // substring binded first
+        .sLength // then length operation
+   .sExpnEnd
+  .sEnd
+```
+
 
 ## Minor Syntactic Details
 ## Assign

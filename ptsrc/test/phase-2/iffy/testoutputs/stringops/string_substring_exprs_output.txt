@@ -7,8 +7,12 @@
    .sAssignmentStmt
    .sIdentifier
         .sStringLiteral
-        .sInteger
-        .sIdentifier
+             .sInteger
+             .sInteger
+          .sAdd
+             .sInteger
+             .sInteger
+           .sMultiply
        .sSubstring
    .sExpnEnd
   .sEnd
