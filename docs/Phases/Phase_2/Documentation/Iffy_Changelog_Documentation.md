@@ -46,7 +46,7 @@ To make `?` the same precedence, it was added as a choice alternative to the Ter
 PICTURE OF RULE ADDED
 ```
 
-As its choice actions, it calls the Expression rule rather than the Subterm rule since it is designed to take an expression as its right operand as well.
+As its choice actions, it calls the Subterm rule to maintain precedence. If the Expression rule is used instead, lower binding operators can be binded before the index operator.
 
 We emit the `sIndex` semantic token after consuming the expression to make sure parser output is in postfix notation.
 
@@ -57,7 +57,7 @@ The string length operation `#` is also similar to `?` and takes an expression a
 PICTURE OF THE FACTOR RULE
 ```
 
-Again similar to the index operator, it takes an expression. Therefore the Expression rule is called. We emit the `sLength` semantic token after to follow the postfix notation required in the parser output token stream.
+A call to the Factor rule is done for parsing expressions again to maintain precedence. If lower binding operators are required, the contents can be surrounded by brackets which will lead to an Expression rule call in Factor.
 
 ### Substring Operation
 The substring operation is at a new precedence level: Higher than `div` and `mod` but lower than `not`. To implement this new precedence level, the Subterm rule was defined:
@@ -72,9 +72,9 @@ The Subterm rule is now in-between the Term and Factor rule as the new precedenc
 picture of term rule
 ```
 
-In the Subterm rule, we have a simple input choice to check if a `$` token is the next input token. If it is not, it matches the default alternative which just calls the Factor rule. This implements the previous functionality before the addition of the new precedence.
+In the Subterm rule, we first make a call to Factor to process the preceding string literal that is the first operand of the substring operation. Then we have an input choice loop similar to that in Term.
 
-If the `$` token was read, then we call the Expression rule to parse both operands of the `pDotDot` token and then emit the `sSubstring` token to do the operation. 
+If the read token is the `$`, then we call Factor to parse the range operands and then emit the `sSubstring` token to follow post fix notation. If it is anything else, we break.
 
 ## Other Syntactic Details
 No functional changes to the parser were required for these changes as the only thing changed were the string of characters associated with the given operation. Therefore a simple find and replace in parser.ssl was done:
