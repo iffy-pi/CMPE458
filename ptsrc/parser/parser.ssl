@@ -448,6 +448,8 @@ CaseStmt :
             | 'else':
                 .sElse
                 @Block
+                'end'
+                >
             | 'end':
                 >
         ]}
