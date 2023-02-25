@@ -1,0 +1,2 @@
+using ouptut
+i = "Hello World" ? "Hello" $ 1 .. 2

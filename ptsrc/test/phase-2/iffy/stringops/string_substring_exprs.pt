@@ -1,0 +1,3 @@
+using output
+% substring with nested expressions
+a = "Hello World" $  1+2 .. 3*4

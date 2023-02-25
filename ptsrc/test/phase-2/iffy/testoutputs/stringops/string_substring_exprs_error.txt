@@ -1,0 +1,94 @@
+@Program
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ [ (pIdentifier)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pIdentifier)
+  | pIdentifier:
+  @AssignmentOrCallStmt
+   [ (pAssignEquals)
+   | pAssignEquals:
+   .sAssignmentStmt
+   .sIdentifier
+   @Expression
+    @SimpleExpression
+     [ (pStringLiteral)
+     | *:
+     @Term
+      @Subterm
+       @Factor
+        [ (pStringLiteral)
+        | pStringLiteral:
+        .sStringLiteral
+        ] or >
+        >>
+       ;Factor
+       [ (pDollar)
+       | pDollar:
+       @Factor
+        [ (pInteger)
+        | pInteger:
+        .sInteger
+        ] or >
+        >>
+       ;Factor
+       ?pDotDot (pPlus)
+       scan/parse error, line 3: syntax error at: +
+       @Factor
+        [ (pPlus)
+        | *:
+        ?pIdentifier (pPlus)
+        }
+        .sIdentifier
+        @IdentifierExtension
+         [ (pPlus)
+         | *:
+         >>
+        ;IdentifierExtension
+        ] or >
+        >>
+       ;Factor
+       .sSubstring
+       ] or >
+       }
+       [ (pPlus)
+       | *:
+       ] or >
+       >>
+      ;Subterm
+      [ (pPlus)
+      | *:
+      ] or >
+      >>
+     ;Term
+     [ (pPlus)
+     | *:
+     ] or >
+     >>
+    ;SimpleExpression
+    [ (pPlus)
+    | *:
+    >>
+   ;Expression
+   .sExpnEnd
+   ] or >
+   >>
+  ;AssignmentOrCallStmt
+  ] or >
+  }
+  [ (pPlus)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program
