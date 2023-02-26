@@ -1,4 +1,4 @@
-using Bubble (output)
+using output
 
 val nelements = 25
 val maxval = 99

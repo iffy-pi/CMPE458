@@ -217,7 +217,10 @@ Block :
                 @UnlessStmt
             | pSemicolon:
                 % semicolons are considered null declarations so we dont care for them
-            |*:
+            | pNewLine:
+            | pEnd:
+		>
+	    |*:
                >
         ]}
         .sEnd;
