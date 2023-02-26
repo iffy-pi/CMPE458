@@ -1,0 +1,38 @@
+@Program
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pIdentifier)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pIdentifier)
+  | pIdentifier:
+  @AssignmentOrCallStmt
+   [ (pColon)
+   | *:
+   @CallStmt
+    .sCallStmt
+    .sIdentifier
+    [ (pColon)
+    | *:
+    .sParmEnd
+    >>
+   ;CallStmt
+   >>
+  ;AssignmentOrCallStmt
+  ] or >
+  }
+  [ (pColon)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program
+scan/parse error, line 2: syntax error at: :

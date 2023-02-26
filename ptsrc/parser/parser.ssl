@@ -570,22 +570,22 @@ Term :
                 .sInfixAnd  @Subterm  .sAnd
             | '?':
                 % String index operator
-                @Expression
+                @Subterm
                 .sIndex
             | *:
                 >
         ]};
 
 Subterm:
-    [
+    @Factor
+    {[
         | '$':
-            @Expression '..' @Expression
+            @Factor '..' @Factor
             .sSubstring
 
         | *:
-            % call factor here
-            @Factor
-    ]
+            >
+    ]}
     ;
 
 Factor :
@@ -606,8 +606,9 @@ Factor :
                 .sFile '(' @Expression ')'
                 .sExpnEnd
             | '#':
-                % String length operand, it is expecting an expression hence we call the expression rule
-                @Expression
+                % String length operand
+                % expecting an expression but to obey precedence rules must call expression subrules equal to or higher than its precedence
+                @Factor
                 .sLength
         ];
 

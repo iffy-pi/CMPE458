@@ -1,0 +1,3 @@
+using output
+% testing basic length operation, a is assigned length of str
+a = # str

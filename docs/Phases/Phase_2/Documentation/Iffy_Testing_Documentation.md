@@ -15,6 +15,490 @@
     - Testing parsing of expressions
     - Verifying it obeys specified precedence
 
+## String Operations
+### Length Operation
+We use `string_length.pt` to test the parsing of the string length operation as a standalone assignment statement. We simply assign the length of the variable `str` to the variable `a`.
+
+The expected output wou
+
+```
+.sProgram        // For the pUsing token
+.sIdentifier     // Identifier of the using statement
+.sParmEnd        // Part of the program definition
+.sBegin          // Block begin statement
+
+.sAssignmentStmt // assignment token
+.sIdentifier     // identifier for a
+.sIdentifier     // identifier for str
+.sLength    // length operator token after to follow postfix notation
+.sExpnEnd   // end expression token
+
+.sEnd            // Block end statement
+```
+
+This is verified by the actual output of the test file from parsetrace:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sIdentifier
+        .sLength
+   .sExpnEnd
+  .sEnd
+```
+
+Similar output would be gotten for the use of a string literal instead of a variable (see `string_length_literal.pt`), the only difference being the `sIdentifier` token for the `str` variable will be replaced with an `sStringLiteral` token.
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sStringLiteral // replaced sIdentifier
+        .sLength
+   .sExpnEnd
+  .sEnd
+```
+
+This would apply for other string operation and testing.
+
+The length operation was also tested to be able to parse expressions. This was done with `string_length_exprs.pt` which replaces the static string with a simple concatenation.
+
+Following post fix notation, the expected output token stream for the expression would be:
+
+```
+sStringLiteral // "Hel" string
+sStringLiteral // "lo" string
+sAdd // Add the strings together
+sLength // the length operation
+```
+
+This is the same as the actual parsetrace output:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sStringLiteral
+             .sStringLiteral
+          .sAdd
+        .sLength
+   .sExpnEnd
+  .sEnd
+```
+
+Note that the brackets are required because the Factor rule is called instead of the Expression rule in order to make sure precedence rules are obeyed. If the expression rule is called, lower binding operators can be binded before the current operator.
+
+### Substring Operation
+The test file `string_substring.pt` tests the parsing of the substring operator on a string literal given integer constant ranges. The expected output would be
+
+```
+.sProgram        // For the pUsing token
+.sIdentifier     // Identifier of the using statement
+.sParmEnd        // Part of the program definition
+.sBegin          // Block begin statement
+
+.sAssignmentStmt // assignment token
+.sIdentifier     // identifier for a
+.sStringLiteral // String variable
+.sInteger // Integer start subscript 1
+.sInteger // Integer end subscrtipt 3
+.sSubstring // emitted following post fix notation
+.sExpnEnd   // end expression token
+
+.sEnd            // Block end statement
+```
+
+This is verified by the actual output from parsetrace:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+            .sInteger
+            .sInteger
+       .sSubstring
+   .sExpnEnd
+  .sEnd
+```
+
+The file `string_substring_exprs.pt` is used to test that expressions can be used for the string subscript values. It performs simple integer calculations to determine the range. The expected output would be the post fix notation for each subscript expression.
+
+So for the range specification: `(1+2) .. (3*4)`, we expect the output to be:
+
+```
+.sStringLiteral // The string we are subscripting
+.sInteger // The integer 1
+.sInteger // The integer 2
+.sAdd // Do 1+2
+.sInteger // The integer 3
+.sInteger // The integer 4
+.sMultiply // Do 3*4
+.sSubstring
+```
+
+This is verified by the parsetrace on `string_substring_exprs.pt`:
+
+```
+.sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+            .sInteger
+            .sInteger
+         .sAdd
+            .sInteger
+            .sInteger
+          .sMultiply
+       .sSubstring
+   .sExpnEnd
+  .sEnd
+```
+
+Note that the brackets are required because the Factor rule is called instead of the Expression rule in order to make sure precedence rules are obeyed. If the expression rule is called, lower binding operators can be binded before the current operator.
+
+### Index Operation
+The file `string_index.pt` tests the how the string index operation when the `?` operator is used. Similar to `string_substring.pt` it performs the test with two static string literals. The expected output would be:
+
+```
+.sProgram        // For the pUsing token
+.sIdentifier     // Identifier of the using statement
+.sParmEnd        // Part of the program definition
+.sBegin          // Block begin statement
+
+.sAssignmentStmt // assignment token
+.sIdentifier     // identifier for i
+.sStringLiteral // "Hello World" string
+.sStringLiteral // "Hello" string we are subscripting
+.sIndex // The index operator emitted afterward following postfix notation
+.sExpnEnd   // end expression token
+
+.sEnd            // Block end statement
+```
+
+This is verified by the parsetrace output on the test file:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+        .sStringLiteral
+      .sIndex
+   .sExpnEnd
+  .sEnd
+```
+
+The index operator also can parse expressions, and this can be verified by the parsetrace output of `string_index_exprs.pt`, which simply replaces the static index string with a simple concatenation.
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+           .sStringLiteral // "Hel" string
+           .sStringLiteral // "lo" string
+        .sAdd // Add to add the tokens together, follows post fix notation
+      .sIndex // Index following post fix notation
+   .sExpnEnd
+  .sEnd
+```
+
+### Testing for Precedence
+- Testing that # > ? (string precedence 1)
+- That $ > ? (string precedence 2)
+- That # > $ (string precedence 3) (override with the alternate)
+- 
+
+#### Testing Precedence(`#`) > Precedence(`?`)
+`string_precedence_1.pt` verifies that `#` has higher precedence than the `?`. It features a simple assignment `a = # "Hello World" ? "Hello"` which does not use any brackets.
+
+Following the precedence rules, the `#` should be binded first and then the `?`. This would result in the following token stream:
+
+```
+.sStringLiteral // String "Hello World"
+.sLength // Length operator bound to "Hello World"
+.sStringLiteral // String "Hello"
+.sIndex // Index operator performing on (# "Hello World") and "Hello"
+```
+
+This is verified by the parsetrace output:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+         .sStringLiteral
+        .sLength
+        .sStringLiteral
+      .sIndex
+   .sExpnEnd
+  .sEnd
+```
+
+Note that this program and assignment is technically illegal, however this would be identified by the semantic analysis stage. The parser is context free and therefore does not know the hash operation returns an integer.
+
+We can force the `?` to have higher precedence by surrounding the expression in brackets, since the Factor rule parses contents in brackets as expressions. This is what is done in `string_precedence_1_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+              .sStringLiteral
+              .sStringLiteral
+            .sIndex // index operation first
+        .sLength // Then length operation next
+   .sExpnEnd
+  .sEnd
+```
+
+#### Testing Precedence(`$`) > Precedence(`?`)
+`string_precedence_2.pt` tests that the precedence of `$` is higher than that of the `?`, with the use of the statement `i = "Hello World" ? "Hello" $ 1 .. 2`.
+
+Following precedence rules, the `$` should bind to the "Hello" first, and then the `?`. This would generate the token stream:
+
+```
+.sStringLiteral // "Hello World"
+.sStringLiteral // "Hello"
+.sInteger // 1
+.sInteger // 2
+.sSubstring // appears first to do "Hello" $ 1 .. 2
+.sIndex // next to do ? on result i.e. "Hello World" ? ("Hello" $ 1 .. 2)
+```
+
+This is verified by the parsetrace output below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sStringLiteral
+           .sStringLiteral
+           .sInteger
+           .sInteger
+          .sSubstring
+      .sIndex
+   .sExpnEnd
+  .sEnd
+```
+
+We can force the `?` to have higher precedence by surrounding the expression in brackets. This is what is done in `string_precedence_2_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sStringLiteral
+                .sStringLiteral
+           .sIndex // Index operation is performed first
+        .sInteger
+        .sInteger
+       .sSubstring // Then the substring operation
+   .sExpnEnd
+  .sEnd
+```
+
+#### Testing Precedence(`#`) > Precedence(`$`)
+`string_precedence_3.pt` tests that the precedence of `#` is higher than that of the `$`, with the use of the statement `i = # "Hello World" $ 1 .. 4`.
+
+Following precedence rules, the `#` should bind to the "Hello World" first, and then the `$`. This would generate the token stream:
+
+```
+.sStringLiteral // "Hello World"
+.sLength // length operation on "Hello World"
+.sInteger // 1
+.sInteger // 2
+.sSubstring // substring on result i.e. ( # "Hello World" ) $ 1 .. 4
+```
+
+This is verified by the parsetrace output below:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+         .sStringLiteral
+        .sLength
+        .sInteger
+        .sInteger
+       .sSubstring
+   .sExpnEnd
+  .sEnd
+```
+
+We can force the `$` to have higher precedence by surrounding the expression in brackets. This is what is done in `string_precedence_3_alt.pt`, with the output shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+              .sStringLiteral
+              .sInteger
+              .sInteger
+             .sSubstring // substring binded first
+        .sLength // then length operation
+   .sExpnEnd
+  .sEnd
+```
+
+
+## Minor Syntactic Details
+## Assign
+These tests are just used to verify that the new token for the assignment operator, as well as the changed tokens for not, not equals and comparisons are correctly parsed by the system.
+
+The file `parsing_assign.pt` is used to test that the new assignment operator `=` generates the `sAssignmentStmt` token, as this will show that the parser recognizes the new assignment token. This is verified by the parsetrace output below:
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sIdentifier
+   .sExpnEnd
+  .sEnd
+```
+
+If the old colon assign is used (`:=`) as seen in `parsing_assign_invalid.pt`, a parsing error occurs because of the colon:
+
+
+```
+...
+  ;AssignmentOrCallStmt
+  ] or >
+  }
+  [ (pColon)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program
+scan/parse error, line 2: syntax error at: :
+```
+
+### Not and Not Equals
+The test file `parsing_not.pt` tests that the new not operator `!` is parsed by the parser. This is verified by its parsetrace output:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+         .sIdentifier
+        .sNot
+   .sExpnEnd
+  .sEnd
+```
+
+As seen above, the `sNot` semantic token is emitted when the new not operator is used. If the old not keyword is used (as seen in `parsing_not_invalid.pt`), we get semantically illegal parsing:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+        .sIdentifier
+   .sExpnEnd
+    .sCallStmt
+    .sIdentifier
+    .sParmEnd
+  .sEnd
+```
+
+The `not` is parsed as an identifier and is marked as the full assignment statement, while the actual variable to invert is recognized as a call statement. This does not fail in parsing, but will fail in the semantic analysis stage.
+
+### Comparison
+As we have already seen that the old comparison operator `=` is parsed as an assignment statement, we simply need just one test file `parsing_compare.pt` which tests that `==` is now the comparison operator.
+
+Its parse trace output is shown below:
+
+```
+ .sProgram
+ % .sNewLine
+ .sIdentifier
+ .sParmEnd
+  .sBegin
+   .sAssignmentStmt
+   .sIdentifier
+             .sIdentifier
+             .sIdentifier
+         .sEq
+   .sExpnEnd
+  .sEnd
+```
+
+As seen, the `b == c` is correctly parsed into the two `sIdentifier` tokens followed by the `sEq` statement.
+
 ## Declarations
 ### General Invalid Assignments
 #### Missing Identifier
