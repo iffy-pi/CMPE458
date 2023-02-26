@@ -11,6 +11,12 @@ ssltrace "ptc -o2 -t2 -L CMPE458/ptsrc/lib/pt test.pt" CMPE458/ptsrc/lib/pt/pars
 
 This was implemented with a shell script.
 
+The order is as follows:
+- Iffy
+- Ethan
+- Noah
+- Liam
+
 # Iffy's Testing
 ## String Operations
 All test files mentioned in this file are located in the folder ptsrc/test/phase-2/iffy/stringops.
