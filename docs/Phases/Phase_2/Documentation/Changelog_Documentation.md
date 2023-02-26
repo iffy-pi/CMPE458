@@ -125,6 +125,8 @@ All removed keywords were taken out of the block rule or replaced with their Qub
 
 The statement rule was removed entirely, as Quby makes no distinction between declarations and statements. The statement rule was integrated into the block rule to simplify routine parsing as a whole, so that the block rule was the primary rule crawling for the parser.
 
+Another change to the Block rule was making sure to consume pEnd tokens, or else only the first procedure/module would be recognized.
+
 ## Routine Handling changes
 To simplify semantic analysis changes for Quby implementation, the parser still emits sBegin and sEnd tokens at the beginning of every block. This was implemented through modifications to the block and statement rules, so that any block of Quby will be interpreted similarly to PT Pascal in semantic analysis.
 
