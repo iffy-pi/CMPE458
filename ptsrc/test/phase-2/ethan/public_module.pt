@@ -1,0 +1,3 @@
+module * print 
+    var i: integer
+end

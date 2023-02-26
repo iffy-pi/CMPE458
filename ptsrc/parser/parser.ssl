@@ -146,6 +146,7 @@ Output :
         sSubstring
         sLength
         sIndex
+        sPublic
         % end added semantic tokens
         sEndOfFile
         lastSemanticToken = sEndOfFile;
@@ -189,8 +190,16 @@ Block :
             | 'def':
                 .sProcedure
                 % procedure name
-                pIdentifier  .sIdentifier
-                @ProcedureHeading
+                [
+                    | '*':
+                        pIdentifier  .sIdentifier
+                        .sPublic
+                        @ProcedureHeading
+                    | *:
+                        pIdentifier  .sIdentifier
+                        @ProcedureHeading
+                ]
+
                 @Block
             | pIdentifier:
                 @AssignmentOrCallStmt
@@ -215,9 +224,16 @@ Block :
 
 
 Module : %Module rule added to parser for module handling
-        .sModule     %emit sModule first so the subsequent identifier can be correlated to a module 
-        pIdentifier  %Consume the identifier
-        .sIdentifier %Emit the identifier
+        .sModule     %emit sModule first so the subsequent identifier can be correlated to a module
+        [
+            | '*':
+                pIdentifier  %Consume the identifier
+                .sIdentifier %Emit the identifier                        
+                .sPublic
+            | *:
+                pIdentifier  
+                .sIdentifier
+        ]
         @Block       %Emit begin followed by declarations and statements, then end. 
         ;
 
@@ -338,7 +354,6 @@ ProcedureHeading :
                     % type identifier
                     pIdentifier  .sIdentifier
                     [
-                        | ';':
                         | *:
                             >
                     ]
@@ -346,7 +361,6 @@ ProcedureHeading :
                 ')'
             | *:
         ]
-        ';'
         .sParmEnd;
 
 AssignmentOrCallStmt :
@@ -397,18 +411,6 @@ CallStmt :
             | *:        % no actual parameters
         ]
         .sParmEnd;
-
-BeginStmt :
-        .sBegin
-        {
-            @Block
-            [
-                | ';':
-                | 'end':
-                    .sEnd
-                    >
-            ]
-        };
 
 UnlessStmt :
         .sIfStmt

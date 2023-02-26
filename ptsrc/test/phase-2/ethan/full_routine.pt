@@ -1,0 +1,17 @@
+using Bubble (output)
+
+val nelements = 25
+val maxval = 99
+
+def lessthan (i : integer, j : integer, var b : boolean)
+    var current : integer
+    current = i
+end
+
+def * swap
+    var t : integer
+end
+
+module * print 
+    var i: integer
+end
