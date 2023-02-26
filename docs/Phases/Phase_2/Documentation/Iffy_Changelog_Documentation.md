@@ -10,6 +10,23 @@ Pictures were obtained using GitHub Commit Comparison:
 https://github.com/iffy-pi/CMPE458/compare/aab721523cf8c40155f0580c7140c702c4ba7eea..<latest commit here>
 ```
 
+## Updating Tokens
+Firstly, the input tokens in parser.ssl were updated to match the output tokens in scan.ssl. This involved deleting the old unused input tokens and adding the new tokens for Quby.
+
+![[Pasted image 20230226164102.png]]
+
+![[Pasted image 20230226164117.png]]
+
+We also updated the semantic tokens in the system, adding the new required semantic tokens and removing the old unused semantic tokens:
+
+![[Pasted image 20230226164127.png]]
+
+The semantic tokens that were added were for new operational futures introduced by Quby, this includes:
+- The modules
+- The `do` statement with `break if`
+- The string operations: substring, length and index
+- The public keyword
+
 ## Declarations
 ### Constants
 Removed the semicolon ending token in the `ConstantDefinitions` rule as the semicolon ending token is not required in Quby.

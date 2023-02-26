@@ -3,7 +3,7 @@
 
 - Removed `repeat` statement
 - Added support for `do` statement
-- Modifified `case` statement syntax
+- Modified `case` statement syntax
 - Added support for `unless` statement
 
 # `repeat` Statement
@@ -53,8 +53,6 @@ end
 ```
 
 For this statement to be syntactically valid, there must be at least 1 `when` condition in a case statement always, and that `when` statement may be accompanied 1 or more additional `when` statements and at most 1 `else` statement that acts as a default branch to exit the case statement. 
-
-
 
 This statement behaves similar to the `case` statement before but has some major changes. Firstly, the requirement for an `of` keyword after the initial expression is removed. Meanwhile, the `when` statements are purely syntactic sugar for the previous case checking syntax in PT Pascal. These statements emit the same thing as previously to the semantic phase of the compiler while consuming the token `when` before the condition and the token `then` after the condition from the scanner. The `else` branch of the new `case` statement by contract will require additional support in the semantic phase of the compiler as this feature is not currently supported. When the `else` keyword is encountered, a corresponding `.sElse` token is emitted to the next phase of the compiler, followed by the contents of the following `Block` rule called as the body of the `else` statement.
 

@@ -901,3 +901,4 @@ The parser throws an error for this, because (as defined the VariableDeclaration
    }
 ...
 ```
+
