@@ -1,3 +1,5 @@
-module * print 
+using output
+
+module * print
     var i: integer
 end

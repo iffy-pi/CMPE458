@@ -1,3 +1,5 @@
+using output
+
 def * lessthan (i : integer, j : integer, var b : boolean)
     var current : integer
     current = i
