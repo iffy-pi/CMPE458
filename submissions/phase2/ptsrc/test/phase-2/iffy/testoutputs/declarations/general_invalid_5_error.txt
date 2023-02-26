@@ -1,0 +1,42 @@
+@Program
+ % .sNewLine
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pVal)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pVal)
+  | pVal:
+  .sConst
+  @ConstantDefinitions
+   ?pIdentifier (pUnless)
+   scan/parse error, line 3: syntax error at: unless
+   .sIdentifier
+   ?pAssignEquals (pUnless)
+   @ConstantValue
+    [ (pUnless)
+    | *:
+    ?pInteger (pUnless)
+    }
+    .sInteger
+    ] or >
+    >>
+   ;ConstantValue
+   >>
+  ;ConstantDefinitions
+  ] or >
+  }
+  [ (pUnless)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program

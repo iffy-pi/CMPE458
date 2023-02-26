@@ -1,0 +1,42 @@
+@Program
+ % .sNewLine
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pVal)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pVal)
+  | pVal:
+  .sConst
+  @ConstantDefinitions
+   ?pIdentifier (pIdentifier)
+   .sIdentifier
+   ?pAssignEquals (pComma)
+   scan/parse error, line 3: syntax error at: ,
+   @ConstantValue
+    [ (pComma)
+    | *:
+    ?pInteger (pComma)
+    }
+    .sInteger
+    ] or >
+    >>
+   ;ConstantValue
+   >>
+  ;ConstantDefinitions
+  ] or >
+  }
+  [ (pComma)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program

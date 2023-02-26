@@ -1,0 +1,4 @@
+% Valid type declaration
+using output
+type t : integer
+type p : integer

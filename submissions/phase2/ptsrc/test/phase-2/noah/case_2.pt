@@ -1,0 +1,7 @@
+using output
+case x
+    when 6 then 
+        y = 7
+    when 7 then 
+        y = 8
+end

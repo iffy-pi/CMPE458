@@ -1,0 +1,6 @@
+% uses invalid standalone else in case statement
+using output
+case x
+    else
+        y = 5
+end
