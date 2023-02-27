@@ -1513,8 +1513,9 @@ The code module.pt in the /ptsrc/test/phase-2/liam/ directory outputted the corr
 ```
 
 
-## Erroneus test case for `module`:
+## Erroneous test case for `module`:
 In the module error pt file, module_error.pt, the modules identifier is removed. An error is thrown at the subsequent line were x = 1 is. Below is the following output:
+
 ```
 @Program
  ?pUsing (pUsing)
@@ -1594,6 +1595,7 @@ The code from while.pt outputted the following. This code correctly outputted th
 
 ## Erroneus test case for `while` loops:
 In this test case the while loop is missing the subsequent do after the expression. The file while_error.pt had the following output:
+
 ```
 @Program
  ?pUsing (pUsing)
@@ -1738,6 +1740,7 @@ The testing code outputted the following below. The reason this output is correc
 
 ## Erroneus test case for `if` statements:
 In the file if_error.pt, there is a missing then after an expression. The code had the following output:
+
 ```
 @Program
  ?pUsing (pUsing)
@@ -1895,6 +1898,7 @@ The above output signifies correct functionality as the `.sElse` being emitted i
 
 ## Erroneus test case for `else` statements:
 The file else_error.pt tested having multiple subsequent else statements. The code had the following output error message:
+
 ```
 @Program
  ?pUsing (pUsing)
@@ -1974,6 +1978,7 @@ The above output shows that the elsif rule is functioning properly, as the elsif
 
 ## Erroneus Test Case for `elsif` statements:
 The file elsif_error.pt tests to see if placing an elsif after an else could still function. The code had the following output:
+
 ```
 @Program
  ?pUsing (pUsing)
@@ -2245,4 +2250,5 @@ The if_elsif_else.pt code tests the new implementations for if, elsif and else a
    .sEnd
   .sEnd
 ```
+
 In this case, we see that the if, elsif, else returns the correct input as the elsif and else is nested within the first `if` statements `else` that was emitted. The pt `else` statement is also correlated to the nested `if`, hence the code within it will be excecuted if both the `if` and `elsif` statements are not true. 
