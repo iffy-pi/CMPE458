@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
+                "file": "Phases/phase2/documentation/Changelog_Documentation.md",
                 "mode": "source",
                 "source": false
               }
@@ -23,36 +23,24 @@
             "id": "a1df572afdd80b78",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Phases/Phase_2/Documentation/Ethan_Testing_Documentation.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           },
           {
             "id": "3136555cc8a81a1e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           },
           {
             "id": "5462c93cf8cff8da",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Phases/Phase_2/Documentation/Ethan_Changelog_Documentation.md",
-                "mode": "source",
-                "source": false
-              }
+              "type": "empty",
+              "state": {}
             }
           }
         ]
@@ -121,7 +109,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
+                "file": "Phases/phase2/documentation/Changelog_Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -138,7 +126,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
+                "file": "Phases/phase2/documentation/Changelog_Documentation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -161,7 +149,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md"
+                "file": "Phases/phase2/documentation/Changelog_Documentation.md"
               }
             }
           }
