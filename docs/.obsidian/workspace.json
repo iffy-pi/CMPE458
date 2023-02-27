@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
                 "mode": "source",
                 "source": false
               }
@@ -121,7 +121,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -138,7 +138,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md",
+                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Phases/Phase_2/Documentation/Testing_Documentation.md"
+                "file": "Phases/Phase_2/Documentation/Changelog_Documentation.md"
               }
             }
           }
@@ -185,8 +185,10 @@
   },
   "active": "d49a013ca4ea3946",
   "lastOpenFiles": [
-    "Phases/Phase_2/Documentation/Changelog_Documentation.md",
+    "Phases/Phase_2/Documentation/Changelog_Documentation.pdf",
     "Phases/Phase_2/Documentation/Testing_Documentation.md",
+    "Phases/Phase_2/Documentation/Testing_Documentation.pdf",
+    "Phases/Phase_2/Documentation/Changelog_Documentation.md",
     "Phases/Phase_2/Documentation/Ethan_Testing_Documentation.md",
     "Phases/Phase_2/Documentation/Ethan_Changelog_Documentation.md",
     "Phases/Phase_2/Documentation/Liam_Testing_Documentation.md",
