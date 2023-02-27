@@ -21,13 +21,17 @@ pkgdir_parent=`echo $PKGDIR | sed -e 's#\(.*\)\(/.*\)#\1#'`
 pkgdir_leaf=`echo $PKGDIR | sed -e 's#\(.*/\)\(.*\)#\2#'`
 
 # transfer the file to the group account with scp
-SUBFOLDER="$GROUPMACHINE:/cas/student/cisc458a1/cisc458"
-echo "Transferring $PKGDIR to $SUBFOLDER..."
-scp -r "$PKGDIR" "$SUBFOLDER/$pkgdir_leaf"
+LOCALSUBFOLDER="/cas/student/cisc458a1/cisc458"
+REMOTESUBFOLDER="$GROUPMACHINE:/cas/student/cisc458a1/cisc458"
+
+echo "Transferring $PKGDIR to $LOCALSUBFOLDER..."
+ssh $GROUPMACHINE 'if [[ -d '$LOCALSUBFOLDER/$pkgdir_leaf' ]]; then rm -rf '$LOCALSUBFOLDER/$pkgdir_leaf' && echo Deleted previous version!; else echo no match!;  fi'
+scp -r "$PKGDIR" "$REMOTESUBFOLDER/$pkgdir_leaf"
 echo "Done!"
 echo ""
 echo ""
+
 # ssh into the system to perform the submit command
-echo "Submitting on group machine with SSH..."
-ssh $GROUPMACHINE "turnin-cisc458 -v $SUBFOLDER/$pkgdir_leaf"
+echo "Submitting on group machine with turnin through SSH..."
+ssh $GROUPMACHINE "cd $LOCALSUBFOLDER && turnin-cisc458 -v $pkgdir_leaf"
 echo "Done!"
