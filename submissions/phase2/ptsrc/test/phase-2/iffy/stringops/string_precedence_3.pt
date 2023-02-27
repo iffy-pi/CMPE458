@@ -1,0 +1,3 @@
+using ouptut
+% Testing that # is higher precedence than $
+i = # "Hello World" $ 1 .. 4

@@ -1,0 +1,3 @@
+% using comma separation for constants, not allowed
+using output
+val a,b,c = 19

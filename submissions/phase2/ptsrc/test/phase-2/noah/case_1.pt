@@ -1,0 +1,9 @@
+using output
+case x
+    when 4 then 
+        y = 4
+    when 5 then 
+        y = 3
+    else 
+        y = 2
+end

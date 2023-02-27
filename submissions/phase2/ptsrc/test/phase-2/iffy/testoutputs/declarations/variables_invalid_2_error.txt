@@ -1,0 +1,83 @@
+@Program
+ % .sNewLine
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pVar)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pVar)
+  | pVar:
+  .sVar
+  @VariableDeclarations
+   ?pIdentifier (pIdentifier)
+   .sIdentifier
+   [ (pComma)
+   | pComma:
+   .sVar
+   ?pIdentifier (pColon)
+   scan/parse error, line 3: syntax error at: :
+   .sIdentifier
+   ] or >
+   }
+   [ (pColon)
+   | *:
+   ] or >
+   ?pColon (pColon)
+   @TypeBody
+    [ (pColon)
+    | *:
+    @SimpleType
+     [ (pColon)
+     | *:
+     @OptionallySignedIntegerConstant
+      [ (pColon)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pColon)
+       | *:
+       ?pIdentifier (pColon)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     ?pDotDot (pColon)
+     .sRange
+     @OptionallySignedIntegerConstant
+      [ (pColon)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pColon)
+       | *:
+       ?pIdentifier (pColon)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     >>
+    ;SimpleType
+    >>
+   ;TypeBody
+   >>
+  ;VariableDeclarations
+  ] or >
+  }
+  [ (pColon)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program

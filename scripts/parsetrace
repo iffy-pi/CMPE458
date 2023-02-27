@@ -13,13 +13,21 @@ fi
 
 
 flag=$2
+grep_for_error=0
 
 if [[ "$flag" = "-a" ]]; then
     flag=""
+
+elif [[ "$flag" = "-ge" ]]; then
+    grep_for_error=1
 
 elif [[ "$flag" = "" ]]; then
     flag=-e
 
 fi
 
-ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def $flag
+if [[ "$grep_for_error" = "1" ]]; then
+    ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def -a | grep "error"
+else
+    ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def $flag
+fi

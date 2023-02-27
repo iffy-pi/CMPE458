@@ -46,3 +46,6 @@
 
 # Object file
 /ptsrc-ref/ptruntime/ptruntime.o
+
+# DS Store (MacOS specific)
+.DS_Store

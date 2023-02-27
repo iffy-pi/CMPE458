@@ -1,0 +1,5 @@
+% repeat syntax has been removed
+using output
+repeat
+    y = 7;
+until x == 5;
