@@ -15,7 +15,6 @@
 %      "t-code", corresponding semantically to the source program.
 
 Input :
-        % Semantic tokens - must match output tokens in parser.ssl exactly!
         sIdentifier 
         firstSemanticToken = sIdentifier
         firstCompoundSemanticToken = sIdentifier
@@ -49,8 +48,6 @@ Input :
         sThen
         sElse
         sWhileStmt
-        sRepeatStmt
-        sRepeatEnd
         sEq
         sNE
         sLT
@@ -68,8 +65,77 @@ Input :
         sAnd
         sNot
         sNewLine
+        % added semantic tokens
+        sModule
+        sDo
+        sBreakIf
+        sSubstring
+        sLength
+        sIndex
+        sPublic
+        % end added semantic tokens
+        % to remove tokens (for semantic phase)
+        sRepeatStmt
+        sRepeatEnd
+        % end remove tokens
         sEndOfFile
         lastSemanticToken = sEndOfFile;
+
+        % % Semantic tokens - must match output tokens in parser.ssl exactly!
+        % sIdentifier 
+        % firstSemanticToken = sIdentifier
+        % firstCompoundSemanticToken = sIdentifier
+        % sInteger
+        % sStringLiteral
+        % lastCompoundSemanticToken = sStringLiteral
+
+        % sProgram
+        % sParmBegin
+        % sParmEnd
+        % sConst
+        % sType
+        % sVar
+        % sProcedure
+        % sBegin
+        % sEnd
+        % sNegate
+        % sArray
+        % sFile
+        % sRange
+        % sCaseStmt
+        % sCaseEnd
+        % sLabelEnd
+        % sExpnEnd
+        % sNullStmt
+        % sAssignmentStmt
+        % sSubscript
+        % sCallStmt
+        % sFieldWidth
+        % sIfStmt
+        % sThen
+        % sElse
+        % sWhileStmt
+        % sRepeatStmt
+        % sRepeatEnd
+        % sEq
+        % sNE
+        % sLT
+        % sLE
+        % sGT
+        % sGE
+        % sAdd
+        % sSubtract
+        % sMultiply
+        % sDivide
+        % sModulus
+        % sInfixOr
+        % sOr
+        % sInfixAnd
+        % sAnd
+        % sNot
+        % sNewLine
+        % sEndOfFile
+        % lastSemanticToken = sEndOfFile;
 
 Output :        
         % T-code tokens - must match input tokens in coder.ssl exactly!

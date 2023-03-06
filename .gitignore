@@ -49,3 +49,6 @@
 
 # DS Store (MacOS specific)
 .DS_Store
+
+# private folder
+__local
