@@ -65,6 +65,7 @@ Input :
         sAnd
         sNot
         sNewLine
+
         % added semantic tokens
         sModule
         sDo
@@ -74,68 +75,14 @@ Input :
         sIndex
         sPublic
         % end added semantic tokens
+        
         % to remove tokens (for semantic phase)
         sRepeatStmt
         sRepeatEnd
         % end remove tokens
+        
         sEndOfFile
         lastSemanticToken = sEndOfFile;
-
-        % % Semantic tokens - must match output tokens in parser.ssl exactly!
-        % sIdentifier 
-        % firstSemanticToken = sIdentifier
-        % firstCompoundSemanticToken = sIdentifier
-        % sInteger
-        % sStringLiteral
-        % lastCompoundSemanticToken = sStringLiteral
-
-        % sProgram
-        % sParmBegin
-        % sParmEnd
-        % sConst
-        % sType
-        % sVar
-        % sProcedure
-        % sBegin
-        % sEnd
-        % sNegate
-        % sArray
-        % sFile
-        % sRange
-        % sCaseStmt
-        % sCaseEnd
-        % sLabelEnd
-        % sExpnEnd
-        % sNullStmt
-        % sAssignmentStmt
-        % sSubscript
-        % sCallStmt
-        % sFieldWidth
-        % sIfStmt
-        % sThen
-        % sElse
-        % sWhileStmt
-        % sRepeatStmt
-        % sRepeatEnd
-        % sEq
-        % sNE
-        % sLT
-        % sLE
-        % sGT
-        % sGE
-        % sAdd
-        % sSubtract
-        % sMultiply
-        % sDivide
-        % sModulus
-        % sInfixOr
-        % sOr
-        % sInfixAnd
-        % sAnd
-        % sNot
-        % sNewLine
-        % sEndOfFile
-        % lastSemanticToken = sEndOfFile;
 
 Output :        
         % T-code tokens - must match input tokens in coder.ssl exactly!
@@ -188,9 +135,9 @@ Output :
         tIfBegin
         tIfEnd
         tCaseBegin
-        tWhileBegin
-        tRepeatBegin
-        tRepeatControl
+        tWhileBegin % to remove
+        tRepeatBegin % to remove
+        tRepeatControl % to remove
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -199,6 +146,16 @@ Output :
         tTrapBegin
         tWriteEnd
         tReadEnd
+        % New output tokens
+        tConcatenate % string operators added here because same location as std operators
+                        % dont take any operand themselves, take one of the compound codes
+        tSubstring
+        tLength
+        tIndex
+        tStringEqual
+
+        tDoBegin % new item for do
+        % end new output tokens
 
         % Compound T-codes - T-code operations that take an operand
         tLiteralAddress
@@ -213,15 +170,22 @@ Output :
         tCaseSelect
         tCaseMerge
         tCaseEnd
-        tWhileTest
-        tWhileEnd
-        tRepeatTest
+        tWhileTest % to remove
+        tWhileEnd % to remove 
+        tRepeatTest % to remove
         tSkipProc
         tCallEnd
         tLineNumber
+        % new compund t codes
+        toDoBreakIf % compound to match ifthen t codes
+        toDoTest % compound to match while t codes
+        tDoEnd
+
+        tCaseElse % new t code for case
+                  % compound to match ifthen t codes
+        % end new compound t codes
         tTrap
         lastCompoundTcode = tTrap
-
         % End of file marker T-code
         tEndOfFile
         lastTcode = tEndOfFile;
