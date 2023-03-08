@@ -65,6 +65,7 @@ Input :
         sAnd
         sNot
         sNewLine
+
         % added semantic tokens
         sModule
         sDo
@@ -74,68 +75,14 @@ Input :
         sIndex
         sPublic
         % end added semantic tokens
+        
         % to remove tokens (for semantic phase)
         sRepeatStmt
         sRepeatEnd
         % end remove tokens
+        
         sEndOfFile
         lastSemanticToken = sEndOfFile;
-
-        % % Semantic tokens - must match output tokens in parser.ssl exactly!
-        % sIdentifier 
-        % firstSemanticToken = sIdentifier
-        % firstCompoundSemanticToken = sIdentifier
-        % sInteger
-        % sStringLiteral
-        % lastCompoundSemanticToken = sStringLiteral
-
-        % sProgram
-        % sParmBegin
-        % sParmEnd
-        % sConst
-        % sType
-        % sVar
-        % sProcedure
-        % sBegin
-        % sEnd
-        % sNegate
-        % sArray
-        % sFile
-        % sRange
-        % sCaseStmt
-        % sCaseEnd
-        % sLabelEnd
-        % sExpnEnd
-        % sNullStmt
-        % sAssignmentStmt
-        % sSubscript
-        % sCallStmt
-        % sFieldWidth
-        % sIfStmt
-        % sThen
-        % sElse
-        % sWhileStmt
-        % sRepeatStmt
-        % sRepeatEnd
-        % sEq
-        % sNE
-        % sLT
-        % sLE
-        % sGT
-        % sGE
-        % sAdd
-        % sSubtract
-        % sMultiply
-        % sDivide
-        % sModulus
-        % sInfixOr
-        % sOr
-        % sInfixAnd
-        % sAnd
-        % sNot
-        % sNewLine
-        % sEndOfFile
-        % lastSemanticToken = sEndOfFile;
 
 Output :        
         % T-code tokens - must match input tokens in coder.ssl exactly!
@@ -166,21 +113,21 @@ Output :
         tVarParm
         tFetchAddress
         tFetchInteger
-        tFetchChar
+        tFetchString
         tFetchBoolean
         tAssignBegin
         tAssignAddress
         tAssignInteger
-        tAssignChar
+        tAssignString
         tAssignBoolean
         tStoreAddress
         tStoreInteger
-        tStoreChar
+        tStoreString
         tStoreBoolean
         tSubscriptBegin
         tSubscriptAddress
         tSubscriptInteger
-        tSubscriptChar
+        tSubscriptString
         tSubscriptBoolean
         tArrayDescriptor
         tFileDescriptor
@@ -188,9 +135,9 @@ Output :
         tIfBegin
         tIfEnd
         tCaseBegin
-        tWhileBegin
-        tRepeatBegin
-        tRepeatControl
+        tWhileBegin % to remove
+        tRepeatBegin % to remove
+        tRepeatControl % to remove
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -199,12 +146,21 @@ Output :
         tTrapBegin
         tWriteEnd
         tReadEnd
+        % New output tokens
+        tConcatenate % string operators added here because same location as std operators
+                        % dont take any operand themselves, take one of the compound codes
+        tSubstring
+        tLength
+        tIndex
+        tStringEqual
+
+        tDoBegin % new item for do
+        % end new output tokens
 
         % Compound T-codes - T-code operations that take an operand
         tLiteralAddress
         firstCompoundTcode = tLiteralAddress
         tLiteralInteger
-        tLiteralChar
         tLiteralBoolean
         tSkipString
         tStringData
@@ -214,15 +170,22 @@ Output :
         tCaseSelect
         tCaseMerge
         tCaseEnd
-        tWhileTest
-        tWhileEnd
-        tRepeatTest
+        tWhileTest % to remove
+        tWhileEnd % to remove 
+        tRepeatTest % to remove
         tSkipProc
         tCallEnd
         tLineNumber
+        % new compund t codes
+        toDoBreakIf % compound to match ifthen t codes
+        toDoTest % compound to match while t codes
+        tDoEnd
+
+        tCaseElse % new t code for case
+                  % compound to match ifthen t codes
+        % end new compound t codes
         tTrap
         lastCompoundTcode = tTrap
-
         % End of file marker T-code
         tEndOfFile
         lastTcode = tEndOfFile;
@@ -277,7 +240,9 @@ type Integer :
 
         % These two sizes are machine dependent
         byteSize = 1
-        wordSize = 4;
+        wordSize = 4
+        stringSize = 1024 % for maximum size of string
+        ; 
 
 type Boolean :
         no
@@ -322,7 +287,7 @@ type PredeclaredId :
 
 type StdType :
         stdInteger
-        stdChar
+        stdString
         stdBoolean
         stdText;
 
@@ -354,9 +319,15 @@ mechanism SymbolTable :
         % Restore procedure parameter entries to the symbol table 
         % after popping the scope.
 
-    oSymbolTblLookupExternal >> Boolean;
+    oSymbolTblLookupExternal >> Boolean
         % Return true if any external names (program parameters)
         % have not yet been declared.
+
+    % new symbol scope functions, add comment like the above
+    oSymbolTblStripScope 
+
+    oSymbolTblMergeScope
+    ;
 
 
 % Symbol Stack types and mechanism
@@ -1441,7 +1412,7 @@ EmitAssign:
             | tpInteger, tpSubrange, tpFile:
                 .tAssignInteger
             | tpChar:
-                .tAssignChar
+                .tAssignString
             | tpBoolean:
                 .tAssignBoolean
             | *:                
@@ -1452,7 +1423,7 @@ EmitStore:
             | tpInteger, tpSubrange, tpFile:
                 .tStoreInteger
             | tpChar:
-                .tStoreChar
+                .tStoreString
             | tpBoolean:
                 .tStoreBoolean
             | *:                
@@ -1788,7 +1759,7 @@ Operand :
                 @StringLiteral  % pushes type and value
                 [ oTypeStkChooseKind
                     | tpChar:
-                        .tLiteralChar
+                        .tLiteralString
                         oEmitValue
                     | *:
                         .tLiteralString
@@ -1812,12 +1783,12 @@ StringLiteral :
             | zero:
                 #eNullString
                 oTypeStkPush(tpChar)
-                oTypeStkLinkToStandardType(stdChar)
+                oTypeStkLinkToStandardType(stdString)
                 oValuePop
                 oValuePush(zero)
             | one:
                 oTypeStkPush(tpChar)
-                oTypeStkLinkToStandardType(stdChar)
+                oTypeStkLinkToStandardType(stdString)
                 oValuePop
                 oValuePushChar
             | *:
@@ -2113,7 +2084,7 @@ VariableExtension :
                     | tpInteger, tpSubrange:
                         .tSubscriptInteger
                     | tpChar:
-                        .tSubscriptChar
+                        .tSubscriptString
                     | tpBoolean:
                         .tSubscriptBoolean
                 ]
@@ -2130,7 +2101,7 @@ ConstantOperand :
                 .tLiteralInteger
                 oEmitValue
             | tpChar:
-                .tLiteralChar
+                .tLiteralString
                 oEmitValue
             | tpBoolean:
                 .tLiteralBoolean
@@ -2150,7 +2121,7 @@ VariableOperand :
             | tpInteger, tpSubrange, tpFile:
                 .tFetchInteger          % replace address with value
             | tpChar:
-                .tFetchChar
+                .tFetchString
             | tpBoolean:
                 .tFetchBoolean
             % The caller is responsible for detecting illegal situations
@@ -2347,7 +2318,7 @@ AssignProcedure :
                                 oValuePush(one)
                                 oEmitValue
                                 oValuePop
-                                .tSubscriptChar
+                                .tSubscriptString
                                 .tVarParm
                             | *:
                                 #eFileNameReqd
@@ -3042,7 +3013,7 @@ SymbolStkPushDefaultCharConstant :
         oSymbolStkEnterValue
         oValuePop
         oTypeStkPush(tpChar)
-        oTypeStkLinkToStandardType(stdChar)
+        oTypeStkLinkToStandardType(stdString)
         oSymbolStkEnterTypeReference
         oTypeStkPop;
 
