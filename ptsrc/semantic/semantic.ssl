@@ -240,7 +240,9 @@ type Integer :
 
         % These two sizes are machine dependent
         byteSize = 1
-        wordSize = 4;
+        wordSize = 4
+        stringSize = 1024 % for maximum size of string
+        ; 
 
 type Boolean :
         no
