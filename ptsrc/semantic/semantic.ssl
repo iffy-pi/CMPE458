@@ -319,9 +319,15 @@ mechanism SymbolTable :
         % Restore procedure parameter entries to the symbol table 
         % after popping the scope.
 
-    oSymbolTblLookupExternal >> Boolean;
+    oSymbolTblLookupExternal >> Boolean
         % Return true if any external names (program parameters)
         % have not yet been declared.
+
+    % new symbol scope functions, add comment like the above
+    oSymbolTblStripScope 
+
+    oSymbolTblMergeScope
+    ;
 
 
 % Symbol Stack types and mechanism
