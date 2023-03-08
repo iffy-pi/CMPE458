@@ -204,7 +204,6 @@ Output :
         tLiteralAddress
         firstCompoundTcode = tLiteralAddress
         tLiteralInteger
-        tLiteralChar
         tLiteralBoolean
         tSkipString
         tStringData
@@ -1788,7 +1787,7 @@ Operand :
                 @StringLiteral  % pushes type and value
                 [ oTypeStkChooseKind
                     | tpChar:
-                        .tLiteralChar
+                        .tLiteralString
                         oEmitValue
                     | *:
                         .tLiteralString
@@ -2130,7 +2129,7 @@ ConstantOperand :
                 .tLiteralInteger
                 oEmitValue
             | tpChar:
-                .tLiteralChar
+                .tLiteralString
                 oEmitValue
             | tpBoolean:
                 .tLiteralBoolean
