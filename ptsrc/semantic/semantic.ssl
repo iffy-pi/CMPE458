@@ -166,21 +166,21 @@ Output :
         tVarParm
         tFetchAddress
         tFetchInteger
-        tFetchChar
+        tFetchString
         tFetchBoolean
         tAssignBegin
         tAssignAddress
         tAssignInteger
-        tAssignChar
+        tAssignString
         tAssignBoolean
         tStoreAddress
         tStoreInteger
-        tStoreChar
+        tStoreString
         tStoreBoolean
         tSubscriptBegin
         tSubscriptAddress
         tSubscriptInteger
-        tSubscriptChar
+        tSubscriptString
         tSubscriptBoolean
         tArrayDescriptor
         tFileDescriptor
@@ -1441,7 +1441,7 @@ EmitAssign:
             | tpInteger, tpSubrange, tpFile:
                 .tAssignInteger
             | tpChar:
-                .tAssignChar
+                .tAssignString
             | tpBoolean:
                 .tAssignBoolean
             | *:                
@@ -1452,7 +1452,7 @@ EmitStore:
             | tpInteger, tpSubrange, tpFile:
                 .tStoreInteger
             | tpChar:
-                .tStoreChar
+                .tStoreString
             | tpBoolean:
                 .tStoreBoolean
             | *:                
@@ -2113,7 +2113,7 @@ VariableExtension :
                     | tpInteger, tpSubrange:
                         .tSubscriptInteger
                     | tpChar:
-                        .tSubscriptChar
+                        .tSubscriptString
                     | tpBoolean:
                         .tSubscriptBoolean
                 ]
@@ -2150,7 +2150,7 @@ VariableOperand :
             | tpInteger, tpSubrange, tpFile:
                 .tFetchInteger          % replace address with value
             | tpChar:
-                .tFetchChar
+                .tFetchString
             | tpBoolean:
                 .tFetchBoolean
             % The caller is responsible for detecting illegal situations
@@ -2347,7 +2347,7 @@ AssignProcedure :
                                 oValuePush(one)
                                 oEmitValue
                                 oValuePop
-                                .tSubscriptChar
+                                .tSubscriptString
                                 .tVarParm
                             | *:
                                 #eFileNameReqd
