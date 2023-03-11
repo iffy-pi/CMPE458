@@ -1798,7 +1798,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                     oSymbolTblPreserveParameters:
                         { Restore procedure parameter entries to the symbol table }
                         begin
-                            assert (symbolTblKind [symbolTblTop] = syProcedure, assert46);
+                            assert (symbolTblKind [symbolTblTop] = syProcedure, syPublicProcedure, assert46);
                             symbolTblTop := symbolTblTop +
                                 typeTblLowerBound [symbolTblTypeTblLink[symbolTblTop]];
                         end ;
@@ -1910,7 +1910,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                         { The top symbol is a procedure.  Push the procedure's i'th 
                           formal parameter, where i is the value of the top count stack entry. }
                         begin
-                            Assert((symbolStkKind[symbolStkTop] = syProcedure), assert24);
+                            Assert((symbolStkKind[symbolStkTop] = syProcedure, syPublicProcedure), assert24);
                             SymbolStkPushIdentifier(symbolStkSymbolTblRef [symbolStkTop] + 
                                 countStack[countStackTop]);
                         end;
@@ -1957,7 +1957,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                         { Standard routines are distinguished from user defined routines by their 
                           negative value fields. }
                         begin
-                            Assert((symbolStkKind[symbolStkTop] = syProcedure) or
+                            Assert((symbolStkKind[symbolStkTop] = syProcedure, syPublicProcedure) or
                                    (symbolStkKind[symbolStkTop] = syFunction), assert27);
                             if symbolStkValue[symbolStkTop] < 0 then
                                 resultValue := -symbolStkValue[symbolStkTop]
@@ -2076,7 +2076,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                     oTypeStkEnterParameterCount:
                         { Set the top entry's parameter count field from the top count. }
                         begin
-                            Assert((symbolStkKind[symbolStkTop] = syProcedure), assert28);
+                            Assert((symbolStkKind[symbolStkTop] = syProcedure, syPublicProcedure), assert28);
                             typeStkLowerBound[typeStkTop] := countStack[countStackTop];
                         end;
 
@@ -2084,7 +2084,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                         { Return yes if the parameter count field matches the top count, 
                           otherwise return no. }
                         begin
-                            Assert((symbolStkKind[symbolStkTop] = syProcedure), assert29);
+                            Assert((symbolStkKind[symbolStkTop] = syProcedure, syPublicProcedure), assert29);
                             if typeStkLowerBound[typeStkTop] = countStack[countStackTop] then
                                 resultValue := yes
                             else
