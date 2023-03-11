@@ -338,6 +338,8 @@ type SymbolKind :
         syVariable
         syVarParameter
         syProcedure
+        syModule
+        syPublicProcedure
         syFunction
         syExternal
         syExpression
@@ -767,6 +769,12 @@ Program :
         % monitor at the end of program execution
         .tTrapBegin
         .tTrap  oEmitTrapKind(trHalt);
+
+ModuleDefinition:
+        sModule
+
+
+
 
 ProgramParameter :
         % Program parameters are external file names.  With the
