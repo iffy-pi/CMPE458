@@ -771,10 +771,21 @@ Program :
         .tTrap  oEmitTrapKind(trHalt);
 
 ModuleDefinition:
-        sModule
+        sModule %Consume the sModule
 
+        oSymbolStkPush(syModule) %Place the identifier on the symbol stack
+        oSymbolTblPushScope
 
+        @Block
+        % Check that all file parameters have been declared
+        [ oSymbolTblLookupExternal
+            | yes:
+                #eExternalUndeclared
+            | *:
+        ]
 
+        oSymbolTblPopScope
+        oSymbolStkPop
 
 ProgramParameter :
         % Program parameters are external file names.  With the
