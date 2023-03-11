@@ -770,22 +770,7 @@ Program :
         .tTrapBegin
         .tTrap  oEmitTrapKind(trHalt);
 
-ModuleDefinition:
-        sModule %Consume the sModule
 
-        oSymbolStkPush(syModule) %Place the identifier on the symbol stack
-        oSymbolTblPushScope
-
-        @Block
-        % Check that all file parameters have been declared
-        [ oSymbolTblLookupExternal
-            | yes:
-                #eExternalUndeclared
-            | *:
-        ]
-
-        oSymbolTblPopScope
-        oSymbolStkPop
 
 ProgramParameter :
         % Program parameters are external file names.  With the
@@ -1286,6 +1271,20 @@ ProcedureDefinition :
 
         .tProcedureEnd
         oFixPopForwardBranch;   % fix branch around procedure above
+
+ModuleDefinition:
+        sModule %Consume the sModule
+         
+        oSymbolStkPush(syModule) %Place the identifier on the symbol stack
+        oSymbolTblPushScope
+               
+
+        %to promote all public symbols to the enclosing scope.
+        oSymbolTblStripScope
+        oSymbolTblMergeScope
+
+        % Pop program scope.
+        oSymbolStkPop
 
 ProcedureHeading :
         % Enter formal parameters into the symbol table, allocate
@@ -1902,7 +1901,7 @@ BinaryOperator :
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | sModulus:
-                .tModulus
+                .us
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | *:
