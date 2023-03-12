@@ -1840,6 +1840,25 @@ UnaryOperator :
                 oTypeStkPush(tpBoolean) % result type
                 @CompareAndSwapTypes
                 oTypeStkPop
+
+            | sLength:
+                .tLength
+                % Type checking for string is complicated
+                % Standard method for others wont work, editing choice in CompareAndSwapTypes
+                % will mean that negation of a string is possible
+                % instead use hacky work around (not pretty but works)
+
+                oTypeStkPush(tpInteger)
+                oTypeStkPush(tpString)
+                @CompareAndSwapTypes
+                % This will cause the tpString alternative to be used, which we have configured to handle
+                % an integer type as the result type
+
+                % now we need to pop the types (added and string op), and then push the result type
+                oTypeStkPop
+                oTypeStkPop
+                oTypeStkPop
+                oTypeStkPush(tpInteger)
             | *:
                 >>
         ]
@@ -1935,6 +1954,8 @@ CompareAndSwapTypes :
                 oTypeStkSwap
                 [ oTypeStkChooseKind
                     | tpString:
+                    | tpInteger:
+                        % special case for string length operation   
                     | *:
                         #eTypeMismatch
                 ]
