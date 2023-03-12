@@ -830,6 +830,8 @@ Block :
                 @TypeDefinitions
             | sVar:
                 @VariableDeclarations
+            | sModule:
+                @ModuleDefinition
             | *:
                 >
         ]}
@@ -1273,18 +1275,36 @@ ProcedureDefinition :
         oFixPopForwardBranch;   % fix branch around procedure above
 
 ModuleDefinition:
-        sModule %Consume the sModule
-         
-        oSymbolStkPush(syModule) %Place the identifier on the symbol stack
-        oSymbolTblPushScope
-               
+        sIdentifier %Consume the subsequent identifier
+        oSymbolStkPushIdentifier %Put identifier on symbol stack
 
-        %to promote all public symbols to the enclosing scope.
+        [ oSymbolStkChooseKind
+            | syUndefined:
+            | syExternal:
+                #eExternalDeclare
+            |  *:
+                #eMultiplyDefined
+        ]
+        oSymbolStkSetKind(syModule) %Place type on the symbol stack
+        oTypeStkPush(tpNull)
+        oTypeTblEnter
+        oSymbolStkEnterTypeReference
+        oSymbolTblEnter
+        oSymbolTblPushScope
+
+        @Block
+
+        oTypeTblUpdate
+        oTypeStkPop
+        oSymbolTblUpdate
+        oSymbolStkPop
+       
+
+        %Remove nonpublic symbols from scop and merge public symbols to outside scope.
         oSymbolTblStripScope
         oSymbolTblMergeScope
 
-        % Pop program scope.
-        oSymbolStkPop
+       
 
 ProcedureHeading :
         % Enter formal parameters into the symbol table, allocate
