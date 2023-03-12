@@ -830,7 +830,7 @@ Block :
                 @TypeDefinitions
             | sVar:
                 @VariableDeclarations
-            | sModule:
+            | sModule: % Added sModule call to @ModuleDefinition in block
                 @ModuleDefinition
             | *:
                 >
@@ -1285,6 +1285,9 @@ ModuleDefinition:
             |  *:
                 #eMultiplyDefined
         ]
+
+        % Similar to Procedure definition, but don't skip over procedure body, and no recursive flag. 
+        
         oSymbolStkSetKind(syModule) %Place type on the symbol stack
         oTypeStkPush(tpNull)
         oTypeTblEnter
