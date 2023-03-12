@@ -473,36 +473,53 @@ mechanism TypeStack :
     % to the associated type table entry, a type kind, a lower
     % bound, an upper bound and a reference to the type table
     % entry for this type's component type.
+    
+    % TypeStackSlot = {
+    %     TypeTable *typeTableEntry;  // the type table entry for this slot
+    %     TypeKind kind; // the type kind for this slot
+    %     int subrangeLowerBound; // lower bound of subrange
+    %     int subrangeUpperBound; upper bound of subrange
+    %     TypeTable *subrangeTypeTableEntry; // the type table entry for the subrange
+    % }
 
     oTypeStkPush (TypeKind)
         % Push a type stack entry and set its kind to the parameter value.
+        % TypeStack.push ( new TypeStackSlot( kind=TypeKind) )
 
     oTypeStkPushSymbol
         % Push an entry and set its attributes from the type table 
         % entry referenced by the top symbol stack entry.
+        % TypeStack.push ( new TypeStackSlot( SymbolStack.top().typeTableEntry ) )
 
     oTypeStkPushComponent
         % Push an entry and set its attributes from the type table
         % entry referenced by the current top type stack entry.
+        % TypeStack.push( new TypeStackSlot( TypeStack.top().typeTableEntry) )
 
     oTypeStkSetKind (TypeKind)
         % Set the top entry's kind field to the parameter value.
+        % TypeStack.top().kind = TypeKind
 
     oTypeStkSetRecursionFlag (Boolean)
         % Mark the top entry, a procedure type, to indicate whether the
         % procedure is in the process of being defined.  Used to detect
         % self recursive calls.
+        % TypeStack.top().recursionFlag = Boolean
 
     oTypeStkChooseRecursionFlag >> Boolean
         % Return the value of the top entry's recursion flag
+        % return TypeStack.top().recursionFlag
 
     oTypeStkLinkToStandardType (StdType)
         % Set the top entry's type reference field to point to
         % the parameter standard type table entry.
+        % TypeStack.top().typeTableEntry = TypeTable.findEntry(StdType)
 
     oTypeStkEnterBounds
         % Set the lower and upper bound fields of the top entry to
         % the top two values in the value stack (top value is upper bound).
+        % TypeStack.top().upperBound = ValueStack.top()
+        % TypeStack.top().lowerBound = ValueStack.top(1)
 
     oTypeStkVerifyBounds >> Boolean
         % Return true if the lower bound field of the top entry is less
@@ -1855,7 +1872,17 @@ BinaryOperator :
                 oTypeStkPush(tpBoolean)
                 @CompareOperandAndResultTypes
             | sEq:
-                .tEQ
+                % adding support to use string equals if starting operand is string
+                [ oTypeStkChooseKind
+                    | tpString:
+                        % If the type on type stack top is string then we are doing string comparison
+                        % emit string equal
+                        .tStringEqual
+
+                    | *:
+                        % otherwise use the standard equals
+                        .tEQ
+                ]
                 @CompareEqualityOperandTypes
             | sNE:
                 .tNE
