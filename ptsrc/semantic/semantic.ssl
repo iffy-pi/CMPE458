@@ -1666,6 +1666,15 @@ CaseStmt :
         oFixPushForwardBranch
         oEmitNullAddress        % address of case branch table
         {[
+            | sElse:
+                .tCaseElse
+                @Statement
+                .tCaseMerge
+                oFixPushForwardBranch
+                oEmitNullAddress       
+                oFixSwap                       
+                oCountIncrement;
+
             | sCaseEnd:
                 >
             | *:
