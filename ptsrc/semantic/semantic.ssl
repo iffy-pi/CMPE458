@@ -76,11 +76,6 @@ Input :
         sPublic
         % end added semantic tokens
         
-        % to remove tokens (for semantic phase)
-        sRepeatStmt
-        sRepeatEnd
-        % end remove tokens
-        
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 
@@ -136,8 +131,6 @@ Output :
         tIfEnd
         tCaseBegin
         tWhileBegin % to remove
-        tRepeatBegin % to remove
-        tRepeatControl % to remove
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -155,6 +148,8 @@ Output :
         tStringEqual
 
         tDoBegin % new item for do
+        tDoBreakIf
+        tDoTest
         % end new output tokens
 
         % Compound T-codes - T-code operations that take an operand
@@ -172,7 +167,6 @@ Output :
         tCaseEnd
         tWhileTest % to remove
         tWhileEnd % to remove 
-        tRepeatTest % to remove
         tSkipProc
         tCallEnd
         tLineNumber
@@ -1424,8 +1418,8 @@ Statement :
                 @WhileStmt
             | sCaseStmt:
                 @CaseStmt
-            | sRepeatStmt:
-                @RepeatStmt
+            | sDo:
+                @DoStmt
             | sNullStmt:
         ];
 
@@ -1643,19 +1637,25 @@ WhileStmt :
         oFixPopTargetAddress
         oFixPopForwardBranch;
 
-RepeatStmt :
-        .tRepeatBegin
-        oFixPushTargetAddress           % top-of-loop branch target
+DoStmt :
+        .tDoBegin
+        oFixPushTargetAddress
         {[
-            | sRepeatEnd:
+            | sBreakIf:
+                @BooleanControlExpression
+                .tDoTest
+                oFixPushForwardBranch
+                oEmitNullAddress
+                oFixSwap
+            | sEnd:
                 >
             | *:
                 @Statement
         ]}
-        .tRepeatControl
-        @BooleanControlExpression
-        .tRepeatTest
-        oFixPopTargetAddress;
+        .tDoEnd
+        oFixPopTargetAddress
+        oFixPopForwardBranch
+
 
 CaseStmt :
         .tCaseBegin
