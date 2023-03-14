@@ -162,8 +162,8 @@ Output :
         firstCompoundTcode = tLiteralAddress
         tLiteralInteger
         tLiteralBoolean
-        tSkipString
-        tStringData
+        % tSkipString % to remove
+        % tStringData % to remove
         tLiteralString
         tIfThen
         tIfMerge
@@ -1771,16 +1771,7 @@ Operand :
                 oValuePop
             | sStringLiteral:
                 oSymbolStkPush(syExpression)
-                @StringLiteral  % pushes type and value
-                [ oTypeStkChooseKind
-                    | tpString:
-                        .tLiteralString
-                        oEmitValue
-                    | *:
-                        .tLiteralString
-                        oEmitValue
-                ]
-                oValuePop
+                @StringLiteral  % pushes the contents of the string literal
             | sFile:
                 @Expression
                 @FileOperand
@@ -1788,45 +1779,15 @@ Operand :
         ];
 
 StringLiteral :
-        % Process a string literal, which can either represent 
-        % a single character or a packed array of characters.
-        % Pushes the type and value. 
-        % The value of a packed array is its address.
+        % processes a string literal, which is now only a first class value in Quby
+        % So we emit the string directly
 
-        oValuePushStringLength
-        [ oValueChoose
-            | zero:
-                #eNullString
-                oTypeStkPush(tpString)
-                oTypeStkLinkToStandardType(stdString)
-                oValuePop
-                oValuePush(zero)
-            | one:
-                oTypeStkPush(tpString)
-                oTypeStkLinkToStandardType(stdString)
-                oValuePop
-                oValuePushChar
-            | *:
-                % branch around the literal string since
-                % it is stored in the code area
-                .tSkipString
-                oFixPushForwardBranch
-                oEmitNullAddress
-                .tStringData
-                oEmitValue                      % string length
-                oValuePop
-                oValuePushCodeAddress           % The string's characters are in the code area
-                oValueNegate                    % encode that with a negative address
-                oEmitString                     % string's characters
-                oFixPopForwardBranch
-                oTypeStkPush(tpString)
-                oValuePush(one)                 % strings are indexed from 1
-                oValuePushStringLength
-                oTypeStkEnterBounds
-                oValuePop
-                oValuePop
-                oTypeTblEnter
-        ];
+        oTypeStkPush(tpString)
+        oTypeStkLinkToStandardType(stdString)
+        .tLiteralString
+        oEmitString % emits the string onto it
+
+        ;
 
 UnaryOperator :
         [
