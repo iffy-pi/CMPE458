@@ -1843,27 +1843,29 @@ UnaryOperator :
 
             | sLength:
                 .tLength
-                % Type checking for string is complicated
-                % Standard method for others wont work, editing choice in CompareAndSwapTypes
-                % will mean that negation of a string is possible
-                % instead use hacky work around (not pretty but works)
-
-                oTypeStkPush(tpInteger)
-                oTypeStkPush(tpString)
-                @CompareAndSwapTypes
-                % This will cause the tpString alternative to be used, which we have configured to handle
-                % an integer type as the result type
-
-                % now we need to pop the types (added and string op), and then push the result type
-                oTypeStkPop
-                oTypeStkPop
-                oTypeStkPop
-                oTypeStkPush(tpInteger)
+                @HandleStringLengthOperation
             | *:
                 >>
         ]
         % If an operator is present the result is an expression
         oSymbolStkSetKind(syExpression);
+
+HandleStringLengthOperation:
+    % checks if it is a valid string length operation
+    % CompareAndSwapTypes is not used because the logic change required can result in semantic violations for other items
+
+    % what should be on top of the type stack should be a string
+    [ oTypeStkChooseKind
+        | tpString:
+            % if it is a string it is valid
+        | *:
+            #eTypeMismatch % it is not a string, string length operation is invalid
+    ]
+
+    % pop the type on the stack and then push result
+    oTypeStkPop
+    oTypeStkPush(tpInteger)
+    ;
 
 BinaryOperator :
         % Choice should be ordered by frequency of occurrence of alternatives.
@@ -1954,8 +1956,6 @@ CompareAndSwapTypes :
                 oTypeStkSwap
                 [ oTypeStkChooseKind
                     | tpString:
-                    | tpInteger:
-                        % special case for string length operation   
                     | *:
                         #eTypeMismatch
                 ]
