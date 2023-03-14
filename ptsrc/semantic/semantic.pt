@@ -344,7 +344,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
         firstPredeclaredId = 1;
         firstPredeclaredType = 1;
         pidInteger = 1;
-        pidChar = 2;
+        pidString = 2;
         pidBoolean = 3;
         pidText = 4;
         lastPredeclaredType = 4;
@@ -788,7 +788,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
 
         { Predefined type table entries }
         standardIntegerTypeRef: TypeTblReference;
-        standardCharTypeRef:    TypeTblReference;
+        standardStringTypeRef:    TypeTblReference;
         standardBooleanTypeRef: TypeTblReference;
         standardTextTypeRef:    TypeTblReference;
         
@@ -1017,11 +1017,11 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
               similarly for char, Boolean and text. }
             standardIntegerTypeRef := pidInteger;
 
-            { char }
-            symbolTblKind[pidChar] := syType;
-            symbolTblTypeTblLink[pidChar] := pidChar;
-            typeTblKind[pidChar] := tpChar;
-            standardCharTypeRef := pidChar;
+            { string }
+            symbolTblKind[pidString] := syType;
+            symbolTblTypeTblLink[pidString] := pidString;
+            typeTblKind[pidString] := tpString;
+            standardStringTypeRef := pidString;
 
             { Boolean }
             symbolTblKind[pidBoolean] := syType;
@@ -1033,7 +1033,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
             symbolTblKind[pidText] := syType;
             symbolTblTypeTblLink[pidText] := pidText;
             typeTblKind[pidText] := tpFile;
-            typeTblComponentLink[pidText] := standardCharTypeRef;
+            typeTblComponentLink[pidText] := standardStringTypeRef;
             standardTextTypeRef := pidText;
 
             { true (1) }
@@ -2044,7 +2044,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                                 stdInteger:
                                     typeStkTypeTblRef[typeStkTop] := standardIntegerTypeRef;
                                 stdString:
-                                    typeStkTypeTblRef[typeStkTop] := standardCharTypeRef;
+                                    typeStkTypeTblRef[typeStkTop] := standardStringTypeRef;
                                 stdBoolean:
                                     typeStkTypeTblRef[typeStkTop] := standardBooleanTypeRef;
                                 stdText:
@@ -2354,7 +2354,7 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                         case typeStkKind[typeStkTop] of
                             tpInteger, tpSubrange:
                                 dataAreaEnd := dataAreaEnd + wordSize;
-                            tpChar, tpBoolean:
+                            tpString, tpBoolean:
                                 dataAreaEnd := dataAreaEnd + byteSize;
                             tpArray:
                                 begin
