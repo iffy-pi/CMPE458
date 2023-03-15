@@ -860,17 +860,43 @@ ConstantDefinitions :           % Process named constant definitions
                         #eMultiplyDefined
                         % The new definition will now obscure the old one
                 ]
-                oSymbolStkSetKind(syConstant)
-                @ConstantValue
-                oSymbolStkEnterTypeReference
-                oTypeStkPop
-                oSymbolStkEnterValue
-                oValuePop
-                oSymbolTblEnter
-                oSymbolStkPop
+
+                % choice on the value to check for string literal
+                [
+                    | sStringLiteral:
+                        % handle string as a var
+                        @HandleStringConstant
+                    | *:
+                        % use standard constant handling
+                        oSymbolStkSetKind(syConstant)
+                        @ConstantValue
+                        oSymbolStkEnterTypeReference
+                        oTypeStkPop
+                        oSymbolStkEnterValue
+                        oValuePop
+                        oSymbolTblEnter
+                        oSymbolStkPop
+                ]
             | *:
                 >
         ]};
+
+HandleStringConstant :
+        % we handle string constants as vars
+        % we have consumed the identifier and the literal value
+
+        % first enter the type as string, equivalent to @TypeBody rule call in VariableDeclarations
+        oTypeStkPush(tpString)
+
+        % use the same rule in VariableDeclarations
+        % enters the string variable into the symbol table
+        @EnterVariableAttributes
+
+        % pop from the type stack and symbol stack
+        oTypeStkPop
+        oSymbolStkPop
+
+        ;
 
 ConstantValue :         % push the value and type of the constant value
         [
@@ -911,8 +937,8 @@ ConstantValue :         % push the value and type of the constant value
                     | *:
                 ]
                 oSymbolStkPop   
-            | sStringLiteral:
-                @StringLiteral  % pushes type and value, enters address
+            % | sStringLiteral: % no longer possible, handled above
+            %     @StringLiteral  % pushes type and value, enters address
         ];
 
 TypeDefinitions :       % process named type definitions
