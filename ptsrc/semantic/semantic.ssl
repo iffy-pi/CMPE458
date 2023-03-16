@@ -1893,7 +1893,18 @@ BinaryOperator :
                 ]
                 @CompareEqualityOperandTypes
             | sNE:
-                .tNE
+                [ oTypeStkChooseKind
+                    | tpString:
+                        % type is string, we have to use string inequality
+                        % can be achieved by doing inversion on equality
+                        .tNot
+                        .tStringEqual
+                    
+                    | *:
+                        % otherwise use standard not equals
+                        .tNE
+
+                ]
                 @CompareEqualityOperandTypes
             | sGT:
                 .tGT
