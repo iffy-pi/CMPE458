@@ -1,9 +1,9 @@
 Changes to semantic.ssl:
-Iffy: 7 8 20 21 22
+Iffy: 21 22
 
-DONE: 2 3 4 5
+DONE: 2 3 4 5 7 8 20 21 
 
 Changes to semantic.pt:
-Iffy: 2 3 5
+Iffy:
 
-DONE: 
+DONE: 2 3 5 
