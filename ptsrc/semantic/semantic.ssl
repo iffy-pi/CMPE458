@@ -76,11 +76,6 @@ Input :
         sPublic
         % end added semantic tokens
         
-        % to remove tokens (for semantic phase)
-        sRepeatStmt
-        sRepeatEnd
-        % end remove tokens
-        
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 
@@ -136,8 +131,6 @@ Output :
         tIfEnd
         tCaseBegin
         tWhileBegin % to remove
-        tRepeatBegin % to remove
-        tRepeatControl % to remove
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -155,6 +148,8 @@ Output :
         tStringEqual
 
         tDoBegin % new item for do
+        tDoBreakIf
+        tDoTest
         % end new output tokens
 
         % Compound T-codes - T-code operations that take an operand
@@ -172,7 +167,6 @@ Output :
         tCaseEnd
         tWhileTest % to remove
         tWhileEnd % to remove 
-        tRepeatTest % to remove
         tSkipProc
         tCallEnd
         tLineNumber
@@ -844,7 +838,7 @@ Block :
             | sType:
                 @TypeDefinitions
             | sVar:
-                @VariableDeclarations
+                @VariableDeclaration
             | sModule: % Added sModule call to @ModuleDefinition in block
                 @ModuleDefinition
             | *:
@@ -853,39 +847,38 @@ Block :
         sBegin
         @BeginStmt;
 
-ConstantDefinitions :           % Process named constant definitions
-        {[
-            | sIdentifier:
-                oSymbolStkPushLocalIdentifier
-                [ oSymbolStkChooseKind
-                    | syUndefined:
-                    | syExternal:
-                        % A program parameter must be declared as a file variable
-                        #eExternalDeclare
-                    | *:
-                        #eMultiplyDefined
-                        % The new definition will now obscure the old one
-                ]
-
-                % choice on the value to check for string literal
-                [
-                    | sStringLiteral:
-                        % handle string as a var
-                        @HandleStringConstant
-                    | *:
-                        % use standard constant handling
-                        oSymbolStkSetKind(syConstant)
-                        @ConstantValue
-                        oSymbolStkEnterTypeReference
-                        oTypeStkPop
-                        oSymbolStkEnterValue
-                        oValuePop
-                        oSymbolTblEnter
-                        oSymbolStkPop
-                ]
+ConstantDefinition :           % Process named constant definition
+        sIdentifier
+        oSymbolStkPushLocalIdentifier
+        [ oSymbolStkChooseKind
+            | syUndefined:
+            | syExternal:
+                % A program parameter must be declared as a file variable
+                #eExternalDeclare
             | *:
-                >
-        ]};
+                #eMultiplyDefined
+                % The new definition will now obscure the old one
+        ]
+
+        % choice on the value to check for string literal
+        [
+            | sStringLiteral:
+                % handle string as a var
+                @HandleStringConstant
+            | *:
+                % use standard constant handling
+                oSymbolStkSetKind(syConstant)
+                @ConstantValue
+                oSymbolStkEnterTypeReference
+                oTypeStkPop
+                oSymbolStkEnterValue
+                oValuePop
+                oSymbolTblEnter
+                oSymbolStkPop
+        ]
+        ;
+          
+        
 
 HandleStringConstant :
         % we handle string constants as vars
@@ -1465,8 +1458,8 @@ Statement :
                 @WhileStmt
             | sCaseStmt:
                 @CaseStmt
-            | sRepeatStmt:
-                @RepeatStmt
+            | sDo:
+                @DoStmt
             | sNullStmt:
         ];
 
@@ -1684,19 +1677,25 @@ WhileStmt :
         oFixPopTargetAddress
         oFixPopForwardBranch;
 
-RepeatStmt :
-        .tRepeatBegin
-        oFixPushTargetAddress           % top-of-loop branch target
+DoStmt :
+        .tDoBegin
+        oFixPushTargetAddress
         {[
-            | sRepeatEnd:
+            | sBreakIf:
+                @BooleanControlExpression
+                .tDoTest
+                oFixPushForwardBranch
+                oEmitNullAddress
+                oFixSwap
+            | sEnd:
                 >
             | *:
                 @Statement
         ]}
-        .tRepeatControl
-        @BooleanControlExpression
-        .tRepeatTest
-        oFixPopTargetAddress;
+        .tDoEnd
+        oFixPopTargetAddress
+        oFixPopForwardBranch
+
 
 CaseStmt :
         .tCaseBegin
@@ -1707,6 +1706,15 @@ CaseStmt :
         oFixPushForwardBranch
         oEmitNullAddress        % address of case branch table
         {[
+            | sElse:
+                .tCaseElse
+                @Statement
+                .tCaseMerge
+                oFixPushForwardBranch
+                oEmitNullAddress       
+                oFixSwap                       
+                oCountIncrement;
+
             | sCaseEnd:
                 >
             | *:
