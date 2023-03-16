@@ -826,7 +826,7 @@ ProgramParameter :
 Block :
         % The parser has flagged phase errors, but has emitted out-of-phase
         % definitions with the intent of providing better error repair.
-        .sBegin
+        sBegin
         {[
             | sProcedure:
                 @ProcedureDefinition
@@ -850,7 +850,7 @@ Block :
             | *:
                 >
         ]}
-        .sEnd;
+        sEnd;
 
 ConstantDefinition :           % Process named constant definition
         sIdentifier
@@ -1896,18 +1896,19 @@ BinaryOperator :
         % but that would probably be less efficient on average.
         [
             | sAdd:
-                .tAdd
                 [ oTypeStkChooseKind
-                    | tpInteger:
-                        .tpInteger
-                        oTypeStkPush(tpInteger) % result type
                     | tpString:
-                        .tpString
-                        oTypeStkPush(tpString)
+                        % If the type on type stack top is string then we are doing string concatenation
+                        % emit string concatenation
+                        .tConcatenate
+                        oTypeStkPush(tpString) % result is tp string
                     | *:
-                        >
+                        % otherwise use the standard adition
+                        .tAdd
+                        oTypeStkPush(tpInteger) % result type
                 ]
                 @CompareOperandAndResultTypes
+
             | sSubtract:
                 .tSubtract
                 oTypeStkPush(tpInteger)
