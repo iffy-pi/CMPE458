@@ -148,10 +148,6 @@ Output :
         sIndex
         sPublic
         % end added semantic tokens
-        % to remove tokens (for semantic phase)
-        sRepeatStmt
-        sRepeatEnd
-        % end remove tokens
         sEndOfFile
         lastSemanticToken = sEndOfFile;
 

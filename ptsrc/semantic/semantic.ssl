@@ -146,10 +146,7 @@ Output :
         tLength
         tIndex
         tStringEqual
-
         tDoBegin % new item for do
-        tDoBreakIf
-        tDoTest
         % end new output tokens
 
         % Compound T-codes - T-code operations that take an operand
@@ -171,8 +168,8 @@ Output :
         tCallEnd
         tLineNumber
         % new compund t codes
-        toDoBreakIf % compound to match ifthen t codes
-        toDoTest % compound to match while t codes
+        tDoBreakIf % compound to match ifthen t codes
+        tDoTest % compound to match while t codes
         tDoEnd
 
         tCaseElse % new t code for case
@@ -834,11 +831,11 @@ Block :
             | sProcedure:
                 @ProcedureDefinition
             | sConst:
-                @ConstantDefinitions
+                @ConstantDefinition
             | sType:
                 @TypeDefinitions
             | sVar:
-                @VariableDeclaration
+                @VariableDeclarations
             | sModule: % Added sModule call to @ModuleDefinition in block
                 @ModuleDefinition
             | *:
@@ -1695,7 +1692,7 @@ DoStmt :
         .tDoEnd
         oFixPopTargetAddress
         oFixPopForwardBranch
-
+        ;
 
 CaseStmt :
         .tCaseBegin
@@ -1713,7 +1710,7 @@ CaseStmt :
                 oFixPushForwardBranch
                 oEmitNullAddress       
                 oFixSwap                       
-                oCountIncrement;
+                oCountIncrement
 
             | sCaseEnd:
                 >

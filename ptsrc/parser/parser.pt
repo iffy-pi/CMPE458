@@ -305,10 +305,8 @@ program ScannerParser(output, stdIdentifiers, scanSsl, parseSsl, source, parseSt
         sLength = 50;
         sIndex = 51;
         sPublic = 52;
-        sRepeatStmt = 53;
-        sRepeatEnd = 54;
-        sEndOfFile = 55;
-        lastSemanticToken = 55;
+        sEndOfFile = 53;
+        lastSemanticToken = 53;
 
         { Input/Output Tokens }
 
