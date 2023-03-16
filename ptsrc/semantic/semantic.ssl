@@ -820,7 +820,7 @@ ProgramParameter :
 Block :
         % The parser has flagged phase errors, but has emitted out-of-phase
         % definitions with the intent of providing better error repair.
-
+        .sBegin
         {[
             | sProcedure:
                 @ProcedureDefinition
@@ -830,13 +830,21 @@ Block :
                 @TypeDefinitions
             | sVar:
                 @VariableDeclarations
-            | sModule: % Added sModule call to @ModuleDefinition in block
-                @ModuleDefinition
+            | sAssignmentStmt:
+                @AssignmentStmt
+            | sCallStmt:
+                @CallStmt
+            | sIfStmt:
+                @IfStmt
+            | sWhileStmt:
+                @WhileStmt
+            | sCaseStmt:
+                @CaseStmt
+            | sNullStmt:
             | *:
                 >
         ]}
-        sBegin
-        @BeginStmt;
+        .sEnd;
 
 ConstantDefinitions :           % Process named constant definitions
         {[
@@ -907,31 +915,27 @@ ConstantValue :         % push the value and type of the constant value
         ];
 
 TypeDefinitions :       % process named type definitions
-        {[
-            | sIdentifier:
-                oSymbolStkPushLocalIdentifier
-                [ oSymbolStkChooseKind
-                    | syUndefined:
-                    | syExternal:
-                        % Program parameters must be declared as file variables
-                        #eExternalDeclare        % ignore this declaration
-                    | *:
-                        #eMultiplyDefined
-                        % The new definition will obscure the old one
-                ]
-                oSymbolStkSetKind(syType)
-
-                % Accepts a type specification and pushes its type to the Type Stack.
-                % Creates type table entries for the type and any new subtypes as necessary.
-                @TypeBody
-
-                oSymbolStkEnterTypeReference
-                oTypeStkPop
-                oSymbolTblEnter
-                oSymbolStkPop
+        sIdentifier
+        oSymbolStkPushLocalIdentifier
+        [ oSymbolStkChooseKind
+            | syUndefined:
+            | syExternal:
+                % Program parameters must be declared as file variables
+                #eExternalDeclare        % ignore this declaration
             | *:
-                >
-        ]};
+                #eMultiplyDefined
+                % The new definition will obscure the old one
+        ]
+        oSymbolStkSetKind(syType)
+
+        % Accepts a type specification and pushes its type to the Type Stack.
+        % Creates type table entries for the type and any new subtypes as necessary.
+        @TypeBody
+
+        oSymbolStkEnterTypeReference
+        oTypeStkPop
+        oSymbolTblEnter
+        oSymbolStkPop;
 
 TypeBody :
         % Accept a type specification and push a Type Stack entry for it.
@@ -1411,23 +1415,9 @@ ProcedurePrologue :
         oCountPop;
 
 Statement :
-        [
-            | sAssignmentStmt:
-                @AssignmentStmt
-            | sCallStmt:
-                @CallStmt
-            | sBegin:
-                @BeginStmt
-            | sIfStmt:
-                @IfStmt
-            | sWhileStmt:
-                @WhileStmt
-            | sCaseStmt:
-                @CaseStmt
-            | sRepeatStmt:
-                @RepeatStmt
-            | sNullStmt:
-        ];
+        oSymbolTblPushScope
+        @Block
+        oSymbolTblPopScope;
 
 AssignmentStmt :
         sIdentifier  oSymbolStkPushIdentifier
@@ -1879,7 +1869,16 @@ BinaryOperator :
         [
             | sAdd:
                 .tAdd
-                oTypeStkPush(tpInteger) % result type
+                [ oTypeStkChooseKind
+                    | tpInteger:
+                        .tpInteger
+                        oTypeStkPush(tpInteger) % result type
+                    | tpString:
+                        .tpString
+                        oTypeStkPush(tpString)
+                    | *:
+                        >
+                ]
                 @CompareOperandAndResultTypes
             | sSubtract:
                 .tSubtract
@@ -1915,6 +1914,10 @@ BinaryOperator :
             | sLE:
                 .tLE
                 @CompareRelationalOperandTypes
+            | sIndex:
+                .tIndex
+                oTypeStkPush(tpInteger)
+                @CompareIndexOperandTypes
             | sMultiply:
                 .tMultiply
                 oTypeStkPush(tpInteger)
@@ -1924,13 +1927,31 @@ BinaryOperator :
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | sModulus:
-                .us
+                .tModulus
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | *:
                 >>
         ]
         % If an operator is present the result is an expression
+        oSymbolStkSetKind(syExpression);
+
+CompareIndexOperandTypes :
+        % Verify that the types of the two operands are string
+        % expressions
+        [ oTypeStkChooseKind
+            | tpString:
+                oTypeStkPop
+                [ oTypeStkChooseKind
+                    | tpString:
+                    | *:
+                        #eOperandOperatorTypeMismatch
+                ]
+            | *:
+                #eOperandOperatorTypeMismatch
+                oTypeStkPop
+        ]
+        oSymbolStkPop
         oSymbolStkSetKind(syExpression);
 
 CompareAndSwapTypes :
