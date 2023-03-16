@@ -1347,7 +1347,7 @@ ModuleDefinition:
         %Remove nonpublic symbols from scop and merge public symbols to outside scope.
         oSymbolTblStripScope
         oSymbolTblMergeScope
-
+        ;
        
 
 ProcedureHeading :
@@ -1968,7 +1968,7 @@ BinaryOperator :
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | sModulus:
-                .us
+                .tModulus
                 oTypeStkPush(tpInteger)
                 @CompareOperandAndResultTypes
             | *:
