@@ -1149,6 +1149,7 @@ SubrangeUpperBound :
         ];
 
 VariableDeclarations :
+
         {[
             | sIdentifier:
                 oSymbolStkPushLocalIdentifier
@@ -1276,13 +1277,24 @@ ProcedureDefinition :
                 #eMultiplyDefined
                 % New definition obscures old one.
         ]
+
+        % Change symbol kind depending on whether sPublic token
+        % was outputted with procedure definition
+        [
+            | sPublic:
+                   oSymbolStkSetKind(syPublicProcedure)
+            | *:
+                   oSymbolStkSetKind(syProcedure)
+        ]
+
+
         % Procedure bodies only execute when the routine is called
         % so we need to branch around the procedure's code
         .tSkipProc              % branch around procedure definition
         oFixPushForwardBranch
         oEmitNullAddress
 
-        oSymbolStkSetKind(syProcedure)
+     
         oValuePushCodeAddress
         oSymbolStkEnterValue
         oValuePop
