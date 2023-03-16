@@ -1758,6 +1758,32 @@ program SemanticAnalysis (output, semanticSsl, parseStream, temp, tCode, options
                         else
                             Error(eLexicLevelStackOvfl);
 
+                    oSymbolTblStripScope:
+                        begin
+                            Assert((lexicLevelStackTop >= 1), assert31);
+                            i := symbolTblTop;
+
+
+                            while i > symbolTblDisplay[lexicLevelStackTop] do
+                                begin
+                                    link := symbolTblIdentLink[i];
+
+                                    if link <> null then
+                                        begin
+                                            while link > 0 do
+                                                link := symbolTblIdentLink[link];
+                                            identSymbolTblRef[-link] := symbolTblIdentLink[i];
+                                        end;
+
+                                    i := i - 1
+                                end;
+                        end;
+
+                    oSymbolTblMergeScope:
+                        begin
+                            lexicLevelStackTop := lexicLevelStackTop - 1;
+                        end;
+
                     oSymbolTblPopScope:
                         { Pop the lexic level stack, remove local entries from the type table, 
                           remove local entries but leave parameter entries on the symbol stack. }
