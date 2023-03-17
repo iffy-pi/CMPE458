@@ -69,8 +69,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "5a9344c1eee7f513",
@@ -149,10 +148,11 @@
       "oz-clear-unused-images:Clear Unused Images": false
     }
   },
-  "active": "10aaa90e9c98d80a",
+  "active": "d57ed4c08400871a",
   "lastOpenFiles": [
-    "Untitled.md",
+    "Phases/phase3/How_To_Test.md",
     "Phases/phase3/Documentation/Iffy_Changelog_Documentation.md",
+    "Untitled.md",
     "Phases/phase3/Documentation/assets/Pasted image 20230316001558.png",
     "Phases/phase3/Documentation/assets/Pasted image 20230316001049.png",
     "Phases/phase3/Documentation/assets/Pasted image 20230316000828.png",
