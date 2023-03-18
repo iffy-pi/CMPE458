@@ -11,19 +11,32 @@ if (( $# < 1 )) ; then
     exit 0
 fi
 
-flag=$2
-grep_for_error=0
-
-if [[ "$flag" = "-ge" ]]; then
-    grep_for_error=1
-
+if `test ! -f $1`; then
+    echo "$1 is not a file!"
+    exit 0
 fi
 
+flag=$2
 
-if [[ "$grep_for_error" = "1" ]]; then
+# ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e | grep "error"
+
+if [[ "$flag" = "-ge" ]]; then
+    # grep for error
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | grep "error"
+
+elif [[ "$flag" = "-o" ]]; then
+    # print the tcodes and semantic oprations (like the sample provided in the tutorial)
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | egrep "^ *[\.o%]"
+
 elif [[ "$flag" = "-a" ]]; then
+    # print everything
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def
+
+elif [[ "$flag" != "" ]]; then
+    # pass the flag through
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def $flag
 else
-    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def $flag | egrep "^ *[\.o%]"
+    # default behaviour
+    # only shows emitted tokens
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e
 fi
