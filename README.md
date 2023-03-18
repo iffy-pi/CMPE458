@@ -76,4 +76,6 @@ semtrace test.pt -ge
 
 # use -a to see entire trace, to get more context on an error
 semtrace test.pt -a
+
+# both scripts also support the standard -i and -o flags of ssltrace
 ```

@@ -19,11 +19,11 @@ if [[ "$flag" = "-ge" ]]; then
 
 fi
 
+
 if [[ "$grep_for_error" = "1" ]]; then
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | grep "error"
-
 elif [[ "$flag" = "-a" ]]; then
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def
 else
-    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | egrep "^ *[\.o%]"
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def $flag | egrep "^ *[\.o%]"
 fi
