@@ -1149,6 +1149,23 @@ SubrangeUpperBound :
         ];
 
 VariableDeclarations :
+        % Use count stack to know how many declarations occur
+        % Count for first decleration
+        oCountPush(one)
+
+        %Handle initial identifier
+        sIdentifier
+        oSymbolStkPushLocalIdentifier
+
+        % Check not previously defined
+        [ oSymbolStkChooseKind
+            | syUndefined, syExternal:
+            | *:
+                #eMultiplyDefined
+                % The new definition will obscure the old one
+        ]
+
+        %Loop through subsequent variable declarations
 
         {[
             | sIdentifier:
