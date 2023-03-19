@@ -80,4 +80,5 @@ Supported flags:
 - `-ge`: Check the ssltrace output for errors using grep
 - `-o`: Print emitted tokens and semantic operations (like trace in Tutorial 6)
 - `-a`: Print entire trace (including branching and stuff)
+- `-u`: Token output for default is automaticaally stripped, use this flag to keep unstripped
 - Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens

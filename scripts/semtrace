@@ -32,11 +32,15 @@ elif [[ "$flag" = "-a" ]]; then
     # print everything
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def
 
+elif [[ "$flag" = "-u" ]]; then
+    # unstripped, does not do sed to it
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e
+
 elif [[ "$flag" != "" ]]; then
     # pass the flag through
     ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def $flag
 else
     # default behaviour
     # only shows emitted tokens
-    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e | sed -e 's/^ *//'
 fi
