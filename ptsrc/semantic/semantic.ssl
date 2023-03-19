@@ -1713,13 +1713,17 @@ CaseStmt :
                 oEmitNullAddress       
                 oFixSwap                       
                 oCountIncrement
+                sCaseEnd
+                .tCaseEnd
+                >
 
             | sCaseEnd:
+                .tCaseEnd
                 >
             | *:
                 @CaseAlternative
         ]}
-        .tCaseEnd
+        
         oFixPopForwardBranch
         oEmitCaseBranchTable
         % emit merge branches for case alternatives
