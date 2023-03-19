@@ -58,6 +58,26 @@ Run it with:
 
 ```
 python parser_def_paster.py
-```.
+```
 
 Note: You should first make the scanner (`make scanner`) and then run the paste script. You can verify everything is pasted correctly by making the scanner again (it should not give any errors this time).
+
+## Using semtrace and ptsemtrace
+These are the designed ssltrace script for semantic section. `ptsemtrace` is the ssltrace for the Pascal compiler (using build/ptsrc/lib/pt). `semtrace` is the ssltrace for the Quby compiler (using ptsrc/lib/pt).
+
+You can use `ptsemtrace` to see the generated t-codes for the pascal compiler, and then use `semtrace` for the generated t-codes on Quby. You can then compare the two for validation.
+
+Script usage information (applies to both scripts):
+```
+semtrace $file [$flag]
+    $file : required : file address : file to ssltrace on
+    $flag : optional : string       : Flag to use to change trace behaviour
+
+Default behaviour prints out emitted tokens.
+```
+
+Supported flags:
+- `-ge`: Check the ssltrace output for errors using grep
+- `-o`: Print emitted tokens and semantic operations (like trace in Tutorial 6)
+- `-a`: Print entire trace (including branching and stuff)
+- Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens

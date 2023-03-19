@@ -1730,13 +1730,17 @@ CaseStmt :
                 oEmitNullAddress       
                 oFixSwap                       
                 oCountIncrement
+                sCaseEnd
+                .tCaseEnd
+                >
 
             | sCaseEnd:
+                .tCaseEnd
                 >
             | *:
                 @CaseAlternative
         ]}
-        .tCaseEnd
+        
         oFixPopForwardBranch
         oEmitCaseBranchTable
         % emit merge branches for case alternatives
@@ -1819,6 +1823,7 @@ Expression :
             @Operand
             @UnaryOperator
             @BinaryOperator
+            @TernaryOperator
             [
                 | sExpnEnd:
                     >
@@ -2032,6 +2037,14 @@ CompareIndexOperandTypes :
         ]
         oSymbolStkPop
         oSymbolStkSetKind(syExpression);
+
+TernaryOperator :
+    sStringLiteral
+    sInteger
+    sInteger
+    sSubstring
+    .tSubstring
+    oTypeStkPush(tpString)
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
