@@ -1,0 +1,5 @@
+program Sample ( output );
+var a : boolean;
+begin
+    a := ('a' = 'b');
+end.
