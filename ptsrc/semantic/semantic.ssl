@@ -1149,9 +1149,28 @@ SubrangeUpperBound :
         ];
 
 VariableDeclarations :
+        % Use count stack to know how many declarations occur
+        % Count for first decleration
+        oCountPush(one)
 
+        %Handle initial identifier
+        sIdentifier
+        oSymbolStkPushLocalIdentifier
+
+        % Check not previously defined
+        [ oSymbolStkChooseKind
+            | syUndefined, syExternal:
+            | *:
+                #eMultiplyDefined
+                % The new definition will obscure the old one
+        ]
+
+        %Loop through subsequent variable declarations
+        % Output pattern from parser is sVar sIdentifier sVar sIdentifier...
         {[
-            | sIdentifier:
+            | sVar: %If new variable is passed
+                oCountIncrement %Increment counter 
+                sIdentifier
                 oSymbolStkPushLocalIdentifier
 
                 % Check not previously defined
@@ -1161,52 +1180,58 @@ VariableDeclarations :
                         #eMultiplyDefined
                         % The new definition will obscure the old one
                 ]
-
-                % Accepts a type specification and pushes its type to the Type Stack.
-                % Creates type table entries for the type and any new subtypes as necessary.
-                @TypeBody
-                @EnterVariableAttributes
-                oTypeStkPop
-                oSymbolStkPop
             | *:
-                >
-        ]};
+                >        
+        ]}
+        @TypeBody
+        @EnterVariableAttributes
+
+        %Pop counter at end
+        oTypeStkPop
+        oSymbolStkPop
+        oCountPop;
 
 EnterVariableAttributes :
         % Enter the type on top of the Type Stack as the type of 
         % the new variable on top of the symbol stack
 
-        % Check if this is the declaration of an external file parameter
-        [ oSymbolStkChooseKind
-            | syExternal:       
-                % An external file parameter to the program
-                [ oTypeStkChooseKind
-                    | tpFile:
-                        oSymbolStkSetKind(syVariable)
-                        oSymbolStkEnterTypeReference
-                        % The symbol table entry was created for the file
-                        % when its program parameter was accepted.
-                        oSymbolTblUpdate
-                    | *:
-                        #eExternalDeclare       % Ignore this declaration
-                ]
+        {[oCountChoose %Loop through the count and decrement per variable declaration
+            | zero: %If no more variable declerations exit
+                >
+            | *: 
+                oCountDecrement
+                % Check if this is the declaration of an external file parameter
+                [ oSymbolStkChooseKind
+                    | syExternal:       
+                        % An external file parameter to the program
+                        [ oTypeStkChooseKind
+                            | tpFile:
+                                oSymbolStkSetKind(syVariable)
+                                oSymbolStkEnterTypeReference
+                                % The symbol table entry was created for the file
+                                % when its program parameter was accepted.
+                                oSymbolTblUpdate
+                            | *:
+                                #eExternalDeclare       % Ignore this declaration
+                        ]
 
-            | *:                
-                % A new variable or redeclaration in this scope
-                oSymbolStkSetKind(syVariable)
-                [ oTypeStkChooseKind
-                    | tpFile:
-                        % an internal file
+                    | *:                
+                        % A new variable or redeclaration in this scope
+                        oSymbolStkSetKind(syVariable)
+                        [ oTypeStkChooseKind
+                            | tpFile:
+                                % an internal file
+                                oSymbolStkEnterTypeReference
+                                oValuePush(zero)
+                                @AllocateVar
+                                oValuePop
+                            | *:
+                                @AllocateVar
+                        ]
                         oSymbolStkEnterTypeReference
-                        oValuePush(zero)
-                        @AllocateVar
-                        oValuePop
-                    | *:
-                        @AllocateVar
+                        oSymbolTblEnter
                 ]
-                oSymbolStkEnterTypeReference
-                oSymbolTblEnter
-        ];
+        ]};
  
 AllocateVar :
         % The symbol and type stack entries for the variable 
@@ -1713,13 +1738,17 @@ CaseStmt :
                 oEmitNullAddress       
                 oFixSwap                       
                 oCountIncrement
+                sCaseEnd
+                .tCaseEnd
+                >
 
             | sCaseEnd:
+                .tCaseEnd
                 >
             | *:
                 @CaseAlternative
         ]}
-        .tCaseEnd
+        
         oFixPopForwardBranch
         oEmitCaseBranchTable
         % emit merge branches for case alternatives
@@ -1802,6 +1831,7 @@ Expression :
             @Operand
             @UnaryOperator
             @BinaryOperator
+            @TernaryOperator
             [
                 | sExpnEnd:
                     >
@@ -2015,6 +2045,14 @@ CompareIndexOperandTypes :
         ]
         oSymbolStkPop
         oSymbolStkSetKind(syExpression);
+
+TernaryOperator :
+    sStringLiteral
+    sInteger
+    sInteger
+    sSubstring
+    .tSubstring
+    oTypeStkPush(tpString)
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
