@@ -1,7 +1,0 @@
-% integer addition with quby
-using output
-var a: integer
-var b: integer
-a = 10
-b = 5
-a = a + b
