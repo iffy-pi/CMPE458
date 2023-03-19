@@ -52,3 +52,7 @@
 
 # private folder
 __local
+
+# obsidian stuff
+.obsidian/
+.trash/
