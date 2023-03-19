@@ -1761,6 +1761,7 @@ Expression :
             @Operand
             @UnaryOperator
             @BinaryOperator
+            @TernaryOperator
             [
                 | sExpnEnd:
                     >
@@ -1939,6 +1940,14 @@ BinaryOperator :
         ]
         % If an operator is present the result is an expression
         oSymbolStkSetKind(syExpression);
+
+TernaryOperator :
+    sStringLiteral
+    sInteger
+    sInteger
+    sSubstring
+    .tSubstring
+    oTypeStkPush(tpString)
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
