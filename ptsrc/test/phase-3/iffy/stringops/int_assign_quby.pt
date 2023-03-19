@@ -1,4 +1,0 @@
-% setting constant to an identifier rather than a value
-using output
-var a : integer
-a = 27
