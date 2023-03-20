@@ -1,0 +1,6 @@
+% Testing substring with variables
+using output
+var a : string
+var b : string
+var c : integer
+a = b $ 1 .. c
