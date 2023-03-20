@@ -1,0 +1,8 @@
+program Sample ( output );
+var a : integer;
+var b : integer;
+begin
+    a := 10;
+    b := 5;
+    a := a + b;
+end.

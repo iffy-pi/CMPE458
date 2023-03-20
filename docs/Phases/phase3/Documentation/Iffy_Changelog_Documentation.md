@@ -4,7 +4,7 @@ Pictures were obtained using GitHub Commit Comparison:
 ```
 https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..<latest commit here>
 
-https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..895eacba9b949d17794b1975a9639af377170216
+https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..c25944e1658fed5eb9b12f4993f65ae642e6acd3
 ```
 
 - Token Updates
@@ -159,7 +159,8 @@ The choice rule operates on the type on top of the type stack (which is returned
 
 String inequality is handled in a similar way, but with the emission of the `tNot` to invert the results of `tStringEqual`:
 
-![[Pasted image 20230316000719.png]]
+![[Pasted image 20230319213412.png]]
+
 
 ## Changes to `semantic.pt`
 ### Updating token definitions

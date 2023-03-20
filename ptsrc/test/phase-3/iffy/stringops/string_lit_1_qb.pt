@@ -1,0 +1,4 @@
+% testing one char string literal in quby
+using output
+var a : boolean
+a = ( "a" == "a" )
