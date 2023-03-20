@@ -1,0 +1,3 @@
+% Testing string constant
+using output
+val a = "abc"

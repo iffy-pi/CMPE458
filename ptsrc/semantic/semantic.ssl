@@ -2105,7 +2105,11 @@ TernaryOperator :
             | *:
                 >>
         ]
+
         % If an operator is present the result is an expression
+        % First pop expression types for integer operands
+        oSymbolStkPop
+        oSymbolStkPop
         oSymbolStkSetKind(syExpression)
     ;
 
@@ -2123,6 +2127,7 @@ HandleSubstringOperandTypeChecking:
 
                         [ oTypeStkChooseKind % check third string operand
                             | tpString:
+                                oTypeStkPop
                             | *:
                                 % not what we want, do error recovery
                                 #eTypeMismatch
@@ -2133,15 +2138,18 @@ HandleSubstringOperandTypeChecking:
                         % not what we want, do error recovery
                         #eTypeMismatch
                         oTypeStkPop
+                        oTypeStkPop
                 ]
 
             | *:
                 % not what we want, do error recovery
                 #eTypeMismatch
                 oTypeStkPop
+                oTypeStkPop
+                oTypeStkPop
         ]
 
-    ;
+        ;
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
