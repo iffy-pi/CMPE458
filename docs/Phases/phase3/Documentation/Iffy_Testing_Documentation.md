@@ -19,13 +19,13 @@ DONE: 2 3 5
     - Else statement
 - String handling
     - String operations
-        - String equality and inequality
-        - String length operation
-    - Handling string literals
+        -  DONE: String equality and inequality
+        - DONE: String length operation
+    - DONE: Handling string literals
     - Handling string constants
     - New string traps
 
-- Describe `semtrace` and `ptsemtrace`
+- Describe semtrace and ptsemtrace
 
 
 
@@ -37,7 +37,7 @@ To verify the proper handling of string literals for Quby, programs were defined
 ### Empty String
 The file `stringops/string_lit_0_qb.pt` performs a string comparison using an empty string in Quby. `stringops/string_lit_0_pt.pt` does the same operation but in Pascal.
 
-Performing `ptsemtrace` on the Pascal file, an error occurs as null/empty strings are not allowed in Pascal:
+Performing ptsemtrace on the Pascal file, an error occurs as null/empty strings are not allowed in Pascal:
 
 ```
 ....
@@ -53,7 +53,7 @@ Performing `ptsemtrace` on the Pascal file, an error occurs as null/empty string
 ...
 ```
 
-Performing `semtrace` on the Quby file, a valid output token stream is gotten since null strings are allowed:
+Performing semtrace on the Quby file, a valid output token stream is gotten since null strings are allowed:
 
 ```
 .tFileDescriptor
@@ -114,7 +114,7 @@ oEmitTrapKind(trHalt)
 ### 1-Char String
 The file `stringops/string_lit_1_qb.pt` performs a string comparison using a one-char string in Quby. `stringops/string_lit_1_pt.pt` does the same operation but in Pascal.
 
-The output of `ptsemtrace` and `semtrace` on the Pascal file (left) and Quby file (right) respectively, are shown below:
+The output of ptsemtrace and semtrace on the Pascal file (left) and Quby file (right) respectively, are shown below:
 
 ![[Pasted image 20230319205514.png]]
 
@@ -125,7 +125,7 @@ Also note that the 97, the ASCII code for `'a'` is emitted, which is the charact
 ## Multi-char String
 The file `stringops/string_lit_m_qb.pt` performs a string comparison using a multi-char string in Quby.
 
-The `semtrace` output of this file is shown below:
+The semtrace output of this file is shown below:
 
 ```
 .tFileDescriptor
@@ -166,7 +166,7 @@ String equality uses the special T-code `tStringEqual` instead of the standard `
 - `stringops/string_eq.pt` assigns a boolean variable the result of a simple string literal comparison (`"a" == "b"`)
 - `stringops/string_eq_2.pt` assigns a boolean variable the result of a simple integer literal comparison
 
-The output of `semtrace` for both files is shown below (`string_eq_2` on the left, and `string_eq` on the right):
+The output of semtrace for both files is shown below (`string_eq_2` on the left, and `string_eq` on the right):
 
 ![[Pasted image 20230319191822.png]]
 
@@ -174,17 +174,87 @@ As you can see in the above image, one of the differences in the output is the u
 
 Furthermore, the `tStringEquals` token is used rather than the `tEQ`, showing that for String literals, the appropriate string token is used. 
 
-The differentiation is still made when using variables instead of literals, as indicated by the `semtrace` shown below (Left is `stringops/string_eq_vars_2.pt` which uses integer variables, right is `stringops/string_eq_vars.pt` which uses String variables):
+The differentiation is still made when using variables instead of literals, as indicated by the semtrace shown below (Left is `stringops/string_eq_vars_2.pt` which uses integer variables, right is `stringops/string_eq_vars.pt` which uses String variables):
 
 ![[Pasted image 20230319192545.png]]
 
 ## String Inequality
 String inequality is implemented by inverting the output of the `tStringEquals` operation using the `tNot` T-code. This replaces the `tNEQ` for String comparisons.
 
-This is indicated by the `semtrace` shown below:
+This is indicated by the semtrace shown below:
 - Left: `stringops/string_neq_2.pt`, performs integer literal inequality and assigns to variable
 - Right: `stringops/string_neq.pt`, performs string literal inequality and assigns to variable
 
 ![[Pasted image 20230319203414.png]]
 
 As seen above, the string inequality emits `tNot` after the `tStringEquals` to achieve the inequality operation on strings, rather than the `tNE` operation.
+
+## String Length
+To test the semantic output of the String length operation, the file `stringops/string_len.pt` assigns the length of the string "abc" to an integer variable.
+
+The semtrace output is shown below:
+
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralString
+oEmitString
+% value emitted 97
+% value emitted 98
+% value emitted 99
+.tLength
+.tAssignInteger
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+
+As seen above, the string literal is emitted first and is then followed by the `tLength` operation. Since the result type is an integer, the code `tAssignInteger` is used to assign it to an integer variable.
+
+If the variable that is assigned to is not an integer type (as is the case in `stringops/string_len_invalid.pt`), a type clash will occur (as indicated with the `eTypeMismatch` error token):
+
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralString
+oEmitString
+% value emitted 97
+% value emitted 98
+% value emitted 99
+.tLength
+#eTypeMismatch
+.tAssignBoolean
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+
+## String Constants
+In Quby, string constants are handled in the same way as string variables.
+
+The files `stringops/string_const.pt` and `stringops/string_var.pt` declare a string constant and string variable respectively. By comparing the `semtrace` output, the specified handling of string constants can be verified.
+
