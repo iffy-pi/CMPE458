@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# load submission folder
+if (( $# < 1 )) ; then
+    echo "Must specify the name of the phase folder e.g. 'phase1', 'phase2'"
+    exit 0
+fi
+
+overwritereadme=0
+if [[ "$2" = "-f" ]]; then
+    overwritereadme=1
+fi
+
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+PHASENAME=$1
+SUBFOLDER="$SCRIPT_DIR/$1"
+REPODIR="$SCRIPT_DIR/.."
+
+if [[ ! -d $SUBFOLDER ]]; then
+    echo "Created $SUBFOLDER"
+    mkdir $SUBFOLDER
+fi
+
+echo "Copying ptsrc folder..."
+if [[ -d $SUBFOLDER/ptsrc ]]; then
+    rm -rf $SUBFOLDER/ptsrc
+fi
+cp -r $REPODIR/ptsrc $SUBFOLDER/ptsrc
+
+echo "Copying Documentation..."
+docs=("Changelog_Documentation" "Testing_Documentation")
+types=("md" "pdf")
+for name in ${docs[*]}; do
+    for t in ${types[*]}; do
+        src=$REPODIR/docs/Phases/$PHASENAME/Documentation/$name.$t
+        dest=$SUBFOLDER/$name.$t
+
+        if [[ ! -f $src ]]; then
+            echo "$src does not exist!"
+            continue
+        fi
+
+        cp $src $dest
+    done
+done
+
+
+# Copy the README
+if [[ -f $SUBFOLDER/README.md ]]; then
+    # if README exists, overwrite only if we have the flag set
+    if [[ "$overwritereadme" = "1" ]]; then
+        echo "Overwriting README"
+        rm $SUBFOLDER/README.md
+        cp $SCRIPT_DIR/phase1/README.md $SUBFOLDER/README.md
+    else
+        echo "README already exists and was not overwritten"
+    fi
+
+else
+    echo "Copying default README from phase1/"
+    cp $SCRIPT_DIR/phase1/README.md README.md
+    echo "Dont forget to update the README!"
+fi
+

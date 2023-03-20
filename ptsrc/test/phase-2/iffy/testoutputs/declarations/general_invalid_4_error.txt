@@ -1,0 +1,76 @@
+@Program
+ % .sNewLine
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pVar)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pVar)
+  | pVar:
+  .sVar
+  @VariableDeclarations
+   ?pIdentifier (pUnless)
+   scan/parse error, line 3: syntax error at: unless
+   .sIdentifier
+   [ (pUnless)
+   | *:
+   ] or >
+   ?pColon (pUnless)
+   @TypeBody
+    [ (pUnless)
+    | *:
+    @SimpleType
+     [ (pUnless)
+     | *:
+     @OptionallySignedIntegerConstant
+      [ (pUnless)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pUnless)
+       | *:
+       ?pIdentifier (pUnless)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     ?pDotDot (pUnless)
+     .sRange
+     @OptionallySignedIntegerConstant
+      [ (pUnless)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pUnless)
+       | *:
+       ?pIdentifier (pUnless)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     >>
+    ;SimpleType
+    >>
+   ;TypeBody
+   >>
+  ;VariableDeclarations
+  ] or >
+  }
+  [ (pUnless)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program

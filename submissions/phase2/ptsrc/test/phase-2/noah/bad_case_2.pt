@@ -1,0 +1,8 @@
+% Missing then statement for a matching when
+using output
+case x
+    when 5 
+        y = 4
+    when 5 then 
+        y = 3
+end

@@ -1,0 +1,631 @@
+%  PT Parser Version 5.1
+%
+% Date:  30 Jun 1980
+%        (Revised v5.1 - 8 Feb 2021)
+%
+% Author:  Alan Rosselet
+%
+% Abstract
+%     This module parses the syntax token stream emitted by the scanner
+%     and emits a postfix stream of tokens to the semantic analyzer
+%     module.  The parser detects and repairs syntax errors so that the
+%     token stream emitted to the semantic analyzer is syntactically
+%     legal (except for the special case of declaration phase errors - 
+%     see the comment in the Block routine below).
+
+Input :
+        % Keywords must be first both here and in stdIdentifiers,
+        % and they must appear in the exact same order
+
+        pDiv                    'div'
+        firstKeywordToken = pDiv
+        pMod                    'mod'
+        pOr                     'or'
+        pAnd                    'and'
+        pThen                   'then'
+        pElse                   'else'
+        pOf                     'of'
+        pEnd                    'end'
+        pDo                     'do'
+        pArray                  'array'
+        pFile                   'file'
+        pVar                    'var'
+        pType                   'type'
+        pIf                     'if'
+        pCase                   'case'
+        pWhile                  'while'
+        pUsing                  'using'
+        pVal                    'val'
+        pDef                    'def'
+        pBreak                  'break'
+        pWhen                   'when'
+        pModule                 'module'
+        pUnless                 'unless'
+        % remove these old tokens
+        % end remove these old tokens
+        pElsif                  'elsif'
+        lastKeywordToken = pElsif
+
+         
+
+        % Scanner tokens -
+        %   These are the tokens actually recognized by the Scanner itself.
+
+        % Compound tokens - 
+        %   These will be sent to the parser with a value or index.
+        pIdentifier 
+        firstCompoundInputToken = pIdentifier
+        pInteger
+        pStringLiteral
+        lastCompoundInputToken = pStringLiteral
+
+        % Non-compound tokens - 
+        %   These tokens simply represent themselves.
+        pNewLine
+        pEndFile
+        pPlus                   '+'
+        pMinus                  '-'
+        pStar                   '*'
+        pAssignEquals           '='
+        pNot                    '!'
+        pDot                    '.'
+        pComma                  ','
+        pSemicolon              ';'
+        pQuestion               '?'
+        pDollar                 '$'
+        pColon                  ':'
+        pEquals                 '=='
+        pNotEqual               '!='
+        pLess                   '<'
+        pLessEqual              '<='
+        pGreaterEqual           '>='
+        pGreater                '>'
+        pLeftParen              '('
+        pRightParen             ')'
+        pLeftBracket            '['
+        pRightBracket           ']'
+        pHash                   '#'
+        pDotDot                 '..'
+        lastSyntaxToken = pDotDot;
+
+Output :
+        sIdentifier 
+        firstSemanticToken = sIdentifier
+        firstCompoundSemanticToken = sIdentifier
+        sInteger
+        sStringLiteral
+        lastCompoundSemanticToken = sStringLiteral
+
+        sProgram
+        sParmBegin
+        sParmEnd
+        sConst
+        sType
+        sVar
+        sProcedure
+        sBegin
+        sEnd
+        sNegate
+        sArray
+        sFile
+        sRange
+        sCaseStmt
+        sCaseEnd
+        sLabelEnd
+        sExpnEnd
+        sNullStmt
+        sAssignmentStmt
+        sSubscript
+        sCallStmt
+        sFieldWidth
+        sIfStmt
+        sThen
+        sElse
+        sWhileStmt
+        sEq
+        sNE
+        sLT
+        sLE
+        sGT
+        sGE
+        sAdd
+        sSubtract
+        sMultiply
+        sDivide
+        sModulus
+        sInfixOr
+        sOr
+        sInfixAnd
+        sAnd
+        sNot
+        sNewLine
+        % added semantic tokens
+        sModule
+        sDo
+        sBreakIf
+        sSubstring
+        sLength
+        sIndex
+        sPublic
+        % end added semantic tokens
+        sEndOfFile
+        lastSemanticToken = sEndOfFile;
+
+rules
+
+Program :
+        'using'  .sProgram
+        % program name
+        pIdentifier .sIdentifier % consume first required identifier
+        % program parameters
+        {
+            [
+                | ',':
+                    pIdentifier  .sIdentifier % consume more identifiers if present
+                | *:
+                    >
+            ]
+        }
+        .sParmEnd
+
+        % Block rule!
+        @Block;
+
+Block :
+        % Strictly speaking, standard Pascal requires that declarations
+        % appear only in the order consts, types, vars, procedures.
+        % We allow arbitrary intermixing of these instead to preserve
+        % programmer sanity.
+        .sBegin
+        {[
+            | 'val': % changed from const to val
+                .sConst
+                @ConstantDefinitions
+            | 'type':
+                .sType
+                @TypeDefinitions
+            | 'var':
+                .sVar
+                @VariableDeclarations
+            | 'def':
+                .sProcedure
+                % procedure name
+                [
+                    | '*':
+                        pIdentifier  .sIdentifier
+                        .sPublic
+                        @ProcedureHeading
+                    | *:
+                        pIdentifier  .sIdentifier
+                        @ProcedureHeading
+                ]
+
+                @Block
+            | pIdentifier:
+                @AssignmentOrCallStmt
+            | 'if': 
+                @IfStmt    
+            | 'while':
+                @WhileStmt
+            | 'case':
+                @CaseStmt
+            | 'do':
+                @DoStmt
+            | 'module':   %Adding in check for module declaration in block
+                @Module
+            | 'unless':
+                @UnlessStmt
+            | pSemicolon:
+                % semicolons are considered null declarations so we dont care for them
+            | pEnd:
+            |*:
+               >
+        ]}
+        .sEnd;
+
+
+Module : %Module rule added to parser for module handling
+        .sModule     %emit sModule first so the subsequent identifier can be correlated to a module
+        [
+            | '*':
+                pIdentifier  %Consume the identifier
+                .sIdentifier %Emit the identifier                        
+                .sPublic
+            | *:
+                pIdentifier  
+                .sIdentifier
+        ]
+        @Block       %Emit begin followed by declarations and statements, then end. 
+        ;
+
+ConstantDefinitions :
+        % Accept one named constant definitions
+        pIdentifier  .sIdentifier
+        '=' @ConstantValue
+        ;
+        % removed semicolon ending token requirement
+        % only has support for one constant definition so other calls are removed
+            
+ConstantValue :
+        [
+            | pInteger:
+                .sInteger
+            | pIdentifier:
+                .sIdentifier
+            | '-':
+                @UnsignedIntegerConstant
+                .sNegate
+            | '+':
+                @UnsignedIntegerConstant
+            | pStringLiteral:
+                .sStringLiteral
+        ];
+
+UnsignedIntegerConstant :
+        [
+            | pIdentifier:
+                .sIdentifier
+            | pInteger:
+                .sInteger
+        ];
+
+TypeDefinitions :
+        % Accept one or more named type definitions.
+        pIdentifier  .sIdentifier
+        ':'  @TypeBody 
+        % removed semicolon ending token requirement
+        ;
+
+TypeBody :
+        [
+            | 'array':
+                .sArray
+                '['  @SimpleType  ']'
+                'of'  @SimpleType
+            | 'file':
+                .sFile
+                'of'  @SimpleType
+            | *:
+                @SimpleType
+        ];
+
+SimpleType :
+        % A simple type is a named type (possibly predefined)
+        % or a subrange type specification
+        [
+            | pIdentifier:
+                .sIdentifier
+                [
+                    | '..':
+                        .sRange         %% this may be unnecessary
+                        @OptionallySignedIntegerConstant
+                    | *:
+                ]
+            | *:
+                @OptionallySignedIntegerConstant
+                '..'  .sRange
+                @OptionallySignedIntegerConstant
+        ];
+
+OptionallySignedIntegerConstant :
+        [
+            | '-':
+                @UnsignedIntegerConstant
+                .sNegate
+            | '+':
+                @UnsignedIntegerConstant
+            | *:
+                @UnsignedIntegerConstant
+        ];
+
+VariableDeclarations :
+        % Accept one or more variable declarations.
+        pIdentifier .sIdentifier
+        {[
+            | ',' :
+                % if we see a comma, it should be proceeded by another identifier name and value
+                % we also emit an sVar to make it understandable to semantic analyzer
+                .sVar pIdentifier .sIdentifier
+
+            | *:
+                >
+        ]}
+
+        % variable declarations should always end with a colon then the type
+        ':' @TypeBody
+
+        % removed semicolon ending token requirement
+
+        ;
+
+ProcedureHeading :
+        % Accept zero or more procedure formal parameter declarations.
+        [
+            | '(':
+                {
+                    % formal parameter identifier
+                    [
+                        | 'var':
+                            pIdentifier  .sIdentifier
+                            .sVar
+                        | *:
+                            pIdentifier  .sIdentifier
+                    ]
+                    ':'
+                    % type identifier
+                    pIdentifier  .sIdentifier
+                    [
+                        | ',':
+                        | *:
+                            >
+                    ]
+                }
+                ')'
+            | *:
+        ]
+        .sParmEnd;
+
+AssignmentOrCallStmt :
+        [
+            | pAssignEquals: % replaced pColonEquals
+                .sAssignmentStmt
+                .sIdentifier    % identifier accepted in the Statement rule
+                @Expression
+                .sExpnEnd
+            | '[':
+                .sAssignmentStmt
+                .sIdentifier
+                .sSubscript
+                @Expression
+                .sExpnEnd
+                ']'  pAssignEquals % replaced pColonEquals
+                @Expression
+                .sExpnEnd
+            | *:
+                @CallStmt
+        ];
+
+CallStmt :
+        .sCallStmt
+        .sIdentifier    % procedure identifier accepted in the Statement rule
+        % accept zero or more actual parameters
+        [
+            | '(':
+                {
+                    @Expression
+                    .sExpnEnd
+                    % allow a field width specification to occur in calls
+                    % to the standard procedures write and writeln
+                    [
+                        | ':':
+                            .sFieldWidth
+                            @Expression
+                            .sExpnEnd
+                        | *:
+                    ]
+                    [
+                        | ',':
+                        | *:
+                            >
+                    ]
+                }
+                ')'
+            | *:        % no actual parameters
+        ]
+        .sParmEnd;
+
+UnlessStmt :
+        .sIfStmt
+        @Expression
+        .sNot
+        .sExpnEnd
+        'then'  .sThen
+        @Block
+        ;
+
+IfStmt :
+        .sIfStmt  %Emit if statement
+        @Expression  %Expression handling rule 
+        .sExpnEnd 
+        'then'  .sThen %Consume the then
+        @Block        %Begin block to encapsulate declarations
+        [
+            | 'else': %Event if is followed by an else statemenet
+                .sElse 
+                @Block   
+            | 'elsif': %Added elsif to work as nested if 
+                .sElse
+                .sBegin
+                @IfStmt %Call to nested if
+                .sEnd   
+            | *:
+        ];
+
+CaseStmt :
+        .sCaseStmt
+        @Expression
+        .sExpnEnd
+        'when'
+        @CaseAlternative
+        {[  | 'when':
+                @CaseAlternative
+            | 'else':
+                .sElse
+                @Block
+                'end'
+                >
+            | 'end':
+                >
+        ]}
+        .sCaseEnd;
+
+CaseAlternative :
+        % A case alternative is a statement labelled by
+        % one or more optionally signed integer constants
+
+        {
+            @OptionallySignedIntegerConstant
+            [
+                | ',':
+                | *:
+                    >
+            ]
+        }
+        .sLabelEnd
+        'then'  @Block;
+
+WhileStmt :
+        .sWhileStmt %Emit whileStmt
+        @Expression %The comparison used to exit loop
+        .sExpnEnd %End of the expression
+        'do'        %Consumes the 'do' that begins the loop
+        @Block; %Begins a block to encapsulate the loop, this was the only part changed from PtPascal
+
+DoStmt :
+    .sDo
+    .sBegin
+    [
+        | 'break':
+             'if'
+        | *:
+            @Block
+            'break'
+            'if'
+    ]
+    .sBreakIf
+    @Expression
+    .sExpnEnd
+    {[
+        | 'break':
+            'if'
+            .sBreakIf
+            @Expression
+            .sExpnEnd        
+        | 'end':
+            .sEnd
+            >
+        | *:
+            @Block
+            [  
+                | 'break':
+                    'if'
+                    .sBreakIf
+                    @Expression
+                    .sExpnEnd
+                | *:
+                    'end'
+                    .sEnd
+                    >
+            ]
+    ]};
+    
+
+Expression :
+        @SimpleExpression
+        [
+            | '==':
+                @SimpleExpression  .sEq
+            | pNotEqual: % replaced '<>'
+                @SimpleExpression  .sNE
+            | '<':
+                @SimpleExpression  .sLT
+            | '<=':
+                @SimpleExpression  .sLE
+            | '>':
+                @SimpleExpression  .sGT
+            | '>=':
+                @SimpleExpression  .sGE
+            | *:
+        ];
+
+SimpleExpression :
+        [
+            | '+':
+                @Term
+            | '-':
+                @Term  .sNegate
+            | *:
+                @Term
+        ]
+        {[
+            | '+':
+                @Term  .sAdd
+            | '-':
+                @Term  .sSubtract
+            | 'or':
+                .sInfixOr  @Term  .sOr
+            | *:
+                >
+        ]};
+
+Term :
+        @Subterm
+        {[
+            | '*':
+                @Subterm  .sMultiply
+            | 'div':
+                @Subterm  .sDivide
+            | 'mod':
+                @Subterm  .sModulus
+            | 'and':
+                .sInfixAnd  @Subterm  .sAnd
+            | '?':
+                % String index operator
+                @Subterm
+                .sIndex
+            | *:
+                >
+        ]};
+
+Subterm:
+    @Factor
+    {[
+        | '$':
+            @Factor '..' @Factor
+            .sSubstring
+
+        | *:
+            >
+    ]}
+    ;
+
+Factor :
+        [
+            | pIdentifier:
+                .sIdentifier
+                @IdentifierExtension
+            | pInteger:
+                .sInteger
+            | '(':
+                @Expression  ')'
+            | pNot: % replaced 'not' keyword
+                @Factor
+                .sNot
+            | pStringLiteral:
+                .sStringLiteral
+            | 'file':
+                .sFile '(' @Expression ')'
+                .sExpnEnd
+            | '#':
+                % String length operand
+                % expecting an expression but to obey precedence rules must call expression subrules equal to or higher than its precedence
+                @Factor
+                .sLength
+        ];
+
+IdentifierExtension :
+        % Handle subscripts and function actual parameter lists
+        [
+            | '[':
+                .sSubscript
+                @Expression  ']'
+                .sExpnEnd
+            | '(':
+                .sParmBegin
+                @Expression  ')'
+                .sExpnEnd
+                .sParmEnd
+            | *:
+        ];
+
+end

@@ -1,0 +1,5 @@
+% invalid unless statement because `then` is messing
+using output
+unless x == 4 
+    y = x
+end

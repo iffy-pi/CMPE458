@@ -1,0 +1,3 @@
+using output
+% String substring operation standalone
+a = "James" $ 1..3

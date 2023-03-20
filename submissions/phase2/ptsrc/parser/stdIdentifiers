@@ -1,0 +1,69 @@
+% Keywords and predeclared identifiers of PT Pascal 
+% Version 5.0 - 10 Dec 2020
+
+% Language keywords 
+%   These must be in the exact same order as the keyword token definitions 
+%   in the Output section of scan.ssl and the Input section of parser.ssl
+%   New quby identifiers added right above repeat
+
+div
+mod
+or
+and
+then
+else
+of
+end
+do
+array
+file
+var
+type
+if
+case
+while
+using
+val
+def
+break
+when
+module
+unless
+% remove these old tokens
+% end remove these tokens
+elsif
+
+% End of keywords
+
+% Predeclared identifiers
+%   These must be in the exact same order as the PredeclaredId 
+%   type definition in semantic.ssl.  
+
+% Predeclared type names
+integer
+string
+boolean
+text
+
+% Predeclared constants
+true
+false
+
+% Predeclared procedures and functions
+reset
+rewrite
+write
+writeln
+read
+readln
+chr
+ord
+eoln
+eof
+assign
+
+% Predeclared files
+input
+output
+
+% End of predeclared identifiers

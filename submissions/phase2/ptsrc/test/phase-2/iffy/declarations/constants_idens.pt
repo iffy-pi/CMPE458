@@ -1,0 +1,3 @@
+% setting constant to an identifier rather than a value
+using output
+val a = q

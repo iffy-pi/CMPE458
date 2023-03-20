@@ -1,0 +1,4 @@
+% Test valid constant usage
+using output
+val a = 10
+val b = "hello"

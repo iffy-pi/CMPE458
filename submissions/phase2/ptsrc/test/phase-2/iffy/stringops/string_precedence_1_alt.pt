@@ -1,0 +1,2 @@
+using ouptut
+a = # ("Hello World" ? "Hello" )

@@ -1,0 +1,76 @@
+@Program
+ % .sNewLine
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ .sIdentifier
+ [ (pVar)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pVar)
+  | pVar:
+  .sVar
+  @VariableDeclarations
+   ?pIdentifier (pIdentifier)
+   .sIdentifier
+   [ (pAssignEquals)
+   | *:
+   ] or >
+   ?pColon (pAssignEquals)
+   scan/parse error, line 3: syntax error at: =
+   @TypeBody
+    [ (pAssignEquals)
+    | *:
+    @SimpleType
+     [ (pAssignEquals)
+     | *:
+     @OptionallySignedIntegerConstant
+      [ (pAssignEquals)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pAssignEquals)
+       | *:
+       ?pIdentifier (pAssignEquals)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     ?pDotDot (pAssignEquals)
+     .sRange
+     @OptionallySignedIntegerConstant
+      [ (pAssignEquals)
+      | *:
+      @UnsignedIntegerConstant
+       [ (pAssignEquals)
+       | *:
+       ?pIdentifier (pAssignEquals)
+       }
+       .sIdentifier
+       ] or >
+       >>
+      ;UnsignedIntegerConstant
+      >>
+     ;OptionallySignedIntegerConstant
+     >>
+    ;SimpleType
+    >>
+   ;TypeBody
+   >>
+  ;VariableDeclarations
+  ] or >
+  }
+  [ (pAssignEquals)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program

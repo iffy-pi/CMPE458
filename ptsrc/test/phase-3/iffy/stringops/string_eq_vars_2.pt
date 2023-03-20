@@ -1,0 +1,8 @@
+% Testing non-string equality with variables
+using output
+var a : integer
+var b : integer
+var c : boolean
+a = 0
+b = 1
+c = ( a == b )
