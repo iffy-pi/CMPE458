@@ -886,19 +886,35 @@ ConstantDefinition :           % Process named constant definition
         
 
 HandleStringConstant :
-        % we handle string constants as vars
+        % we handle string constants as var declaration and assignment
         % we have consumed the identifier and the literal value
 
+        % handle the var declaration
         % first enter the type as string, equivalent to @TypeBody rule call in VariableDeclarations
         oTypeStkPush(tpString)
+        oTypeStkLinkToStandardType(stdString)
 
         % use the same rule in VariableDeclarations
         % enters the string variable into the symbol table
+        oCountPush(one) % one declaration
         @EnterVariableAttributes
 
-        % pop from the type stack and symbol stack
+        % now handle the assignment part
+        % based on AssignmentStmt rule
+
+        % pop from type stack because assignment call already handles pushing type
         oTypeStkPop
-        oSymbolStkPop
+
+        % identifier is already on top of symbol stack
+
+        .tAssignBegin
+        @Variable
+
+        % emit the string literal
+        @StringLiteral
+
+        % handle the assignment
+        .tAssignString
 
         ;
 
