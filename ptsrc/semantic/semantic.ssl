@@ -1754,6 +1754,7 @@ DoStmt :
         oFixPushTargetAddress
         {[
             | sBreakIf:
+                .tDoBreakIf
                 @BooleanControlExpression
                 .tDoTest
                 oFixPushForwardBranch
