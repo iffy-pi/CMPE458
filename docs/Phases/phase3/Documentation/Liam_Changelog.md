@@ -40,5 +40,5 @@ Then the rule calls the `EnterVariableAttributes` rule, which we now loop throug
                 oCountDecrement
 
                 // Rest of unmodified EnterVariableCode
-]}
+]} 
 ```
