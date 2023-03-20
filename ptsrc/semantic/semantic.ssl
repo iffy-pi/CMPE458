@@ -2047,12 +2047,52 @@ CompareIndexOperandTypes :
         oSymbolStkSetKind(syExpression);
 
 TernaryOperator :
-    sStringLiteral
-    sInteger
-    sInteger
-    sSubstring
-    .tSubstring
-    oTypeStkPush(tpString)
+        [
+            | sSubstring:
+                .tSubstring
+                @HandleSubstringOperandTypeChecking
+                oTypeStkPush(tpString) % result is tpString
+
+            | *:
+                >>
+        ]
+        % If an operator is present the result is an expression
+        oSymbolStkSetKind(syExpression)
+    ;
+
+HandleSubstringOperandTypeChecking:
+        % check the operands
+        % order on the stack would be string, int , int <top of stack>
+        % so pop and check
+        [ oTypeStkChooseKind % check first int operand
+            | tpInteger:
+                oTypeStkPop
+
+                [ oTypeStkChooseKind % check second int operand
+                    | tpInteger:
+                        oTypeStkPop
+
+                        [ oTypeStkChooseKind % check third string operand
+                            | tpString:
+                            | *:
+                                % not what we want, do error recovery
+                                #eTypeMismatch
+                                oTypeStkPop
+                        ]
+
+                    | *:
+                        % not what we want, do error recovery
+                        #eTypeMismatch
+                        oTypeStkPop
+                ]
+
+            | *:
+                % not what we want, do error recovery
+                #eTypeMismatch
+                oTypeStkPop
+        ]
+
+    ;
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
