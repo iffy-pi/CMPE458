@@ -898,6 +898,7 @@ HandleStringConstant :
         % enters the string variable into the symbol table
         oCountPush(one) % one declaration
         @EnterVariableAttributes
+        oCountPop % pop from the stack
 
         % now handle the assignment part
         % based on AssignmentStmt rule
@@ -915,6 +916,12 @@ HandleStringConstant :
 
         % handle the assignment
         .tAssignString
+
+        % then pop from the symbol stack and pop what variable pushed to type stack
+        oTypeStkPop % pops what StringLiteral put
+        oTypeStkPop % pops what Variable put
+        oSymbolStkPop
+
 
         ;
 
