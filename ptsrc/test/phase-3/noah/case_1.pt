@@ -1,0 +1,12 @@
+using output
+var x : integer
+var y : integer
+
+case x
+    when 6 then 
+        y = 7
+    when 7 then 
+        y = 8
+    else
+        y = 9
+end
