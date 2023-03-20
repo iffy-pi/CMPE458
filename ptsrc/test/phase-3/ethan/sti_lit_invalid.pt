@@ -1,0 +1,3 @@
+using output
+
+val temp = 24 ? "the"
