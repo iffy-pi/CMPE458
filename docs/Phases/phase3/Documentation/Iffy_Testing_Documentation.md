@@ -258,3 +258,8 @@ In Quby, string constants are handled in the same way as string variables.
 
 The files `stringops/string_const.pt` and `stringops/string_var.pt` declare a string constant and string variable respectively. By comparing the `semtrace` output, the specified handling of string constants can be verified.
 
+As seen by the text comparison below, the two output streams are identical:
+
+![[Pasted image 20230320002944.png]]
+
+

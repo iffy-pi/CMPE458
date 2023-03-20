@@ -4,7 +4,7 @@ Pictures were obtained using GitHub Commit Comparison:
 ```
 https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..<latest commit here>
 
-https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..c25944e1658fed5eb9b12f4993f65ae642e6acd3
+https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..9c6dae4f9c2355836cbdeeea9552e1578be21adb
 ```
 
 - Token Updates
@@ -124,12 +124,15 @@ This is done in Quby by modifying the `ConstantDefinitions` rule, after the iden
 
 We perform a choice operation on the value token after the identifier. If it is not a string literal, it is handled as a normal constant (`*` alternative). If it is a string literal, then we use the `HandleStringConstant` rule to implement the alternative handling:
 
-![[Pasted image 20230315234931.png]]
+![[Pasted image 20230320003350.png]]
 
-The rule simply performs the same calls as in the `VariableDeclarations` rule:
+The rule performs the same set of operations as done by `VariableDeclarations` and `AssignmentStmt`:
 - Push the type onto the type stack
 - Enter the variable attributes with `EnterVariableAttributes` rule (this also enters it into the Symbol Table)
 - Pop the type from the Type Stack and the local identifier from the Symbol Stack.
+- Emits `tAssignBegin` to begin an assignment statement, and uses `Variable` to get type information  (makes sense since identifier is still on top of the symbol stack)
+- Emits the relevant string literal
+- Finishes with `tAssignString` and clearing out the Symbol stack and type stack
 
 ## Implementing String Length
 Implementing the String length operation involved modifying the Unary operator to add a new alternative for the `sLength` token. The Unary operator is modified since the string length operation takes one operand:
