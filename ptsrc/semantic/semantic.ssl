@@ -846,6 +846,8 @@ Block :
                 @WhileStmt
             | sCaseStmt:
                 @CaseStmt
+            | sDo:
+                @DoStmt
             | sNullStmt:
             | *:
                 >
@@ -1748,6 +1750,7 @@ WhileStmt :
 
 DoStmt :
         .tDoBegin
+        sBegin
         oFixPushTargetAddress
         {[
             | sBreakIf:
