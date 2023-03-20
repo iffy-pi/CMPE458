@@ -4,7 +4,7 @@ Pictures were obtained using GitHub Commit Comparison:
 ```
 https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..<latest commit here>
 
-https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..9c6dae4f9c2355836cbdeeea9552e1578be21adb
+https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91c60..8b26a97
 ```
 
 - Token Updates
@@ -15,6 +15,7 @@ https://github.com/iffy-pi/CMPE458/compare/bc66a8bd7d0c80dd3202324ee4d0e48713c91
 	- Updated char type to string type
 	- Added string traps
 - Handling Length Operation
+- Handling Substring Operation
 - Handling String Literals
 - Change Handling of string constants to string literals
 - Added symbol table requirements
@@ -163,6 +164,32 @@ The choice rule operates on the type on top of the type stack (which is returned
 String inequality is handled in a similar way, but with the emission of the `tNot` to invert the results of `tStringEqual`:
 
 ![[Pasted image 20230319213412.png]]
+
+
+## Handling String Substring Operation
+The string substring operation is the only three-operand operation in Quby. The `TernaryOperator` rule was written to handle the substring operation and any other tri-operand operations in future:
+
+![[Pasted image 20230320144733.png]]
+
+The `TernaryOperator` rule follows a similar format to the `BinaryOperator` rule:
+- It begins with a choice to see if the current semantic token is a tri-op operation, if not the rule exists
+- If it is, then the appropriate t-code is emitted for the operation, followed by its type checking and then its result type is pushed onto the stack
+- At the end of the rule, we pop the symbol stack twice to remove the `syExpressions` of the last 2 operands, and then set the kind of the last one to an expression
+	- This makes it so that the symbol stack contains the result of the operation on top of it
+
+It is added to the Expression rule as the other operator rules are:
+
+![[Pasted image 20230320144827.png]]
+
+The substring operation is identified by the consumption of the `sSubstring` token. When this is matched, we emit the `tSubstring` T-code, handle the type checking with the `HandleStringOperandTypeChecking` rule, and then push the result type of the operation ( a string) to the type stack.
+
+The rule `HandleStringOperandTypeChecking` is as follows:
+
+![[Pasted image 20230320144130.png]]
+
+This follows the format for the standard type checking. Since operands are consumed left to right, the type stack will be in the order of: string, int, int. This is followed in the type checking above: it checks for an integer type, pops the stack again and checks for an integer type and then pops the stack again to check for a string type. If the string type is matched, the type stack is popped and the rule returns.
+
+If the types on the type stack do not match at any point, a type mismatch error is thrown and recovery is done by just popping the relevant number of types from the type stack.
 
 
 ## Changes to `semantic.pt`

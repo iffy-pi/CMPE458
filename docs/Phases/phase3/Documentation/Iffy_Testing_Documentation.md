@@ -27,6 +27,30 @@ DONE: 2 3 5
 
 - Describe semtrace and ptsemtrace
 
+All files and folders referred to in this section are under `ptsrc/test/phase-3/iffy`.
+
+
+## `ptsemtrace` and `semtrace`
+semtrace and ptsemtrace are scripts we wrote to optimize getting the SSL trace output of our test files. They can be found under the scripts folder included in the submission. semtrace runs SSL trace using the Quby compiler library, whereas ptsemtrace runs SSL trace using the Pascal compiler library.
+
+This allows us to compare the semantic token output of a Quby program to its equivalent Pascal program, allowing us to check for any errors.
+
+The script usage is shortly described below
+
+```
+semtrace <file> [<flag>]
+    <file> : required : file address : file to ssltrace on
+    <flag> : optional : string       : Flag to use to change trace behaviour
+
+Default behaviour prints out emitted tokens.
+```
+
+Supported flags:
+- `-ge`: Check the ssltrace output for errors using grep
+- `-o`: Print emitted tokens and semantic operations (like trace in Tutorial 6)
+- `-a`: Print entire trace (including branching and stuff)
+- `-u`: Token output for default is automaticaally stripped, use this flag to keep unstripped
+- Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens
 
 
 ## Handling String Literals
@@ -252,6 +276,131 @@ oEmitString
 oEmitTrapKind(trHalt)
 % value emitted 0
 ```
+
+## String Substring
+`stringops/string_substr_valid_1.pt` was written to verify that the t-code output for the substring operation is correct, it performs a simple substring operation with only literals.
+
+The semtrace output is shown below:
+
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralString
+oEmitString
+% value emitted 97
+% value emitted 98
+% value emitted 99
+% value emitted 100
+% value emitted 101
+% value emitted 102
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tLiteralInteger
+oEmitValue
+% value emitted 4
+.tSubstring
+.tAssignString
+
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+
+As seen above, when the assignment statement begins the string literal is emitted along with the following integer literals. This is then followed by the `tSubstring` operation and then the `tAssignString` to end the assignment. All stacks are empty at the end of the code indicating correctness, and furthermore the output matches the format for other operations.
+
+The substring operation also works with variables instead of literals. This was verified with the semtrace output of `stringops/string_substr_valid_2.pt` which uses a string variable and an integer variable for the substring operation:
+
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralAddress
+oEmitValue
+% value emitted 1028
+.tFetchString
+.tLiteralInteger
+oEmitValue
+% value emitted 1
+.tLiteralAddress
+oEmitValue
+% value emitted 2052
+.tFetchInteger
+.tSubstring
+.tAssignString
+
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+
+As seen above, the variables are identified with their address and fetch operations:
+- The string variable is recognized with the `tLiteralAddress` and then the `tFetchString` operation
+- The integer variable is recognized with the `tLiteralAddress` and then the `tFetchInteger` operation
+
+Error detection was also verified as incorrect types cause a type clash error. This was tested with `stringops/string_substr_invalid_1.pt` which attempts to use a string literal for the starting index. The semtrace output shows the error:
+
+```
+...
+      [ oTypeStkChooseKind (tpInteger)
+      | tpInteger:
+      oTypeStkPop
+      [ oTypeStkChooseKind (tpString)
+      | *:
+      #eTypeMismatch
+      semantic error, line 3: type clash
+      oTypeStkPop
+      oTypeStkPop
+      ] or >
+      >>
+     ;HandleSubstringOperandTypeChecking
+     oTypeStkPush(tpString)
+     ] or >
+     oSymbolStkPop
+     oSymbolStkPop
+...
+```
+
+The result type of the substring operation is also properly identified, as an attempt to assign it to a non-string variable (as done in `stringops/string_substr_invalid_2.pt`) results in a type clash error:
+
+```
+...
+    | *:
+    #eTypeMismatch
+    semantic error, line 3: type clash
+    ] or >
+    >>
+   ;CompareAndSwapTypes
+   @EmitAssign
+...
+```
+
+In both cases, there are no non-empty stacks which indicate proper error recovery.
 
 ## String Constants
 In Quby, string constants are handled in the same way as string variables.
