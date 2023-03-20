@@ -1,0 +1,4 @@
+% Testing string literals with multi-char string
+using output
+var a : boolean
+a = ( "abc" == "abc" )
