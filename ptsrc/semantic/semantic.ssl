@@ -1205,9 +1205,12 @@ VariableDeclarations :
 
         % pass new counter to EnterVariableAttributes so that we use current counter
         % to pop symbol stack
-        oCountPushValue % push counter value as new counter
+        % push counter value as new counter
+        oValuePushCount
+        oCountPushValue
         @EnterVariableAttributes
         oCountPop % pop the counter passed to it
+        oValuePop
 
         % pop the type stack at the end
         oTypeStkPop
