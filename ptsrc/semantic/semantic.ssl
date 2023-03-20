@@ -1731,6 +1731,7 @@ CaseStmt :
         oEmitNullAddress        % address of case branch table
         {[
             | sElse:
+                .tCaseEnd
                 .tCaseElse
                 @Statement
                 .tCaseMerge
@@ -1739,7 +1740,6 @@ CaseStmt :
                 oFixSwap                       
                 oCountIncrement
                 sCaseEnd
-                .tCaseEnd
                 >
 
             | sCaseEnd:
