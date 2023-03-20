@@ -2134,11 +2134,14 @@ HandleSubstringOperandTypeChecking:
                         % not what we want, do error recovery
                         #eTypeMismatch
                         oTypeStkPop
+                        oTypeStkPop
                 ]
 
             | *:
                 % not what we want, do error recovery
                 #eTypeMismatch
+                oTypeStkPop
+                oTypeStkPop
                 oTypeStkPop
         ]
 
