@@ -1165,7 +1165,7 @@ VariableDeclarations :
                 % The new definition will obscure the old one
         ]
 
-        %Loop through subsequent variable declarations
+        % Loop through subsequent variable declarations
         % Output pattern from parser is sVar sIdentifier sVar sIdentifier...
         {[
             | sVar: %If new variable is passed
@@ -1183,12 +1183,31 @@ VariableDeclarations :
             | *:
                 >        
         ]}
+        
+        % Push the type for all the variables onto type stack
         @TypeBody
-        @EnterVariableAttributes
 
-        %Pop counter at end
+        % pass new counter to EnterVariableAttributes so that we use current counter
+        % to pop symbol stack
+        oCountPushValue % push counter value as new counter
+        @EnterVariableAttributes
+        oCountPop % pop the counter passed to it
+
+        % pop the type stack at the end
         oTypeStkPop
-        oSymbolStkPop
+
+        % pop all the defined variables from the symbol stack
+        {[ oCountChoose
+            | zero:
+                >
+
+            | *:
+                oCountDecrement
+                oSymbolStkPop
+
+        ]}
+
+        % pop the original counter
         oCountPop;
 
 EnterVariableAttributes :
