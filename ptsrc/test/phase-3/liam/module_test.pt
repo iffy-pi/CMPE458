@@ -1,6 +1,6 @@
-program p (output);
-    module m
-        var i: integer;
-            j: integer;
-    end
-end.
+using output;
+
+module M
+    var i : integer
+end
+

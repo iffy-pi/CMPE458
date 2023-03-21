@@ -1,10 +1,6 @@
-program p (output);
-    module m
-        var i: integer;
-            j: integer;
+using output;
 
-        def *func (var x : integer) 
-            i := x;
-        end
-
-    end
+module m
+    def * add (var x : integer)
+        x = x + y
+end
