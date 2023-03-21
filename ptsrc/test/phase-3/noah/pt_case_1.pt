@@ -1,0 +1,9 @@
+program p (output);
+var x: integer;
+var y: integer;
+begin 
+    case x of
+        6: begin y := 8; end;
+        7: begin y := 9; end;
+    end;
+end.

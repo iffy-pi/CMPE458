@@ -846,6 +846,8 @@ Block :
                 @WhileStmt
             | sCaseStmt:
                 @CaseStmt
+            | sDo:
+                @DoStmt
             | sNullStmt:
             | *:
                 >
@@ -1748,9 +1750,11 @@ WhileStmt :
 
 DoStmt :
         .tDoBegin
+        sBegin
         oFixPushTargetAddress
         {[
             | sBreakIf:
+                .tDoBreakIf
                 @BooleanControlExpression
                 .tDoTest
                 oFixPushForwardBranch
@@ -1776,6 +1780,7 @@ CaseStmt :
         oEmitNullAddress        % address of case branch table
         {[
             | sElse:
+                .tCaseEnd
                 .tCaseElse
                 @Statement
                 .tCaseMerge
@@ -1784,7 +1789,6 @@ CaseStmt :
                 oFixSwap                       
                 oCountIncrement
                 sCaseEnd
-                .tCaseEnd
                 >
 
             | sCaseEnd:
@@ -2101,7 +2105,11 @@ TernaryOperator :
             | *:
                 >>
         ]
+
         % If an operator is present the result is an expression
+        % First pop expression types for integer operands
+        oSymbolStkPop
+        oSymbolStkPop
         oSymbolStkSetKind(syExpression)
     ;
 
@@ -2119,6 +2127,7 @@ HandleSubstringOperandTypeChecking:
 
                         [ oTypeStkChooseKind % check third string operand
                             | tpString:
+                                oTypeStkPop
                             | *:
                                 % not what we want, do error recovery
                                 #eTypeMismatch
@@ -2129,15 +2138,18 @@ HandleSubstringOperandTypeChecking:
                         % not what we want, do error recovery
                         #eTypeMismatch
                         oTypeStkPop
+                        oTypeStkPop
                 ]
 
             | *:
                 % not what we want, do error recovery
                 #eTypeMismatch
                 oTypeStkPop
+                oTypeStkPop
+                oTypeStkPop
         ]
 
-    ;
+        ;
 
 CompareAndSwapTypes :
         % Compare the top two type stack entries for assignment
