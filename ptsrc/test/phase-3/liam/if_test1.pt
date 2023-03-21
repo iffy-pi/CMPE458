@@ -1,0 +1,10 @@
+using output;
+
+var x : integer
+
+x = 1
+
+if x == 1 then
+    write (x); writeln;
+elsif x == 2 then 
+    write (x); writeln;

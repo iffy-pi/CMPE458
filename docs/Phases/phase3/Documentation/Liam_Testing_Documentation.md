@@ -2,6 +2,234 @@
 
 All code used for testing can be found in /ptsrc/test/phase-3/liam/
 
+## `if elsif else` testing
+
+In Quby, the `elsif` clause was added to if statements. By testing that the Quby and PT-pascal output the same tokens when compiling code with similar functionality allows us to ensure proper Quby functionality moving forward. The `if_test1.pt` is used with the Quby compiler and `if_test2.pt` runs with the PT-pascal compiler. 
+
+The Quby compiler had the following output:
+
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralInteger
+oEmitValue
+% value emitted 1
+.tAssignInteger
+.tIfBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tLiteralInteger
+oEmitValue
+% value emitted 1
+.tEQ
+.tIfThen
+oEmitNullAddress
+% value emitted -32767
+.tWriteBegin
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tParmEnd
+.tLiteralInteger
+oEmitValue
+% value emitted 10
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteInteger)
+% value emitted 8
+.tWriteEnd
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteln)
+% value emitted 6
+.tIfMerge
+oEmitNullAddress
+% value emitted -32767
+.tIfBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tEQ
+.tIfThen
+oEmitNullAddress
+% value emitted -32767
+.tWriteBegin
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tParmEnd
+.tLiteralInteger
+oEmitValue
+% value emitted 10
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteInteger)
+% value emitted 8
+.tWriteEnd
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteln)
+% value emitted 6
+.tIfEnd
+.tIfEnd
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+And the PT-pascal compiler outpetted the following:
+```
+.tFileDescriptor
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tFileBind
+.tLiteralAddress
+oEmitDataAddress
+% value emitted 0
+.tStoreInteger
+.tAssignBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tLiteralInteger
+oEmitValue
+% value emitted 1
+.tAssignInteger
+.tIfBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tLiteralInteger
+oEmitValue
+% value emitted 1
+.tEQ
+.tIfThen
+oEmitNullAddress
+% value emitted -32767
+.tWriteBegin
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tParmEnd
+.tLiteralInteger
+oEmitValue
+% value emitted 10
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteInteger)
+% value emitted 8
+.tWriteEnd
+.tIfEnd
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteln)
+% value emitted 6
+.tIfBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tLiteralInteger
+oEmitValue
+% value emitted 2
+.tEQ
+.tIfThen
+oEmitNullAddress
+% value emitted -32767
+.tWriteBegin
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tLiteralAddress
+oEmitValue
+% value emitted 4
+.tFetchInteger
+.tParmEnd
+.tLiteralInteger
+oEmitValue
+% value emitted 10
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteInteger)
+% value emitted 8
+.tWriteEnd
+.tIfEnd
+.tTrapBegin
+.tLiteralAddress
+oEmitValue
+% value emitted 0
+.tVarParm
+.tParmEnd
+.tTrap
+oEmitTrapKind(trWriteln)
+% value emitted 6
+.tTrapBegin
+.tTrap
+oEmitTrapKind(trHalt)
+% value emitted 0
+```
+
+As seen by the two outputs above, both returned similar T-tokens
+
+
 ## `Module` Testing
 
 The code for testing the module can be found in the file `module_test.pt` The file tests to see if the module declarations emit the correct values and store the module identifier on the stack so it can't be used once again. 
