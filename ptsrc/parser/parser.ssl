@@ -235,6 +235,7 @@ Module : %Module rule added to parser for module handling
                 .sIdentifier
         ]
         @Block       %Emit begin followed by declarations and statements, then end. 
+        'end'
         ;
 
 ConstantDefinitions :
