@@ -69,9 +69,9 @@ You can use `ptsemtrace` to see the generated t-codes for the pascal compiler, a
 
 Script usage information (applies to both scripts):
 ```
-semtrace $file [$flag]
-    $file : required : file address : file to ssltrace on
-    $flag : optional : string       : Flag to use to change trace behaviour
+semtrace <file> [<flag>]
+    <file> : required : file address : file to ssltrace on
+    <flag> : optional : string       : Flag to use to change trace behaviour
 
 Default behaviour prints out emitted tokens.
 ```
