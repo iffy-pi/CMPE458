@@ -1,0 +1,8 @@
+program p (output);
+    var i, j, k : int;
+    begin
+    i = 1;
+    j = 1;
+    k = 1;
+    k = k + i + j;
+end.

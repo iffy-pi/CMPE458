@@ -1,0 +1,10 @@
+program p (output);
+    module m
+        var i: integer;
+            j: integer;
+
+        def *func (var x : integer) 
+            i := x;
+        end
+
+    end

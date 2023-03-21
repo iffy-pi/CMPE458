@@ -1,0 +1,10 @@
+program p (output);
+    module m
+        var i: integer;
+            j: integer;
+    end
+    var m: string;
+    begin
+
+    m = "Hello"
+end.
