@@ -42,3 +42,4 @@ Then the rule calls the `EnterVariableAttributes` rule, which we now loop throug
                 // Rest of unmodified EnterVariableCode
 ]} 
 ```
+The above looping was also used to pop from the symbol stack at the end of the variable declerations. 
