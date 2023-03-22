@@ -848,6 +848,8 @@ Block :
                 @CaseStmt
             | sDo:
                 @DoStmt
+            | sModule:
+                @ModuleDefinition
             | sNullStmt:
             | *:
                 >
@@ -1232,9 +1234,8 @@ VariableDeclarations :
             | *:
                 oCountDecrement
                 oSymbolStkPop
-
         ]}
-
+        
         % pop the original counter
         oCountPop;
 
