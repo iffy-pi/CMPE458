@@ -64,7 +64,7 @@ if [[ -f $SUBFOLDER/README.md ]]; then
 
 else
     echo "Copying default README from phase1/"
-    cp $SCRIPT_DIR/phase1/README.md README.md
+    cp $SCRIPT_DIR/phase1/README.md $SUBFOLDER/README.md
     echo "Dont forget to update the README!"
 fi
 
