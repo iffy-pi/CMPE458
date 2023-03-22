@@ -45,6 +45,11 @@ for name in ${docs[*]}; do
     done
 done
 
+echo "Copying Scripts folder...."
+if [[ -d $SUBFOLDER/scripts ]]; then
+    rm -rf $SUBFOLDER/scripts
+fi
+cp -r $REPODIR/scripts $SUBFOLDER/scripts
 
 # Copy the README
 if [[ -f $SUBFOLDER/README.md ]]; then
