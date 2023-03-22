@@ -1,0 +1,6 @@
+using output;
+
+module m
+    def * add (var x : integer)
+        x = x + y
+end

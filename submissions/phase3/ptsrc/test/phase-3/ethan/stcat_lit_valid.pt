@@ -1,0 +1,4 @@
+using output
+
+var temp : string
+temp = "Hello " + "World"

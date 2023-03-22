@@ -1,0 +1,3 @@
+using output
+
+type temp, temp2 : string

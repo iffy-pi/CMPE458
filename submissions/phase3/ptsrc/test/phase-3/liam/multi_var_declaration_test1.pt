@@ -1,0 +1,3 @@
+using output;
+var i, j : integer
+var x, y : integer

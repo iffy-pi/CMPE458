@@ -1,0 +1,3 @@
+% valid var declaration with commas
+using output
+var a, b : integer

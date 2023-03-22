@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# just runs the scan tracer
+# directory of current script to make the command relative to script directory
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+PTSRC_DIR=$SCRIPT_DIR/../ptsrc
+LIB_PT_DIR=$PTSRC_DIR/lib/pt
+
+if (( $# < 1 )) ; then
+    echo "Must specify test file"
+    exit 0
+fi
+
+
+flag=$2
+grep_for_error=0
+
+if [[ "$flag" = "-a" ]]; then
+    flag=""
+
+elif [[ "$flag" = "-ge" ]]; then
+    grep_for_error=1
+
+elif [[ "$flag" = "" ]]; then
+    flag=-e
+
+fi
+
+if [[ "$grep_for_error" = "1" ]]; then
+    ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def -a | grep "error"
+else
+    ssltrace "ptc -o2 -t2 -L $LIB_PT_DIR $1" $LIB_PT_DIR/parser.def $flag
+fi

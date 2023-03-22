@@ -1,0 +1,3 @@
+% invalid declaration, missing identifier
+using output
+var : integer

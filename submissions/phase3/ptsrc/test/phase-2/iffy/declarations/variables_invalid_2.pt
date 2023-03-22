@@ -1,0 +1,3 @@
+% invalid comma declaration missing identifier
+using output
+var a, : integer

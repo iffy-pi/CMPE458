@@ -1,0 +1,66 @@
+@Program
+ ?pUsing (pUsing)
+ .sProgram
+ ?pIdentifier (pIdentifier)
+ % .sNewLine
+ % .sNewLine
+ .sIdentifier
+ [ (pIdentifier)
+ | *:
+ ] or >
+ .sParmEnd
+ @Block
+  .sBegin
+  [ (pIdentifier)
+  | pIdentifier:
+  @AssignmentOrCallStmt
+   [ (pAssignEquals)
+   | pAssignEquals:
+   .sAssignmentStmt
+   .sIdentifier
+   @Expression
+    @SimpleExpression
+     [ (pStringLiteral)
+     | *:
+     @Term
+      @Subterm
+       [ (pStringLiteral)
+       | *:
+       @Factor
+        [ (pStringLiteral)
+        | pStringLiteral:
+        .sStringLiteral
+        ] or >
+        >>
+       ;Factor
+       >>
+      ;Subterm
+      [ (pDollar)
+      | *:
+      ] or >
+      >>
+     ;Term
+     [ (pDollar)
+     | *:
+     ] or >
+     >>
+    ;SimpleExpression
+    [ (pDollar)
+    | *:
+    >>
+   ;Expression
+   .sExpnEnd
+   ] or >
+   >>
+  ;AssignmentOrCallStmt
+  ] or >
+  }
+  [ (pDollar)
+  | *:
+  ] or >
+  .sEnd
+  >>
+ ;Block
+ >>
+;Program
+scan/parse error, line 3: syntax error at: $

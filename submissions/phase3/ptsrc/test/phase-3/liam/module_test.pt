@@ -1,0 +1,6 @@
+using output;
+
+module M
+    var i : integer
+end
+

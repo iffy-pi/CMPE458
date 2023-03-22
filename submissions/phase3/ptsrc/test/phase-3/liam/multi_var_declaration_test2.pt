@@ -1,0 +1,8 @@
+Program p(output);
+var i : integer;
+var j : integer;
+var x : integer;
+var y : integer;
+begin 
+
+end.

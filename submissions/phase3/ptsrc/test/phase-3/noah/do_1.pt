@@ -1,0 +1,10 @@
+using output
+
+var x: integer
+x = 1
+
+do
+    break if x < 42
+    x = x + 1
+end
+

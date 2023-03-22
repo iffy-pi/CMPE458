@@ -1,0 +1,3 @@
+% invalid constant declaration with operator
+using output
+val a : 28

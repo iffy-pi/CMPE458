@@ -1,0 +1,6 @@
+using output;
+
+module M
+    x = 1
+    y = 2
+end

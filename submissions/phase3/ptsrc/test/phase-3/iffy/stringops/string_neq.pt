@@ -1,0 +1,4 @@
+% Testing string inequality
+using output
+var a : boolean
+a = ( "a" != "b" )

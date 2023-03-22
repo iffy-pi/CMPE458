@@ -1,0 +1,4 @@
+% Testing inequality for int
+using output
+var a : boolean
+a = ( 0 != 1 )
