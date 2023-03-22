@@ -1,0 +1,9 @@
+using output
+
+val nelements = 25
+
+var st1 : string
+var st2 : integer
+
+st1 = "Hello there"
+st2 = st1 ? nelements

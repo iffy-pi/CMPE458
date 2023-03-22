@@ -1423,7 +1423,7 @@ ModuleDefinition:
         oSymbolStkPop
        
 
-        %Remove nonpublic symbols from scop and merge public symbols to outside scope.
+        %Remove nonpublic symbols from scope and merge public symbols to outside scope.
         oSymbolTblStripScope
         oSymbolTblMergeScope
         ;
@@ -2000,7 +2000,6 @@ BinaryOperator :
                         oTypeStkPush(tpInteger) % result type
                 ]
                 @CompareOperandAndResultTypes
-
             | sSubtract:
                 .tSubtract
                 oTypeStkPush(tpInteger)
@@ -2058,7 +2057,6 @@ BinaryOperator :
                 @CompareRelationalOperandTypes
             | sIndex:
                 .tIndex
-                oTypeStkPush(tpInteger)
                 @CompareIndexOperandTypes
             | sMultiply:
                 .tMultiply
@@ -2079,8 +2077,7 @@ BinaryOperator :
         oSymbolStkSetKind(syExpression);
 
 CompareIndexOperandTypes :
-        % Verify that the types of the two operands are string
-        % expressions
+        % Verify that the types of the two operands are string expressions
         [ oTypeStkChooseKind
             | tpString:
                 oTypeStkPop
@@ -2093,6 +2090,11 @@ CompareIndexOperandTypes :
                 #eOperandOperatorTypeMismatch
                 oTypeStkPop
         ]
+        % Pop the final handled operand from the type stack.
+        oTypeStkPop
+
+        % The index operator returns an integer, so we push an integer onto the type stack.
+        oTypeStkPush(tpInteger)
         oSymbolStkPop
         oSymbolStkSetKind(syExpression);
 

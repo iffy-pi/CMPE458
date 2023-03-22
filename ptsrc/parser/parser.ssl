@@ -201,20 +201,27 @@ Block :
                 ]
 
                 @Block
+                pEnd
             | pIdentifier:
                 @AssignmentOrCallStmt
             | 'if': 
-                @IfStmt    
+                @IfStmt
+                pEnd
             | 'while':
                 @WhileStmt
+                pEnd
             | 'case':
                 @CaseStmt
+                pEnd
             | 'do':
                 @DoStmt
+                pEnd
             | 'module':   %Adding in check for module declaration in block
                 @Module
+                pEnd
             | 'unless':
                 @UnlessStmt
+                pEnd
             | pSemicolon:
                 % semicolons are considered null declarations so we dont care for them
             |*:

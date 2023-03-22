@@ -1,0 +1,4 @@
+using output
+
+var temp : integer
+temp = 24 ? "the"

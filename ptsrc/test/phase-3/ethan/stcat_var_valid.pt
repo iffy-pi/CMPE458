@@ -1,0 +1,9 @@
+using output
+
+var st1 : string
+var st2 : string
+var st3 : string
+
+st1 = "Hello "
+st2 = "World"
+st3 = st1 + st2
