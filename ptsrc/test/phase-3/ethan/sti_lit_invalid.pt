@@ -1,3 +1,4 @@
 using output
 
-val temp = 24 ? "the"
+var temp : integer
+temp = 24 ? "the"

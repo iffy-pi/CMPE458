@@ -11,7 +11,3 @@ end
 def * swap
     var t : integer
 end
-
-module * print 
-    var i: integer
-end
