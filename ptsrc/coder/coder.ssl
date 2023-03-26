@@ -1559,6 +1559,8 @@ OperandPushVariable:
                     @OperandSubscriptIntegerPop
                 | tSubscriptBoolean:
                     @OperandSubscriptBooleanPop
+                | tSubscriptString:
+                    % tSubscriptString goes here!
             ]
         | *:    
             % not a subscripted variable
