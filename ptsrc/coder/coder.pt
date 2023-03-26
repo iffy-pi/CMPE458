@@ -41,7 +41,7 @@ program Coder (output, coderSsl, tCode, object, options);
         oOperandChooseMode = 17; { >>16 }
         oOperandPushVariable = 18;
         oOperandPushInteger = 19;
-        oOperandPushChar = 20;
+        oOperandPushString = 20;
         oOperandPushBoolean = 21;
         oOperandPushJumpCondition = 22; { (15) }
         oOperandChooseJumpCondition = 23; { >>15 }
