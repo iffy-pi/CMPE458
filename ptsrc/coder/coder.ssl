@@ -16,7 +16,7 @@
 %    The coder attempts to produce locally good code by maintaining a
 %    stack of data descriptors which mimic the contents of the runtime
 %    stack during expression processing.  The coder translates Boolean
-%    expressions into control flow.
+%    expressions into control flow. 
 
 
 Input:
