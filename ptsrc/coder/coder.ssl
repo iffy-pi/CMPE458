@@ -287,7 +287,7 @@ mechanism OperandStack:
 
     oOperandPushChar
         % Push an entry with the value of the last accepted character
-        % (tLiteralChar tcode), length byte and manifest addressing mode.
+        % (tLiteralString tcode), length byte and manifest addressing mode.
 
     oOperandPushBoolean
         % Push an entry with the value of the last accepted Boolean
@@ -1475,8 +1475,6 @@ OperandPushExpression:
             @OperandPushVariable
         | tLiteralInteger:
             oOperandPushInteger
-        | tLiteralChar:
-            oOperandPushChar
         | tLiteralBoolean:
             oOperandPushBoolean
         | tLiteralString:
@@ -2061,7 +2059,7 @@ OperandPushExpressionAssignPopPop:
             @OperandPushVariable
         | tLiteralInteger:
             oOperandPushInteger
-        | tLiteralChar:
+        | tLiteralString:
             oOperandPushChar
         | tLiteralBoolean:
             oOperandPushBoolean
