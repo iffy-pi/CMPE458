@@ -812,7 +812,7 @@ Routine:
                         | tStoreInteger, tStoreAddress:
                             oOperandSetLength(word)
                             @OperandAssignIntegerPopPop
-                        | tStoreChar:
+                        | tStoreString:
                             oOperandSetLength(byte)
                             @OperandAssignCharPopPop
                         | tStoreBoolean:
