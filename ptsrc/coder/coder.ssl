@@ -812,8 +812,7 @@ Routine:
                             oOperandSetLength(word)
                             @OperandAssignIntegerPopPop
                         | tStoreString:
-                            oOperandSetLength(byte)
-                            @OperandAssignCharPopPop
+                            % tStoreString goes here!
                         | tStoreBoolean:
                             oOperandSetLength(byte)
                             @OperandAssignBooleanPopPop
@@ -2061,6 +2060,8 @@ OperandPushExpressionAssignPopPop:
         | tAssignInteger:
             @OperandAssignIntegerPopPop
             >
+        | tAssignString:
+            % tAssignString goes here!
         | tAssignBoolean:
             @OperandAssignBooleanPopPop
             >
