@@ -164,16 +164,24 @@ type Integer:
         trReadln = 4
         trWrite = 5
         trWriteln = 6
-        trWriteString = 7
         trWriteInteger = 8
-        trWriteChar = 9
         trReadInteger = 10
-        trReadChar = 11
         trAssign = 12
         trSubscriptAbort = 13
         trCaseAbort = 14
         trEoln = 15
         trEof = 16
+        % new trap codes ( based on phase 4)
+        trAssignString = 101
+        trChrString = 102
+        trConcatenate = 103
+        trSubstring = 104
+        trLength = 105
+        trStringIndex = 106
+        trStringEqual = 107
+        trReadString = 108
+        trWriteString = 109
+        % end new trap codes
 
         % Data kinds
         byte = 1
