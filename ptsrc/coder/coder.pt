@@ -41,7 +41,7 @@ program Coder (output, coderSsl, tCode, object, options);
         oOperandChooseMode = 17; { >>16 }
         oOperandPushVariable = 18;
         oOperandPushInteger = 19;
-        oOperandPushChar = 20;
+        oOperandPushString = 20;
         oOperandPushBoolean = 21;
         oOperandPushJumpCondition = 22; { (15) }
         oOperandChooseJumpCondition = 23; { >>15 }
@@ -2238,12 +2238,6 @@ program Coder (output, coderSsl, tCode, object, options);
                             OperandPush (mManifest, compoundTokenValue, undefined, word)
                         end;
 
-                    oOperandPushChar:
-                        begin
-                            Assert ( (compoundToken = tLiteralChar), assert19);
-                            OperandPush (mManifest, compoundTokenValue, undefined, byte)
-                        end;
-
                     oOperandPushBoolean:
                         begin
                             Assert ( (compoundToken = tLiteralBoolean), assert20);
@@ -2291,6 +2285,10 @@ program Coder (output, coderSsl, tCode, object, options);
 
                     oOperandPushProcedure:
                         OperandPushProcedure;
+
+                    oOperandPushString:
+                        { Using the defined procedure since strings are handled by their address }
+                        OperandPushStringAddress;
 
                     oOperandPushStringAddress:
                         OperandPushStringAddress;
