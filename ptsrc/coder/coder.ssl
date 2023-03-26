@@ -185,6 +185,7 @@ type Integer:
 
         % Data kinds
         byte = 1
+        string = 3
         word = 2;   % 4 bytes on x86
 
 
