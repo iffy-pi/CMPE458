@@ -130,7 +130,7 @@ Output :
         tIfBegin
         tIfEnd
         tCaseBegin
-        tWhileBegin % to remove
+        tWhileBegin
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -140,41 +140,54 @@ Output :
         tWriteEnd
         tReadEnd
         % New output tokens
-        tConcatenate % string operators added here because same location as std operators
-                        % dont take any operand themselves, take one of the compound codes
+        tConcatenate
         tSubstring
         tLength
         tIndex
         tStringEqual
-        tDoBegin % new item for do
+        tDoBegin
         % end new output tokens
+
+        % remove these old tokens tokens (added for coder.ssl)
+        tStoreChar
+        tRepeatBegin
+        tRepeatControl
+        tSubscriptChar
+        tFetchChar
+        tAssignChar
+        % end remove these old tokens
+
 
         % Compound T-codes - T-code operations that take an operand
         tLiteralAddress
         firstCompoundTcode = tLiteralAddress
         tLiteralInteger
         tLiteralBoolean
-        % tSkipString % to remove
-        % tStringData % to remove
         tLiteralString
         tIfThen
         tIfMerge
         tCaseSelect
         tCaseMerge
         tCaseEnd
-        tWhileTest % to remove
-        tWhileEnd % to remove 
+        tWhileTest
+        tWhileEnd
         tSkipProc
         tCallEnd
         tLineNumber
         % new compund t codes
-        tDoBreakIf % compound to match ifthen t codes
-        tDoTest % compound to match while t codes
+        tDoBreakIf
+        tDoTest
         tDoEnd
-
-        tCaseElse % new t code for case
-                  % compound to match ifthen t codes
+        tCaseElse 
         % end new compound t codes
+
+        % remove these old tokens tokens (added for coder.ssl)
+        tSkipString
+        tStringData
+        tRepeatTest
+        tLiteralChar
+        % end remove these old tokens
+
         tTrap
         lastCompoundTcode = tTrap
         % End of file marker T-code
