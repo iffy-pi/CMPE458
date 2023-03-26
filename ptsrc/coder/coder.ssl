@@ -732,11 +732,10 @@ Block:
     % and file descriptors, which are emitted as assignment statements, 
     % and nested procedure definitions.
     {[
-        | tSkipString:
+        | tLiteralString:
             % Branch around a string constant's character data 
             % in Linux we simply emit it to the data area instead
             oEmitNone(iData)                    %       .data
-            tStringData
             oEmitString                         % sNN:  .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
 
@@ -1478,13 +1477,8 @@ OperandPushExpression:
         | tLiteralBoolean:
             oOperandPushBoolean
         | tLiteralString:
-            % Get a string literal's address
-            oOperandPushStringAddress
-            @EmitStringAddress                  %       lea     sNNN, %T
-        | tSkipString:
             % Emit string literal to data area
             oEmitNone(iData)                    %       .data
-            tStringData
             oEmitString                         % sNNN: .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
         | tNegate:
@@ -2060,7 +2054,10 @@ OperandPushExpressionAssignPopPop:
         | tLiteralInteger:
             oOperandPushInteger
         | tLiteralString:
-            oOperandPushString
+            % Emit string literal to data area
+            oEmitNone(iData)                    %       .data
+            oEmitString                         % sNNN: .asciz  "SSSSS"
+            oEmitNone(iText)                    %       .text
         | tLiteralBoolean:
             oOperandPushBoolean
         | tAssignInteger:
