@@ -1558,8 +1558,6 @@ OperandPushVariable:
             [
                 | tSubscriptInteger:
                     @OperandSubscriptIntegerPop
-                | tSubscriptChar:
-                    @OperandSubscriptCharPop
                 | tSubscriptBoolean:
                     @OperandSubscriptBooleanPop
             ]
@@ -2062,9 +2060,6 @@ OperandPushExpressionAssignPopPop:
             oOperandPushBoolean
         | tAssignInteger:
             @OperandAssignIntegerPopPop
-            >
-        | tAssignChar:
-            @OperandAssignCharPopPop
             >
         | tAssignBoolean:
             @OperandAssignBooleanPopPop
