@@ -73,7 +73,7 @@ fi
 
 if [[ "$keep_asm_file" != "1" ]]; then
     # output to the tempfile
-    cat $outputfile.s
+    cat $outputfile.s | sed -e 's/^ *//'
 fi
 
 if [[ "$keep_asm_file" != "1" ]]; then
