@@ -1,6 +1,51 @@
 #!/usr/bin/env bash
-# just runs the scan tracer
-# directory of current script to make the command relative to script directory
+# holds logic for semtrace, used by semtrace and ptsemtrace
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 LIB_PT_DIR=$SCRIPT_DIR/../ptsrc/lib/pt
-$SCRIPT_DIR/logic_semtrace $LIB_PT_DIR $*
+
+if [[ "$1" = "-pt" ]]; then
+    # use the pascal compiler library
+    echo "Using Pascal compiler!"
+    LIB_PT_DIR=$SCRIPT_DIR/../build/ptsrc/lib/pt
+    shift
+fi
+
+if (( $# < 1 )) ; then
+    echo "Must specify test file"
+    exit 0
+fi
+
+if `test ! -f $1`; then
+    echo "$1 is not a file!"
+    exit 0
+fi
+
+flag=$2
+
+# ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e | grep "error"
+
+if [[ "$flag" = "-ge" ]]; then
+    # grep for error
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | grep "error"
+
+elif [[ "$flag" = "-o" ]]; then
+    # print the tcodes and semantic oprations (like the sample provided in the tutorial)
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def | egrep "^ *[\.o%]"
+
+elif [[ "$flag" = "-a" ]]; then
+    # print everything
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def
+
+elif [[ "$flag" = "-u" ]]; then
+    # unstripped, does not do sed to it
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e
+
+elif [[ "$flag" != "" ]]; then
+    # pass the flag through
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def $flag
+else
+    # default behaviour
+    # only shows emitted tokens
+    ssltrace "ptc -o3 -t3 -L $LIB_PT_DIR $1" $LIB_PT_DIR/semantic.def -e | sed -e 's/^ *//'
+fi

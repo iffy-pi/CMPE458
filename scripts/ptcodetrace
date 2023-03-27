@@ -2,5 +2,4 @@
 # just runs the scan tracer
 # directory of current script to make the command relative to script directory
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-LIB_PT_DIR=$SCRIPT_DIR/../build/ptsrc/lib/pt
-$SCRIPT_DIR/logic_codetrace $LIB_PT_DIR $*
+$SCRIPT_DIR/codetrace -pt $*
