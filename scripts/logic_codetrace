@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# shared logic of codetrace and ptcodetrace
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+LIB_PT_DIR=$1
+shift
+
+
+if (( $# < 1 )) ; then
+    echo "Must specify test file"
+    exit 0
+fi
+
+if `test ! -f $1`; then
+    echo "$1 is not a file!"
+    exit 0
+fi
+
+flag=$2
+
+# split provided path into dir and filename
+parent=`echo $1 | sed -e 's#\(.*/\)\(.*\)#\1#'`
+leaf=`echo $1 | sed -e 's#\(.*/\)\(.*\)#\2#'`
+fname=`echo $leaf | sed -e 's#\(.*\)\(\.pt\)#\1#'`
+
+if [[ "$parent" = "$leaf" ]]; then 
+    parent=""
+fi
+
+asmfile=$parent$fname.s
+del_gen_asm_file=1
+
+if `test -f $asmfile`; then
+    # if file existed before compilation, then we should keep it
+    del_gen_asm_file=0
+fi
+
+if [[ $flag = "-asf" ]]; then
+    # user requested to keep assembly file
+    del_gen_asm_file=0
+    flag=-as
+fi
+
+if [[ "$flag" = "-ge" ]]; then
+    # grep for error
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def | grep "error"
+
+elif [[ "$flag" = "-o" ]]; then
+    # print the tcodes and semantic opratio -Sns (like the sample provided in the tutorial)
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def | egrep "^ *[\.o%]"
+
+elif [[ "$flag" = "-a" ]]; then
+    # print everything
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def
+
+elif [[ "$flag" = "-u" ]]; then
+    # unstripped, does not do sed to it
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def -e
+
+elif [[ "$flag" = "-as" ]]; then
+    # compile into assembly and show the assembly code
+    errfile=asmscripterr.txt
+    ptc -L $LIB_PT_DIR -S $1 > $errfile
+
+    errcont=`find ./ -empty -name $errfile`
+    error_occured=0
+
+    if [[ "$errcont" = "" ]]; then
+        # we are looking for empty error file
+        # if no empty error file is found, means error is non empty
+        # so an error occured
+        error_occured=1
+        cat $errfile
+    fi
+
+    # delete the error file 
+    rm $errfile
+
+    if [[ "$error_occured" = "1" ]]; then
+        # if an error occured
+        # no output files were generated can exit here
+        echo "An error occured compiling $1"
+    else
+        # print the assembly file
+        cat $asmfile | sed -e 's/^ *//'
+    fi
+
+elif [[ "$flag" != "" ]]; then
+    # pass the flag through
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def $flag
+else
+    # default behaviour
+    # only shows emitted tokens
+    ssltrace "ptc -o4 -t4 -L $LIB_PT_DIR $1 -S" $LIB_PT_DIR/coder.def -e | sed -e 's/^ *//'
+fi
+
+if [[ "$del_gen_asm_file" = "1" ]]; then
+    if `test -f $gen_asm_file`; then
+        rm $asmfile
+    fi
+else
+    echo ""
+    echo "$asmfile was saved"
+fi
