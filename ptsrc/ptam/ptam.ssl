@@ -37,6 +37,7 @@ type BOOLEAN :
         bTRUE;
 
 type INSTRUCTION :      % corresponds to semantic.ssl output
+        % Non-compound T-codes - T-code operations take no operands
         tMultiply 
         firstTcode = tMultiply
         tDivide
@@ -62,21 +63,21 @@ type INSTRUCTION :      % corresponds to semantic.ssl output
         tVarParm
         tFetchAddress
         tFetchInteger
-        tFetchChar
+        tFetchString
         tFetchBoolean
         tAssignBegin
         tAssignAddress
         tAssignInteger
-        tAssignChar
+        tAssignString
         tAssignBoolean
         tStoreAddress
         tStoreInteger
-        tStoreChar
+        tStoreString
         tStoreBoolean
         tSubscriptBegin
         tSubscriptAddress
         tSubscriptInteger
-        tSubscriptChar
+        tSubscriptString
         tSubscriptBoolean
         tArrayDescriptor
         tFileDescriptor
@@ -85,8 +86,6 @@ type INSTRUCTION :      % corresponds to semantic.ssl output
         tIfEnd
         tCaseBegin
         tWhileBegin
-        tRepeatBegin
-        tRepeatControl
         tCallBegin
         tParmEnd
         tProcedureEnd
@@ -95,15 +94,30 @@ type INSTRUCTION :      % corresponds to semantic.ssl output
         tTrapBegin
         tWriteEnd
         tReadEnd
+        % New output tokens
+        tConcatenate
+        tSubstring
+        tLength
+        tIndex
+        tStringEqual
+        tDoBegin
+        % end new output tokens
 
-        % Compound T-codes are those that take operands
-        tLiteralAddress 
+        % remove these old tokens tokens (added for coder.ssl)
+        tStoreChar
+        tRepeatBegin
+        tRepeatControl
+        tSubscriptChar
+        tFetchChar
+        tAssignChar
+        % end remove these old tokens
+
+
+        % Compound T-codes - T-code operations that take an operand
+        tLiteralAddress
         firstCompoundTcode = tLiteralAddress
         tLiteralInteger
-        tLiteralChar
         tLiteralBoolean
-        tSkipString
-        tStringData
         tLiteralString
         tIfThen
         tIfMerge
@@ -112,13 +126,26 @@ type INSTRUCTION :      % corresponds to semantic.ssl output
         tCaseEnd
         tWhileTest
         tWhileEnd
-        tRepeatTest
         tSkipProc
         tCallEnd
         tLineNumber
+        % new compund t codes
+        tDoBreakIf
+        tDoTest
+        tDoEnd
+        tCaseElse 
+        % end new compound t codes
+
+        % remove these old tokens tokens (added for coder.ssl)
+        tSkipString
+        tStringData
+        tRepeatTest
+        tLiteralChar
+        % end remove these old tokens
+
         tTrap
         lastCompoundTcode = tTrap
-
+        % End of file marker T-code
         tEndOfFile
         lastTcode = tEndOfFile;
 
