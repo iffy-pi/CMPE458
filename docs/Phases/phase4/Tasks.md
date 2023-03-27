@@ -1,0 +1,22 @@
+- tLiteralString
+- tFetchString
+- tAssignString
+	- OperandAssignStringPopPop
+- tStoreString
+- tSubscriptString
+- tConcatenate
+	- OperandConcatenatePop
+- tSubstring
+	- OperandSubstringPopPop
+- tIndex
+	- OperandIndexPop
+- tLength
+	- OperandLength
+- tChr
+	- OperandChr
+- tOrd
+	- OperandOrd
+- tStringEqual
+	- OperandStringEqualPop
+- tTrap trReadString - N/A
+- tTrap trWriteString - N/A
