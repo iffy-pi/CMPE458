@@ -82,3 +82,20 @@ Supported flags:
 - `-a`: Print entire trace (including branching and stuff)
 - `-u`: Token output for default is automaticaally stripped, use this flag to keep unstripped
 - Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens
+
+# Using codetrace and ptcodetrace
+Same as `semtrace` and `ptsemtrace` but just for the code generation phase instead.
+
+# Using qbasm and ptasm
+These are scripts that generate the assembly instructions for a given Quby and PT file respectively. `qbasm` uses the Quby compiler (in ptsrc/lib/pt) while `ptasm` uses the PT compiler (in build/ptsrc/lib/pt)
+
+Script usage is shown below (applies to both scripts):
+
+```
+qbasm <file> [<flag>]
+    <file> : required : file address : PT file to compile
+    <flag> : optional : string       : Flag to use to change trace behaviour
+```
+
+Supported flags:
+- `-o`: Instead of saving to `.s` file, outputs the assembly instructions in console
