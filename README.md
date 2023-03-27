@@ -84,7 +84,27 @@ Supported flags:
 - Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens
 
 # Using codetrace and ptcodetrace
-Same as `semtrace` and `ptsemtrace` but just for the code generation phase instead.
+Same as `semtrace` and `ptsemtrace` but just for the code generation phase instead, with some new flags:
+
+```
+codetrace <file> [<flag>]
+    <file> : required : file address : file to ssltrace on
+    <flag> : optional : string       : Flag to use to change trace behaviour
+
+Default behaviour prints out emitted tokens, and deletes generated assembly file (if it did not exist before call to codetrace)
+```
+
+Supported flags:
+- `-ge`: Check the ssltrace output for errors using grep
+- `-o`: Print emitted tokens and semantic operations (like trace in Tutorial 6)
+- `-a`: Print entire trace (including branching and stuff)
+- `-as`: Print the generated assembly code
+- `-asf`: Print the generated assembly code and also keep the generated assembly code file
+- `-f`: Keep the generated assembly code file
+- `-d` : Delete the generated assembly code file, even if it existed before
+- `-u`: Token output for default is automaticaally stripped, use this flag to keep unstripped
+- Can also specify any other flag, which will be passed through to ssltrace e.g. `-i` to print input tokens
+
 
 # Using qbasm and ptasm
 These are scripts that generate the assembly instructions for a given Quby and PT file respectively. `qbasm` uses the Quby compiler (in ptsrc/lib/pt) while `ptasm` uses the PT compiler (in build/ptsrc/lib/pt)

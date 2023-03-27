@@ -40,10 +40,22 @@ if `test -f $asmfile`; then
     del_gen_asm_file=0
 fi
 
+if [[ $flag = "-f" ]]; then
+    # user requested to keep assembly file
+    del_gen_asm_file=0
+    flag=""
+fi
+
 if [[ $flag = "-asf" ]]; then
     # user requested to keep assembly file
     del_gen_asm_file=0
     flag=-as
+fi
+
+if [[ $flag = "-d" ]]; then
+    # user requested to delete assembly file
+    del_gen_asm_file=1
+    flag=""
 fi
 
 if [[ "$flag" = "-ge" ]]; then
@@ -105,5 +117,5 @@ if [[ "$del_gen_asm_file" = "1" ]]; then
     fi
 else
     echo ""
-    echo "$asmfile was saved"
+    echo "Generated assembly file '$asmfile' was saved"
 fi
