@@ -2057,6 +2057,9 @@ OperandPushExpressionAssignPopPop:
             oEmitNone(iData)                    %       .data
             oEmitString                         % sNNN: .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
+            % push into temporary register?
+            % @OperandForceAddressIntoTemp
+
         | tLiteralBoolean:
             oOperandPushBoolean
         | tAssignInteger:
@@ -2064,6 +2067,7 @@ OperandPushExpressionAssignPopPop:
             >
         | tAssignString:
             % tAssignString goes here!
+            % Still a TODO
         | tAssignBoolean:
             @OperandAssignBooleanPopPop
             >

@@ -761,7 +761,7 @@ program Coder (output, coderSsl, tCode, object, options);
                         assert25:
                             write ('coder phase ended without consuming all of tCode token stream');
                         assert26:
-                            write ('compound token tCode is not tStringData in oEmitString');
+                            write ('compound token tCode is not tLiteralString in oEmitString');
                         assert27:
                             write ('compound token tCode is not tCallEnd in oOperandPushProcedure');
                         assert28:
@@ -1016,7 +1016,7 @@ program Coder (output, coderSsl, tCode, object, options);
         var
             i:  1 .. maxLiteralLength;
         begin
-            Assert ( (compoundToken = tStringData), assert26);
+            Assert ( (compoundToken = tLiteralString), assert26);
             write (object, '    .asciz  "');
 
             i := 1;
@@ -1349,7 +1349,7 @@ program Coder (output, coderSsl, tCode, object, options);
         { Emit the text associated with the last tLiteralString token accepted 
           (packed one character per byte). }
         begin
-            Assert ( (compoundToken = tStringData), assert26);
+            Assert ( (compoundToken = tLiteralString), assert26);
             { The string's T-code address is used as its label }
             EmitX86Label ('s', tCodeAddress);
             EmitX86StringLiteral;
