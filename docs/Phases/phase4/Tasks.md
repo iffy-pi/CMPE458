@@ -1,23 +1,44 @@
-## 
-- tLiteralString
-- tFetchString
-- tAssignString
-	- OperandAssignStringPopPop
-- tStoreString
-- tSubscriptString
-- tConcatenate
-	- OperandConcatenatePop
-- tSubstring
-	- OperandSubstringPopPop
-- tIndex
-	- OperandIndexPop
-- tLength
-	- OperandLength
-- tChr
-	- OperandChr
-- tOrd
-	- OperandOrd
-- tStringEqual
-	- OperandStringEqualPop
-- tTrap trReadString - N/A
-- tTrap trWriteString - N/A
+## Person Breakdown
+- Iffy
+	- coder.ssl: 1,2,3,4,6
+	- coder.pt: 1,5
+	- coder.ssl #1, coder.pt #1: Token updates
+- Ethan
+- Noah
+- Liam
+
+## TODOs
+- coder.ssl #5: Block rule updates
+- coder.ssl #7, #8, #9
+	- tLiteralString
+	- tFetchString
+	- tAssignString
+		- OperandAssignStringPopPop
+		- Also do coder.ssl #8
+	- tStoreString
+	- tSubscriptString
+		- Also do coder.ssl #9
+		- Also do coder.pt #3
+	- tConcatenate
+		- OperandConcatenatePop
+	- tSubstring
+		- OperandSubstringPopPop
+	- tIndex
+		- OperandIndexPop
+	- tLength
+		- OperandLength
+	- tChr
+		- OperandChr
+		- coder.ssl #9 : Removed optimzied case for tChr (I think it is referring to optimizing rule OperandChrAssignPopPop)
+	- tOrd
+		- OperandOrd
+		- coder.ssl #9: Removed Optimzized case for Tord
+	- tStringEqual
+		- OperandStringEqualPop
+	- tTrap trReadString
+		- N/A if we did things right
+	- tTrap trWriteString
+		- N/A if we did things right
+- coder.ssl #11 is just general for handling traps
+- coder.ssl #13 : Do statements modification
+- coder.ssl #14: Case statement else modification
