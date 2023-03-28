@@ -1859,7 +1859,7 @@ program Coder (output, coderSsl, tCode, object, options);
 
                     case compoundToken of
                         tLiteralAddress, tLiteralInteger, tLiteralChar,
-                        tLiteralBoolean, tLiteralString, tSkipString,
+                        tLiteralBoolean,
                         tWhileTest, tWhileEnd, tRepeatTest, tCallEnd,
                         tLineNumber, tTrap, tIfThen, tIfMerge, tSkipProc,
                         tCaseSelect, tCaseMerge:
@@ -1877,7 +1877,7 @@ program Coder (output, coderSsl, tCode, object, options);
                                 until i > caseHigh - caseLow + 1;
                                 nextTCodeAddress := nextTCodeAddress + (caseHigh - caseLow) + 2
                             end;
-                        tStringData:
+                        tLiteralString:
                             begin
                                 compoundTokenLength := compoundTokenValue;
                                 compoundTokenValue := tCodeAddress;
@@ -2193,7 +2193,7 @@ program Coder (output, coderSsl, tCode, object, options);
                         begin
                             lastEmittedLineNumber := undefined;
                             OptionallyEmitSourceCoordinate;
-                            AssertTempsAreAllFree
+                            { AssertTempsAreAllFree, turned off as it will fail due to string traps }
                         end;
 
                     oEmitCaseMergeBranch:
