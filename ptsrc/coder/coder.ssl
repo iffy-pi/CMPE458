@@ -2180,14 +2180,17 @@ OperandAssignStringPopPop:
     % call the trap
     oOperandPushMode(mTrap) % ... (mTrap, null)
     oOperandSetValue(trAssignString) % ... (mTrap, trAssignString)
+    oOperandSetLength(word)
     oEmitSingle(iCall) % call pttrap(trAssignString)
     oOperandPop
 
     % pop the arguments
     % push esp onto stack
     oOperandPushMode(mStackReg)
+    oOperandSetLength(word)
     % push 8 onto stack
     oOperandPushMode(mManifest)
+    oOperandSetLength(word)
     oOperandSetValue(eight)
     oEmitDouble(iAdd) % ... addl $8, %esp
 
