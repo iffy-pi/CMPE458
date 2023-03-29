@@ -1,13 +1,13 @@
 ## Person Breakdown
 - Iffy
-	- coder.ssl: 1,2,3,4,6
-	- coder.pt: 1,2,4,5,6
-	- tLiteralString - Iffy
-	- tFetchString - Iffy
-	- tAssignString - Iffy
-		- OperandAssignStringPopPop
-		- Also do coder.ssl #8
-	- tStoreString - Iffy
+	- coder.ssl: 1,2,3,4,6 - Done
+	- coder.pt: 1,2,4,5,6 - Done
+	- tLiteralString - Iffy - Done
+	- tFetchString - Iffy - Done
+	- tAssignString - Iffy - Done
+		- OperandAssignStringPopPop - Done
+		- Also do coder.ssl #8 - Done
+	- tStoreString - Iffy - Done
 - Ethan
 	- coder.ssl #5: Block rule updates - Ethan
 	- tConcatenate - Ethan
