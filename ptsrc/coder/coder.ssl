@@ -814,6 +814,7 @@ Routine:
                             @OperandAssignIntegerPopPop
                         | tStoreString:
                             % tStoreString goes here!
+                            @OperandAssignStringPopPop
                         | tStoreBoolean:
                             oOperandSetLength(byte)
                             @OperandAssignBooleanPopPop
