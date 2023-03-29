@@ -2070,6 +2070,8 @@ OperandPushExpressionAssignPopPop:
         | tAssignString:
             % tAssignString goes here!
             % Still a TODO
+            @OperandAssignStringPopPop
+            >
         | tAssignBoolean:
             @OperandAssignBooleanPopPop
             >
@@ -2159,6 +2161,41 @@ OperandPushExpressionAssignPopPop:
             @OperandEofFunction
     ]};
 
+OperandAssignStringPopPop:
+    % doing s1 = s2
+    % ... s1, s2
+    % Assigns right operand (top of stack) string to left operand
+    @SaveTempRegsToStack
+
+    % pushing s2 onto stack
+    @OperandForceAddressIntoTemp % ... s1, %T
+    @OperandForceToStack
+    @OperandPopAndFreeTemp % ... s1
+
+    % pushing s1 onto stack
+    @OperandForceAddressIntoTemp % ... %T
+    @OperandForceToStack
+    @OperandPopAndFreeTemp % ... 
+
+    % call the trap
+    oOperandPushMode(mTrap) % ... (mTrap, null)
+    oOperandSetValue(trAssignString) % ... (mTrap, trAssignString)
+    oEmitSingle(iCall) % call pttrap(trAssignString)
+    oOperandPop
+
+    % pop the arguments
+    % push esp onto stack
+    oOperandPushMode(mStackReg)
+    % push 8 onto stack
+    oOperandPushMode(mManifest)
+    oOperandSetValue(eight)
+    oEmitDouble(iAdd) % ... addl $8, %esp
+
+    oOperandPop
+    oOperandPop
+
+    @RestoreTempRegsFromStack
+    ;
 
 OperandNegateAssignPopPop:
     % Assign the negation of the right (top) operand's value to
