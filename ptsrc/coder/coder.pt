@@ -1855,9 +1855,9 @@ program Coder (output, coderSsl, tCode, object, options);
                 begin
                     compoundToken := acceptedToken;
                     read (tCode, compoundTokenValue);
-                    write('Compound token value!');
-                    writeln;
-                    write(compoundTokenValue);
+                    { write('Compound token value!'); }
+                    { writeln; }
+                    { write(compoundTokenValue); }
                     nextTCodeAddress := nextTCodeAddress + 1;
 
                     case compoundToken of
