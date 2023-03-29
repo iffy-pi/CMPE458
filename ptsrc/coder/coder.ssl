@@ -738,6 +738,7 @@ Block:
             oEmitNone(iData)                    %       .data
             oEmitString                         % sNN:  .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
+            @EmitStringAddress                  % lea    sNNN, %T
 
         | tArrayDescriptor:
             % Initialize an array's run-time bounds descriptor
@@ -1480,6 +1481,7 @@ OperandPushExpression:
             oEmitNone(iData)                    %       .data
             oEmitString                         % sNNN: .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
+            @EmitStringAddress                  % lea    sNNN, %T
         | tNegate:
             @OperandNegate
         | tAdd:
@@ -1549,6 +1551,11 @@ OperandPushVariable:
             oOperandSetMode(mStatic)
             @OperandForceIntoTemp               %       movl    addr, %T
             oOperandSetMode(mTempIndirect)      % ... (%T)
+        | tFetchString:
+            % strings are handled by pushing the address into a temp variable
+            % address is what is in the operand stack if we are doing tFetchString, therefore
+            % no indirect since we are not doing by reference here, strings are just represented by their address
+            @OperandForceIntoTemp
         | *:
     ]
     [
@@ -1568,7 +1575,7 @@ OperandPushVariable:
     [
         | tFetchInteger:
         | tFetchChar, tFetchBoolean:
-            oOperandSetLength(byte)
+            oOperandSetLength(byte)   
         | *: 
             % Value is not to be loaded
     ] ;
@@ -2057,9 +2064,7 @@ OperandPushExpressionAssignPopPop:
             oEmitNone(iData)                    %       .data
             oEmitString                         % sNNN: .asciz  "SSSSS"
             oEmitNone(iText)                    %       .text
-            % push into temporary register?
-            % @OperandForceAddressIntoTemp
-
+            @EmitStringAddress                  % lea    sNNN, %T
         | tLiteralBoolean:
             oOperandPushBoolean
         | tAssignInteger:
