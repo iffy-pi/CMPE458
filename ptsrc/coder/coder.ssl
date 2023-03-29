@@ -1572,7 +1572,7 @@ OperandPushVariable:
         | tFetchString:
             @EmitStringAddress % pushes the address into the temporary register i.e. lea SNNNN, %T
         | tFetchInteger:
-        | tFetchChar, tFetchBoolean:
+        | tFetchBoolean:
             oOperandSetLength(byte)   
         | *: 
             % Value is not to be loaded
