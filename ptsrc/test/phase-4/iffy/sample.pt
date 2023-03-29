@@ -1,3 +1,4 @@
 using output
 var a : string
-a = "abc"
+var b : string
+a = b
