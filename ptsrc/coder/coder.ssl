@@ -1551,11 +1551,6 @@ OperandPushVariable:
             oOperandSetMode(mStatic)
             @OperandForceIntoTemp               %       movl    addr, %T
             oOperandSetMode(mTempIndirect)      % ... (%T)
-        | tFetchString:
-            % strings are handled by pushing the address into a temp variable
-            % address is what is in the operand stack if we are doing tFetchString, therefore
-            % no indirect since we are not doing by reference here, strings are just represented by their address
-            @OperandForceIntoTemp
         | *:
     ]
     [
@@ -1573,6 +1568,8 @@ OperandPushVariable:
             % not a subscripted variable
     ]
     [
+        | tFetchString:
+            @EmitStringAddress % pushes the address into the temporary register i.e. lea SNNNN, %T
         | tFetchInteger:
         | tFetchChar, tFetchBoolean:
             oOperandSetLength(byte)   
