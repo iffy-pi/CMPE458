@@ -2161,6 +2161,20 @@ OperandPushExpressionAssignPopPop:
         | tLE:
             @OperandGreaterPop
             @OperandNot
+        | tConcatenate:
+            @OperandConcatenatePop
+        | tIndex:
+            @OperandIndexPop
+        | tLength:
+            @OperandLength
+        | tSubstring:
+            @OperandSubstringPopPop
+        | tStringEqual:
+            @OperandStringEqualPop
+        | tChr:
+            @OperandChr
+        | tOrd:
+            @OperandOrd
         | tEoln:
             @OperandEolnFunction
         | tEOF:
