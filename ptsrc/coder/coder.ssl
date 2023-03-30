@@ -2264,6 +2264,8 @@ OperandStringEqualPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop
+
 
     @RestoreTempRegsFromStack
     % movl %esi, %X
@@ -2313,6 +2315,9 @@ OperandSubstringPopPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop
+    oOperandPop
+
 
     @RestoreTempRegsFromStack
     % movl %esi, %X
@@ -2351,6 +2356,9 @@ OperandLength:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop
+    oOperandPop
+
 
     @RestoreTempRegsFromStack
     % movl %esi, %X
@@ -2396,6 +2404,9 @@ OperandIndexPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop
+    oOperandPop
+
 
     @RestoreTempRegsFromStack
     % movl %esi, %X
@@ -2440,6 +2451,8 @@ OperandConcatenatePop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop
+    oOperandPop
 
     @RestoreTempRegsFromStack
     
