@@ -1,4 +1,4 @@
 using output
 var a : string
 var b : string
-a = b
+a = (a + b)
