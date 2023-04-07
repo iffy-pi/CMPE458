@@ -1,6 +1,8 @@
 # CMPE458
 Repository for CMPE 458
 
+**The compiler for Quby was not completed, see the incompleted version (binaries and all) in the submissions/phase4 folder. The documents for Phase 4 can be found in docs/Phases/phase4.**
+
 # Repo Organization
 ptsrc/ contains the contents of the tarball (`tar xvf /cas/course/cisc458/pt23/pt23-student.tar.gz`)
 
@@ -29,17 +31,44 @@ source ~/.bash_profile
 
 which can be run automatically by adding it to your ~/.bashrc file.
 
-## Building Compiler
-You can rebuild the compiler by running:
-
-```
-make clean
+# Building Compiler
+## Building Up To Scanner
+```bash
+# go to root dir
+cd ptsrc/
+# make the scanner
 make scanner
+# update parser.pt
+python ../scripts/parser_def_paster.py
 ```
 
-Where `scanner` can be replaced with whatever make tag.
+## Building Up To Semantic Analyzer
+Note: All previous phases must be built in order to build current phase.
+
+```bash
+# go to semantic dir
+cd ptsrc/semtanic
+# make it
+make
+# update semantic.pt
+python ../../scripts/semantic_def_paster.py
+```
+
+## Building Up To Code Generator
+Note: All previous phases must be built in order to build current phase.
+
+```bash
+# go to coder dir
+cd ptsrc/coder
+# make it
+make
+# update coder.pt
+python ../../scripts/coder_def_paster.py
+```
 
 # Scripts ( /scripts )
+These are useful scripts that optimize testing and building processes.
+
 ## scantrace
 Implements the scanner trace command:
 
@@ -51,7 +80,7 @@ Where:
 - `$1` is the test file to pass in (was `test.pt` in the tutorial docs).
 - `$2` (optional) is the tracing flag ( `-i` for input tokens, `-e` for output tokens)
 
-# parser_def_paster
+## parser_def_paster/semantic_def_paster/coder_def_paster
 Handles the pasting of the scan.def and parser.def content into parser/parser.pt (Tutorial 2 Page 4)
 
 Run it with:
@@ -61,6 +90,8 @@ python parser_def_paster.py
 ```
 
 Note: You should first make the scanner (`make scanner`) and then run the paste script. You can verify everything is pasted correctly by making the scanner again (it should not give any errors this time).
+
+There are similar scripts for the semantic and coder phase, under similar naming structure.
 
 ## Using semtrace and ptsemtrace
 These are the designed ssltrace script for semantic section. `ptsemtrace` is the ssltrace for the Pascal compiler (using build/ptsrc/lib/pt). `semtrace` is the ssltrace for the Quby compiler (using ptsrc/lib/pt).
