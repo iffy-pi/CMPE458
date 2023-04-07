@@ -2932,8 +2932,10 @@ OperandEmitDividePopPop:
 
 OperandChr:
     @SaveTempRegsToStack
+
     % push i1
     @OperandForceToStack
+    oOperandPop
 
     % call trChrStringTrap
     oOperandPushMode(mTrap)
@@ -2949,6 +2951,8 @@ OperandChr:
     oOperandSetLength(word)
     oOperandSetValue(four)
     oEmitDouble(iAdd) % ... addl $4, %esp
+    oOperandPop
+    oOperandPop
 
     % getting result
     % ie movl %eax, %esi
@@ -2957,6 +2961,7 @@ OperandChr:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
     
@@ -2965,30 +2970,41 @@ OperandChr:
     ;
 
 OperandOrd:
-    % % lea s1 , %T
-    % @OperandForceAddressIntoTemp
-    % % movl $0, %X
-    % % TODO: push temp onto stack
-    % % oOperandPushMode(mStackReg)
-    % % oOperandSetLength(word)
-    % oOperandPushMode(mManifest)
-    % oOperandSetLength(word)
-    % oOperandSetValue(zero)
-    % oEmitDouble(iMov) % ... movl $0, %X
+    % lea s1 , %T
+    % push string addr onto stack
+    @OperandForceAddressIntoTemp
 
-    % Byte operand is on top of operand stack
-    % Fill a register with integer zero
-    oOperandPushMode(mManifest)
-    oOperandSetValue(zero)
-    oOperandSetLength(word)
-    @OperandForceIntoTemp       %       movl    $0, %T
-    % Move the character value into the low order byte
+    % set mode to indirect
+    oOperandSetMode(mTempIndirect)
+
+    % set length to byte
     oOperandSetLength(byte)
+    
+    % pushing %X onto the stack
+    oTempAllocate
+    oOperandPushTemp
+
+    % pushing 0 onto stack
+    oOperandPushMode(mManifest)
+    oOperandSetLength(word)
+    oOperandSetValue(zero)
+
+    oEmitDouble(iMov) % ... movl $0, %X
+
+    oOperandPop % pops 0
+
+    % set %X to byte
+    oOperandSetLength(byte)
+
+    % swap the operands for mov operation
+    % ... %T %X ==> ... %X %T
     oOperandSwap
-    oEmitDouble(iMov)           %       movb    y, %T
+    oEmitDouble(iMov) % movb (%T), %X
+
+    % swap again to free temp
+    oOperandSwap
     @OperandPopAndFreeTemp
-    % Treat the register as word, to get the character's integer value
-    oOperandSetLength(word);
+    ;
 
 
 OperandEolnFunction:
