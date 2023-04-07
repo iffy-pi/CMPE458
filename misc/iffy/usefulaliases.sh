@@ -1,0 +1,18 @@
+alias ptccl='ptc -L ~/GitRepos/CMPE458/build/ptsrc/lib/pt'
+# local pt
+alias protopt='/cas/student/17iem1/GitRepos/CMPE458/ptsrc/lib/pt'
+# compile pascal 
+alias compas='/cas/student/17iem1/GitRepos/CMPE458/scripts/compas'
+alias qbasm='/cas/student/17iem1/GitRepos/CMPE458/scripts/qbasm'
+alias ptasm='/cas/student/17iem1/GitRepos/CMPE458/scripts/ptasm'
+alias updateparsept='python /cas/student/17iem1/GitRepos/CMPE458/scripts/parser_def_paster.py'
+alias updatesempt='python /cas/student/17iem1/GitRepos/CMPE458/scripts/semantic_def_paster.py'
+alias updatecodept='python /cas/student/17iem1/GitRepos/CMPE458/scripts/coder_def_paster.py'
+alias parsetrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/parsetrace'
+alias scantrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/scantrace'
+alias ptsemtrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/ptsemtrace'
+alias semtrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/semtrace'
+alias codetrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/codetrace'
+alias ptcodetrace='/cas/student/17iem1/GitRepos/CMPE458/scripts/ptcodetrace'
+alias submit='/cas/student/17iem1/GitRepos/CMPE458/submissions/submitfolder.sh'
+alias striplines='python /cas/student/17iem1/GitRepos/CMPE458/scripts/strip_lines.py'
