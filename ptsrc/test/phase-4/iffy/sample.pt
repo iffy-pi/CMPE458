@@ -1,4 +1,7 @@
 using output
 var a : string
 var b : string
-a = (a + b)
+var c : integer
+var d : integer
+c = ord(a)
+c = c + d
