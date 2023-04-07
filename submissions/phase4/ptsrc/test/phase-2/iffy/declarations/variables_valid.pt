@@ -1,0 +1,4 @@
+% valid variables declaration
+using output
+var a : integer
+var b : string

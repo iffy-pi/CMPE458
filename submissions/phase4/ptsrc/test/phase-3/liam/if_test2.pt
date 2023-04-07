@@ -1,0 +1,11 @@
+Program p (output);
+    var x : integer;
+
+    begin
+    x:= 1;
+    
+    if x = 1 then
+        write (x); writeln;
+    if x = 2 then
+        write (x); writeln;
+end.

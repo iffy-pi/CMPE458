@@ -1,0 +1,4 @@
+% Testing non-string equality with literals
+using output
+var a : boolean
+a = ( 0 == 1 )

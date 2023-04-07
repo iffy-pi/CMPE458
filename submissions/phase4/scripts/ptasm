@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# prints assembly code for the program
+# uses the -S but deletes the file immediately after
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+$SCRIPT_DIR/qbasm -pt $*

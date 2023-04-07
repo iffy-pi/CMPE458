@@ -1,0 +1,9 @@
+using output
+
+var st1 : string
+var st2 : string
+var st3 : integer
+
+st1 = "Hello there"
+st2 = "the"
+st3 = st1 ? st2

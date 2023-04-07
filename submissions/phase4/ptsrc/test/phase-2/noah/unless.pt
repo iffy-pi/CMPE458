@@ -1,0 +1,4 @@
+using output
+unless x == 4 then
+    y = x
+end

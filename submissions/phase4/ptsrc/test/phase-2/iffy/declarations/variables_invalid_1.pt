@@ -1,0 +1,3 @@
+% invalid variable declaration using = instead of :
+using output
+var a = integer

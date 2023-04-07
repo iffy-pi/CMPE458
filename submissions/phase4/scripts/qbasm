@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# prints assembly code for the program
+# uses the -S but deletes the file immediately after
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+use_pt_flag=""
+
+if [[ "$1" = "-pt" ]]; then
+    # use the pascal compiler library
+    use_pt_flag="-pt"
+    shift
+fi
+
+
+if [[ "$2" = "-f" ]]; then
+    $SCRIPT_DIR/codetrace $use_pt_flag $1 -asf
+else
+    $SCRIPT_DIR/codetrace $use_pt_flag $1 -as
+fi

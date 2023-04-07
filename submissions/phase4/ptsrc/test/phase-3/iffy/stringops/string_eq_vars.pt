@@ -1,0 +1,8 @@
+% Testing string equality with variables
+using output
+var a : string
+var b : string
+var c : boolean
+a = "a"
+b = "b"
+c = ( a == b )

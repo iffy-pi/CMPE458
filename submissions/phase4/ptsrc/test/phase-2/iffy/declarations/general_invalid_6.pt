@@ -1,0 +1,3 @@
+% invalid type declaration, keyword identifier
+using output
+type unless : 92

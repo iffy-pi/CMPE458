@@ -1,0 +1,3 @@
+using output
+var a : string
+a = "abcdef" $ 2 .. 4

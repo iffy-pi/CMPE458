@@ -1,0 +1,4 @@
+% Testing string variable
+using output
+var a : string
+a = "abc"

@@ -1,0 +1,186 @@
+        { Semantic Operations }
+        oMemoryLoadCode = 14;
+        oMemoryFetchInstruction = 15;
+        oMemoryFetchOperand = 16;
+        oMemoryFetch = 17;
+        oMemoryStore = 18;
+        oALUpop = 19;
+        oALUpushTrap = 20; { (15) }
+        oALUpushL = 21;
+        oALUpushR = 22;
+        oALUpopL = 23;
+        oALUpopR = 24;
+        oALUchooseR = 25; { >>13 }
+        oALUpushLplusR = 26;
+        oALUpushLminusR = 27;
+        oALUpushLtimesR = 28;
+        oALUpushLdivR = 29;
+        oALUpushLmodR = 30;
+        oALUpushLeqR = 31;
+        oALUpushLneR = 32;
+        oALUpushLgtR = 33;
+        oALUpushLgeR = 34;
+        oALUpushLltR = 35;
+        oALUpushLleR = 36;
+        oALUpushLandR = 37;
+        oALUpushLorR = 38;
+        oALUpushNotR = 39;
+        oALUpushNegateR = 40;
+        oALUpushChrR = 41;
+        oALUpushOrdR = 42;
+        oCUchooseInstruction = 43; { >>14 }
+        oCUzeroPC = 44;
+        oCUmoveMDRtoL = 45;
+        oCUmoveMDRtoR = 46;
+        oCUmoveMDRtoT = 47;
+        oCUmoveMDRtoZ = 48;
+        oCUmoveMDRtoIR = 49;
+        oCUmoveMDRtoPC = 50;
+        oCUmoveMDRtoSCR = 51;
+        oCUmoveLtoMDR = 52;
+        oCUmoveRtoMAR = 53;
+        oCUmovePCtoMAR = 54;
+        oCUmoveMARtoPC = 55;
+        oCUincPC = 56;
+        oCUpushPC = 57;
+        oCUpopPC = 58;
+        oCUcase = 59;
+        oCUsubscriptCheck = 60;
+        oTrapHandlerTrap = 61; { >>13 }
+
+        { Input Tokens }
+
+        { Output Tokens }
+
+        { Input/Output Tokens }
+
+        { Error Codes }
+
+        { Type Values }
+        { Type 13 }
+        bFALSE = 0;
+        bTRUE = 1;
+        { Type 14 }
+        tMultiply = 0;
+        firstTcode = 0;
+        tDivide = 1;
+        tModulus = 2;
+        tAdd = 3;
+        tSubtract = 4;
+        tEQ = 5;
+        tNE = 6;
+        tGT = 7;
+        tGE = 8;
+        tLT = 9;
+        tLE = 10;
+        tAnd = 11;
+        tInfixAnd = 12;
+        tOr = 13;
+        tInfixOr = 14;
+        tNegate = 15;
+        tNot = 16;
+        tChr = 17;
+        tOrd = 18;
+        tEoln = 19;
+        tEOF = 20;
+        tVarParm = 21;
+        tFetchAddress = 22;
+        tFetchInteger = 23;
+        tFetchString = 24;
+        tFetchBoolean = 25;
+        tAssignBegin = 26;
+        tAssignAddress = 27;
+        tAssignInteger = 28;
+        tAssignString = 29;
+        tAssignBoolean = 30;
+        tStoreAddress = 31;
+        tStoreInteger = 32;
+        tStoreString = 33;
+        tStoreBoolean = 34;
+        tSubscriptBegin = 35;
+        tSubscriptAddress = 36;
+        tSubscriptInteger = 37;
+        tSubscriptString = 38;
+        tSubscriptBoolean = 39;
+        tArrayDescriptor = 40;
+        tFileDescriptor = 41;
+        tFileBind = 42;
+        tIfBegin = 43;
+        tIfEnd = 44;
+        tCaseBegin = 45;
+        tWhileBegin = 46;
+        tCallBegin = 47;
+        tParmEnd = 48;
+        tProcedureEnd = 49;
+        tWriteBegin = 50;
+        tReadBegin = 51;
+        tTrapBegin = 52;
+        tWriteEnd = 53;
+        tReadEnd = 54;
+        tConcatenate = 55;
+        tSubstring = 56;
+        tLength = 57;
+        tIndex = 58;
+        tStringEqual = 59;
+        tDoBegin = 60;
+        tStoreChar = 61;
+        tRepeatBegin = 62;
+        tRepeatControl = 63;
+        tSubscriptChar = 64;
+        tFetchChar = 65;
+        tAssignChar = 66;
+        tLiteralAddress = 67;
+        firstCompoundTcode = 67;
+        tLiteralInteger = 68;
+        tLiteralBoolean = 69;
+        tLiteralString = 70;
+        tIfThen = 71;
+        tIfMerge = 72;
+        tCaseSelect = 73;
+        tCaseMerge = 74;
+        tCaseEnd = 75;
+        tWhileTest = 76;
+        tWhileEnd = 77;
+        tSkipProc = 78;
+        tCallEnd = 79;
+        tLineNumber = 80;
+        tDoBreakIf = 81;
+        tDoTest = 82;
+        tDoEnd = 83;
+        tCaseElse = 84;
+        tSkipString = 85;
+        tStringData = 86;
+        tRepeatTest = 87;
+        tLiteralChar = 88;
+        tTrap = 89;
+        lastCompoundTcode = 89;
+        tEndOfFile = 90;
+        lastTcode = 90;
+        { Type 15 }
+        trHalt = 0;
+        trReset = 1;
+        trRewrite = 2;
+        trRead = 3;
+        trReadln = 4;
+        trWrite = 5;
+        trWriteln = 6;
+        trWriteString = 7;
+        trWriteInteger = 8;
+        trWriteChar = 9;
+        trReadInteger = 10;
+        trReadChar = 11;
+        trAssign = 12;
+        trSubscriptAbort = 13;
+        trCaseAbort = 14;
+        trEoln = 15;
+        trEof = 16;
+        trFileBind = 17;
+
+        { S/SL Rule Table Addresses } {
+        PTmachine = 0;
+        }
+
+        { S/SL Table Parameters }
+        sslTblSize = 542;
+        minSslTableValue = -32767;
+        maxSslTableValue = 32767;

@@ -1,0 +1,4 @@
+% Testing string equality with literals
+using output
+var a : boolean
+a = ( "a" == "b" )
