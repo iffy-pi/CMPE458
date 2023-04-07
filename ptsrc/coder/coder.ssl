@@ -2234,10 +2234,9 @@ OperandStringEqualPop:
     @OperandPopAndFreeTemp
 
     % pushing s1 onto stack
-    % do not pop
     @OperandForceAddressIntoTemp
     @OperandForceToStack
-    @OperandFreeTemp 
+    @OperandPopAndFreeTemp 
 
     % call the trap
     oOperandPushMode(mTrap)
@@ -2264,10 +2263,10 @@ OperandStringEqualPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
-    oOperandPop
-
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
+    
     % movl %esi, %X
     @OperandForceIntoTemp
     ;
@@ -2284,10 +2283,9 @@ OperandSubstringPopPop:
     oOperandPop
 
     % pushing s1 onto stack
-    % do not pop
     @OperandForceAddressIntoTemp
     @OperandForceToStack
-    @OperandFreeTemp 
+    @OperandPopAndFreeTemp 
 
 
     % call the trap
@@ -2315,21 +2313,21 @@ OperandSubstringPopPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
-    oOperandPop
-    oOperandPop
-
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
+    
     % movl %esi, %X
     @OperandForceIntoTemp
     ;
 
 OperandLength:
     @SaveTempRegsToStack
+
     % pushing s1 onto stack
     @OperandForceAddressIntoTemp
     @OperandForceToStack
-    @OperandFreeTemp 
+    @OperandPopAndFreeTemp 
 
     % call the trap
     oOperandPushMode(mTrap)
@@ -2356,11 +2354,10 @@ OperandLength:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
-    oOperandPop
-    oOperandPop
-
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
+    
     % movl %esi, %X
     @OperandForceIntoTemp
     ;
@@ -2374,10 +2371,9 @@ OperandIndexPop:
     @OperandPopAndFreeTemp
 
     % pushing s1 onto stack
-    % do not pop
     @OperandForceAddressIntoTemp
     @OperandForceToStack
-    @OperandFreeTemp 
+    @OperandPopAndFreeTemp 
 
     % call the trap
     oOperandPushMode(mTrap)
@@ -2404,11 +2400,10 @@ OperandIndexPop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
-    oOperandPop
-    oOperandPop
-
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
+    
     % movl %esi, %X
     @OperandForceIntoTemp
     ;
@@ -2422,10 +2417,9 @@ OperandConcatenatePop:
     @OperandPopAndFreeTemp
 
     % pushing s1 onto stack
-    % do not pop
     @OperandForceAddressIntoTemp
     @OperandForceToStack
-    @OperandFreeTemp 
+    @OperandPopAndFreeTemp
 
     % call the trap
     oOperandPushMode(mTrap)
@@ -2451,8 +2445,7 @@ OperandConcatenatePop:
     oOperandPushMode(mResultReg)
     oOperandSetLength(word)
     oEmitDouble(iMov)
-    oOperandPop
-    oOperandPop
+    oOperandPop % only pop eax, will be using esi below
 
     @RestoreTempRegsFromStack
     
